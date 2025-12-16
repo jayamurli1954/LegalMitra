@@ -1,0 +1,30 @@
+# FROZEN REQUIREMENTS - Exact versions tested and working
+# Use this file for stable, reproducible installations
+# Install with: pip install -r requirements-frozen.txt
+
+# Core web framework
+fastapi==0.123.5
+uvicorn[standard]==0.38.0
+pydantic==2.12.4
+pydantic-settings==2.12.0
+python-dotenv==1.2.1
+
+# HTTP client
+httpx==0.28.1
+
+# AI Providers (install only the ones you need)
+# For Anthropic Claude:
+anthropic>=0.7.0
+
+# For OpenAI GPT:
+openai>=1.3.0
+
+# For Google Gemini:
+google-generativeai>=0.3.0
+
+# Note: These AI packages may have newer versions available
+# If you encounter issues, try updating them individually:
+# pip install --upgrade anthropic
+# pip install --upgrade openai  
+# pip install --upgrade google-generativeai
+

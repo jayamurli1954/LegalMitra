@@ -1,0 +1,531 @@
+# Privacy Policy
+
+**Effective Date:** December 15, 2024  
+**Last Updated:** December 15, 2024  
+**Version:** 1.1
+
+---
+
+## 1. Introduction
+
+LegalMitra ("we," "our," or "us") is committed to protecting your privacy and ensuring compliance with the **Digital Personal Data Protection Act, 2023** (DPDP Act) and other applicable data protection laws in India.
+
+This Privacy Policy explains how we collect, use, disclose, store, and safeguard your personal data when you use our AI-powered legal assistant service ("Service").
+
+**By using LegalMitra, you consent to the data practices described in this Privacy Policy.**
+
+---
+
+## 2. Data Fiduciary Information
+
+Under the DPDP Act, 2023, LegalMitra acts as a **Data Fiduciary** for the personal data we process.
+
+**Data Fiduciary Details:**
+- **Name:** LegalMitra
+- **Address:** [Your Registered Business Address]
+- **Email:** privacy@legalmitra.com
+- **Website:** www.legalmitra.com
+- **Data Protection Officer:** [Name, if appointed]
+- **Contact:** dpo@legalmitra.com
+
+---
+
+## 3. Information We Collect
+
+### 3.1 Personal Data
+We may collect the following categories of personal data:
+
+**A. Information You Provide:**
+- Legal queries and questions
+- Document drafts and text inputs
+- Feedback and communications
+- Contact information (if you reach out to us)
+
+**B. Technical Data (Automatically Collected):**
+- IP address
+- Browser type and version
+- Device information (type, operating system)
+- Usage patterns and interaction data
+- Timestamps and session duration
+- Referring URLs
+
+**C. Cookies and Similar Technologies:**
+- We may use cookies for analytics and service improvement
+- You can manage cookie preferences in your browser settings
+
+### 3.2 Information We DO NOT Collect
+- ❌ We do NOT store your API keys (stored locally on your device)
+- ❌ We do NOT create user accounts (v1.0)
+- ❌ We do NOT store conversation history (v1.0)
+- ❌ We do NOT collect financial information
+- ❌ We do NOT collect Aadhaar, PAN, or government IDs
+
+### 3.3 Sensitive Personal Data
+We do NOT intentionally collect sensitive personal data as defined under DPDP Act, including:
+- Financial information
+- Health records
+- Biometric data
+- Sexual orientation
+- Caste or religious beliefs
+
+**If you inadvertently share such information, we cannot guarantee its protection.**
+
+---
+
+## 4. How We Use Your Information
+
+### 4.1 Legal Basis for Processing
+We process your personal data based on:
+- **Your consent** (by using the service)
+- **Legitimate interests** (service improvement, security)
+- **Legal obligations** (compliance with Indian laws)
+
+### 4.2 Purpose of Data Processing
+We use your information to:
+
+✅ Process your legal queries and generate AI responses  
+✅ Improve our AI models and service quality  
+✅ Provide technical support and troubleshoot issues  
+✅ Ensure security and prevent fraud or abuse  
+✅ Analyze usage patterns for service optimization  
+✅ Comply with legal obligations  
+✅ Respond to your inquiries and feedback  
+
+### 4.3 Automated Decision Making
+Our AI service uses automated processing to generate legal information. However:
+- No automated decisions affect your legal rights
+- You are not subject to automated legal determinations
+- Human review is always recommended for legal matters
+
+---
+
+## 5. Data Sharing and Disclosure
+
+### 5.1 Third-Party AI Services
+Your queries are processed through third-party AI service providers:
+
+**A. Anthropic Claude**
+- Purpose: AI response generation
+- Data Shared: Query text, conversation context
+- Privacy Policy: https://www.anthropic.com/privacy
+
+**B. OpenAI GPT (if applicable)**
+- Purpose: AI response generation
+- Data Shared: Query text
+- Privacy Policy: https://openai.com/privacy
+
+**C. Google Gemini (if applicable)**
+- Purpose: AI response generation
+- Data Shared: Query text
+- Privacy Policy: https://policies.google.com/privacy
+
+**Important:** These services have their own privacy policies. We recommend reviewing them.
+
+### 5.2 Other Third Parties
+We may share data with:
+
+**A. Indian Kanoon API**
+- Purpose: Case law search and retrieval
+- Data Shared: Search queries only
+- Privacy Policy: https://indiankanoon.org/privacy.html
+
+**B. Service Providers**
+- Hosting providers
+- Analytics services
+- Technical support providers
+
+**C. Legal Requirements**
+We may disclose information if required by:
+- Court orders or legal processes
+- Government authorities
+- Law enforcement agencies
+- Compliance with Indian laws
+
+### 5.3 We Do NOT
+- ❌ Sell your personal data
+- ❌ Share data for marketing purposes
+- ❌ Provide data to advertisers
+- ❌ Share data without legal basis
+
+---
+
+## 6. Cross-Border Data Transfer
+
+### 6.1 Data Location
+Your data may be processed and stored:
+- On servers located in India
+- On servers of third-party AI providers (may be outside India)
+
+### 6.2 International Transfers
+When data is transferred outside India:
+- We ensure adequate safeguards are in place
+- Third-party providers comply with DPDP Act requirements
+- Data is transferred only to countries approved by the Government of India (when notified)
+
+### 6.3 Your Rights
+You have the right to know about cross-border transfers and can withdraw consent for such transfers.
+
+---
+
+## 7. Data Storage, Security, and Retention
+
+### 7.1 Data Storage
+**Current Implementation (v1.0):**
+- We do NOT maintain a centralized database of conversations
+- Queries are processed in real-time
+- No conversation history is stored on our servers
+- Your API keys are stored LOCALLY on your device (.env file)
+
+**Future Implementation (v2.0+):**
+- If we implement conversation history, you will be notified
+- You will have the option to enable/disable storage
+- Stored data will be encrypted and secured
+
+### 7.2 Security Measures
+We implement industry-standard security measures:
+
+✅ Encryption in transit (HTTPS/TLS)  
+✅ Secure API communications  
+✅ Access controls and authentication  
+✅ Regular security audits  
+✅ Incident response procedures  
+
+**However:**
+- No method of transmission is 100% secure
+- You are responsible for securing your device and .env file
+- Do NOT share your API keys with others
+
+### 7.3 Data Retention
+**Current Policy:**
+- Real-time processing: Data not retained after response generation
+- Technical logs: Retained for 30 days for debugging
+- Support communications: Retained for 1 year
+- Analytics data: Anonymized and retained for 2 years
+
+**Future Policy:**
+- User conversations (if enabled): Retained until user deletion or 1 year
+- You can request deletion at any time
+
+---
+
+## 8. Your Rights Under DPDP Act, 2023
+
+As a **Data Principal**, you have the following rights:
+
+### 8.1 Right to Access
+You have the right to:
+- Know what personal data we hold about you
+- Obtain a summary of processing activities
+- Request a copy of your data
+
+**How to Exercise:** Email privacy@legalmitra.com
+
+### 8.2 Right to Correction
+You have the right to:
+- Correct inaccurate or incomplete personal data
+- Update your information
+
+**How to Exercise:** Email privacy@legalmitra.com with corrections
+
+### 8.3 Right to Erasure
+You have the right to:
+- Request deletion of your personal data
+- Withdraw consent for processing
+
+**How to Exercise:** Email privacy@legalmitra.com with deletion request
+
+**Note:** We may retain data if required by law or for legitimate purposes.
+
+### 8.4 Right to Grievance Redressal
+You have the right to:
+- File a complaint about data processing
+- Seek resolution of privacy concerns
+
+**How to Exercise:** See Section 11 (Grievance Redressal)
+
+### 8.5 Right to Nominate
+You have the right to:
+- Nominate another person to exercise your rights in case of death or incapacity
+
+**How to Exercise:** Email privacy@legalmitra.com with nomination details
+
+### 8.6 Response Timeline
+We will respond to your requests within:
+- **7 days:** Acknowledgment of request
+- **30 days:** Complete response (may be extended by 30 days if complex)
+
+---
+
+## 9. Children's Privacy
+
+### 9.1 Age Restriction
+LegalMitra is NOT intended for children under 18 years of age.
+
+### 9.2 Parental Consent
+If you are under 18:
+- You must have verifiable parental consent to use the service
+- We may request proof of parental consent
+
+### 9.3 Data of Minors
+If we discover we have collected data from a child under 18 without parental consent:
+- We will delete the data immediately
+- We will notify the parent/guardian (if contact information is available)
+
+### 9.4 Reporting
+If you believe we have collected data from a minor without consent:
+- Email: privacy@legalmitra.com
+- Subject: "Minor Data Concern"
+
+---
+
+## 10. Data Breach Notification
+
+### 10.1 Our Obligations
+In the event of a data breach that may affect you:
+- We will notify the **Data Protection Board of India** as required by law
+- We will notify affected users within **72 hours** of discovering the breach
+- We will provide details about the breach and recommended actions
+
+### 10.2 Your Actions
+If you suspect unauthorized access to your data:
+- Contact us immediately at security@legalmitra.com
+- Change your API keys
+- Review your account activity (if applicable)
+
+### 10.3 Our Response
+We will:
+- Investigate the incident
+- Take corrective measures
+- Cooperate with authorities
+- Provide updates on resolution
+
+---
+
+## 11. Grievance Redressal Mechanism
+
+### 11.1 Grievance Officer
+**Name:** [Grievance Officer Name]  
+**Designation:** Grievance Redressal Officer  
+**Email:** grievances@legalmitra.com  
+**Phone:** [Contact Number]  
+**Address:** [Business Address]  
+
+**Office Hours:** Monday to Friday, 10:00 AM to 6:00 PM IST
+
+### 11.2 Filing a Complaint
+To file a privacy-related complaint:
+
+**Step 1:** Send an email to grievances@legalmitra.com with:
+- Your name and contact information
+- Description of the issue
+- Supporting documents (if any)
+
+**Step 2:** We will acknowledge within 7 days
+
+**Step 3:** We will resolve within 30 days (may extend by 30 days if complex)
+
+### 11.3 Escalation
+If not satisfied with our response:
+- You can approach the **Data Protection Board of India**
+- Website: [Will be notified when established]
+- Email: [Will be notified when established]
+
+---
+
+## 12. Cookies and Tracking Technologies
+
+### 12.1 What Are Cookies
+Cookies are small text files stored on your device when you visit our website.
+
+### 12.2 Types of Cookies We Use
+**A. Essential Cookies:**
+- Required for service functionality
+- Cannot be disabled
+
+**B. Analytics Cookies:**
+- Track usage patterns
+- Help improve service
+- Can be disabled in browser settings
+
+**C. Performance Cookies:**
+- Monitor service performance
+- Identify errors
+- Can be disabled
+
+### 12.3 Managing Cookies
+You can control cookies through:
+- Browser settings (Chrome, Firefox, Safari, Edge)
+- Cookie consent banner on our website
+- Privacy settings in your device
+
+### 12.4 Third-Party Cookies
+Third-party services may set their own cookies:
+- Google Analytics (if used)
+- AI service providers
+- Hosting providers
+
+---
+
+## 13. Do Not Track Signals
+
+We do not currently respond to "Do Not Track" (DNT) browser signals. If we implement DNT response in the future, we will update this policy.
+
+---
+
+## 14. Links to Third-Party Websites
+
+Our service may contain links to third-party websites (e.g., Indian Kanoon, government portals):
+- We are not responsible for their privacy practices
+- We recommend reviewing their privacy policies
+- Links do not imply endorsement
+
+---
+
+## 15. Business Transfers
+
+If LegalMitra is involved in a merger, acquisition, or sale of assets:
+- Your personal data may be transferred
+- We will notify you via email or prominent notice
+- The new entity will be bound by this Privacy Policy
+- You will have the right to withdraw consent
+
+---
+
+## 16. Your Consent and Choices
+
+### 16.1 Consent
+By using LegalMitra, you consent to:
+- Collection and processing of your data as described
+- Sharing data with third-party AI services
+- Cross-border data transfers (if applicable)
+
+### 16.2 Withdrawal of Consent
+You can withdraw consent at any time by:
+- Stopping use of the service
+- Requesting data deletion
+- Emailing privacy@legalmitra.com
+
+### 16.3 Consequences of Withdrawal
+If you withdraw consent:
+- We will stop processing your data
+- We will delete your data (unless required by law)
+- You may not be able to use certain features
+
+---
+
+## 17. Updates to This Privacy Policy
+
+### 17.1 Changes
+We may update this Privacy Policy to:
+- Reflect changes in our practices
+- Comply with new laws or regulations
+- Improve clarity and transparency
+
+### 17.2 Notification
+We will notify you of material changes through:
+- Email notification (if we have your email)
+- Prominent notice on our website
+- In-app notification (if applicable)
+
+### 17.3 Effective Date
+Changes become effective 30 days after posting unless:
+- Required by law to be immediate
+- Changes are minor or administrative
+
+### 17.4 Your Acceptance
+Continued use after changes constitutes acceptance of the updated policy.
+
+---
+
+## 18. International Users
+
+If you are accessing LegalMitra from outside India:
+- Your data may be transferred to India
+- Indian data protection laws will apply
+- You consent to transfer and processing in India
+- Additional local laws may apply to you
+
+---
+
+## 19. Data Protection Impact Assessment
+
+We conduct regular Data Protection Impact Assessments (DPIA) to:
+- Identify privacy risks
+- Implement mitigation measures
+- Ensure DPDP Act compliance
+- Improve data protection practices
+
+---
+
+## 20. Contact Information
+
+For privacy-related questions, concerns, or requests:
+
+**General Privacy Inquiries:**  
+Email: jayamurli1954@gmail.com 
+ 
+
+---
+
+## 21. Compliance and Certifications
+
+LegalMitra is committed to compliance with:
+- Digital Personal Data Protection Act, 2023
+- Information Technology Act, 2000
+- Information Technology (Reasonable Security Practices) Rules, 2011
+- Other applicable Indian laws and regulations
+
+**Certifications:** [List any relevant certifications when obtained]
+
+---
+
+## 22. Questions and Feedback
+
+We value your feedback on our privacy practices. If you have:
+- Questions about this policy
+- Suggestions for improvement
+- Concerns about data handling
+
+Please contact us at: jayamurli1954@gmail.com
+
+---
+
+## 23. Legal Disclaimer
+
+This Privacy Policy is a binding legal document. By using LegalMitra, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy.
+
+**If you do not agree with any part of this Privacy Policy, you must not use our service.**
+
+---
+
+**Last Updated:** December 15, 2025 
+**Version:** 1.1  
+**Effective Date:** December 15, 2025  
+
+**© 2025 LegalMitra. All Rights Reserved.**
+
+---
+
+## APPENDIX A: Definitions
+
+**Data Principal:** Individual whose personal data is being processed (You, the user)
+
+**Data Fiduciary:** Entity that determines purpose and means of processing (LegalMitra)
+
+**Data Processor:** Entity that processes data on behalf of Data Fiduciary (Third-party AI services)
+
+**Personal Data:** Any data relating to an identified or identifiable individual
+
+**Sensitive Personal Data:** Data about financial, health, biometric, sexual orientation, etc.
+
+**Processing:** Any operation performed on personal data (collection, storage, use, disclosure, deletion)
+
+**Consent:** Free, specific, informed, and unambiguous indication of agreement
+
+**Data Breach:** Unauthorized access, disclosure, acquisition, or loss of personal data
+
+**DPDP Act:** Digital Personal Data Protection Act, 2023
+
+---
+
+[END OF PRIVACY POLICY]

@@ -1,0 +1,188 @@
+# Legal AI Assistant - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# ============================================
+# CORE DEPENDENCIES (Minimum for MVP)
+# ============================================
+
+# AI/ML Libraries (Choose one or both)
+openai>=1.3.0                    # For GPT-4/GPT-4o
+anthropic>=0.7.0                 # For Claude Sonnet/Opus
+
+# Environment Management
+python-dotenv>=1.0.0             # Load environment variables
+
+# ============================================
+# BACKEND FRAMEWORK (For Full Application)
+# ============================================
+
+# Web Framework
+fastapi>=0.104.1                 # Modern async web framework
+uvicorn[standard]>=0.24.0        # ASGI server
+pydantic>=2.5.0                  # Data validation
+python-multipart>=0.0.6          # File upload support
+
+# ============================================
+# DATABASE (For Full Application)
+# ============================================
+
+# MongoDB
+pymongo>=4.6.0                   # Synchronous MongoDB driver
+motor>=3.3.2                     # Async MongoDB driver
+
+# Vector Database
+pinecone-client>=3.0.0           # Vector similarity search
+chromadb>=0.4.0                  # Alternative vector DB (open source)
+
+# ============================================
+# AI/ML ENHANCEMENTS
+# ============================================
+
+# LangChain (for advanced AI workflows)
+langchain>=0.1.0                 # LangChain core
+langchain-openai>=0.0.2          # OpenAI integration
+langchain-anthropic>=0.0.1       # Anthropic integration
+langchain-community>=0.0.10      # Community integrations
+
+# Text Processing
+tiktoken>=0.5.0                  # Token counting for OpenAI
+sentence-transformers>=2.2.0     # Text embeddings
+
+# ============================================
+# DOCUMENT PROCESSING
+# ============================================
+
+# PDF Processing
+PyPDF2>=3.0.1                    # Read/write PDFs
+pdfplumber>=0.10.0               # Extract tables from PDFs
+reportlab>=4.0.0                 # Create PDFs programmatically
+
+# Word Documents
+python-docx>=1.1.0               # Read/write .docx files
+docx2txt>=0.8                    # Extract text from .docx
+
+# Excel Files
+openpyxl>=3.1.2                  # Read/write Excel files
+pandas>=2.1.3                    # Data manipulation
+
+# ============================================
+# WEB SCRAPING (For Case Law Collection)
+# ============================================
+
+beautifulsoup4>=4.12.0           # HTML parsing
+requests>=2.31.0                 # HTTP requests
+httpx>=0.25.2                    # Async HTTP client
+selenium>=4.15.0                 # Browser automation (for complex sites)
+
+# ============================================
+# CACHING & PERFORMANCE
+# ============================================
+
+redis>=5.0.1                     # Redis client for caching
+hiredis>=2.2.3                   # High-performance Redis parser
+
+# Background Tasks
+celery>=5.3.4                    # Distributed task queue
+kombu>=5.3.4                     # Messaging library
+
+# ============================================
+# SECURITY & AUTHENTICATION
+# ============================================
+
+python-jose[cryptography]>=3.3.0 # JWT tokens
+passlib[bcrypt]>=1.7.4           # Password hashing
+python-multipart>=0.0.6          # Form data parsing
+
+# ============================================
+# TESTING
+# ============================================
+
+pytest>=7.4.0                    # Testing framework
+pytest-asyncio>=0.21.0           # Async testing
+pytest-cov>=4.1.0                # Coverage reporting
+httpx>=0.25.2                    # HTTP testing client
+
+# ============================================
+# DEVELOPMENT TOOLS
+# ============================================
+
+# Code Quality
+black>=23.11.0                   # Code formatter
+flake8>=6.1.0                    # Linter
+mypy>=1.7.0                      # Type checking
+isort>=5.12.0                    # Import sorting
+
+# Jupyter Notebooks (for experimentation)
+jupyter>=1.0.0                   # Jupyter notebook
+ipykernel>=6.27.0                # Jupyter kernel
+
+# ============================================
+# MONITORING & LOGGING
+# ============================================
+
+# Logging
+loguru>=0.7.2                    # Better logging
+
+# Monitoring
+prometheus-client>=0.19.0        # Metrics collection
+
+# ============================================
+# DATA VALIDATION & SERIALIZATION
+# ============================================
+
+marshmallow>=3.20.0              # Object serialization
+jsonschema>=4.20.0               # JSON validation
+
+# ============================================
+# UTILITIES
+# ============================================
+
+python-dateutil>=2.8.2           # Date utilities
+pytz>=2023.3                     # Timezone handling
+tqdm>=4.66.0                     # Progress bars
+click>=8.1.7                     # CLI creation
+
+# ============================================
+# OPTIONAL ENHANCEMENTS
+# ============================================
+
+# OCR (for scanned documents)
+# pytesseract>=0.3.10            # OCR engine (requires tesseract installed)
+# pdf2image>=1.16.0              # Convert PDF to images
+
+# NLP
+# spacy>=3.7.0                   # NLP library
+# nltk>=3.8.0                    # Natural language toolkit
+
+# Graph Databases (for complex relationships)
+# neo4j>=5.14.0                  # Neo4j driver
+
+# Cloud Storage
+# boto3>=1.29.0                  # AWS SDK
+# google-cloud-storage>=2.10.0  # Google Cloud Storage
+
+# ============================================
+# MINIMAL INSTALLATION (Quick Start)
+# ============================================
+# For absolute beginners, install only these:
+# pip install openai anthropic python-dotenv
+
+# ============================================
+# RECOMMENDED INSTALLATION (MVP)
+# ============================================
+# For building a working prototype:
+# pip install fastapi uvicorn pymongo motor openai anthropic python-dotenv pydantic
+
+# ============================================
+# FULL INSTALLATION
+# ============================================
+# For complete production system:
+# pip install -r requirements.txt
+
+# ============================================
+# VERSION NOTES
+# ============================================
+# - Python 3.8+ required
+# - Tested on Python 3.10, 3.11, 3.12
+# - Some packages may require additional system dependencies
+# - Update regularly: pip install --upgrade -r requirements.txt

@@ -1,0 +1,185 @@
+# Disclaimer
+
+## 1. General Information
+LegalMitra is an AI-powered legal assistant designed to provide legal information and assistance for Indian laws. This service is intended for informational and educational purposes only.
+
+## 2. Not Legal Advice
+The information, documents, and responses provided by LegalMitra do not constitute legal advice, legal representation, or the formation of an attorney-client relationship. LegalMitra is not a substitute for professional legal counsel from a qualified advocate or attorney.
+
+**You should always consult a qualified legal professional for:**
+- Matters requiring court representation
+- Specific advice for your unique circumstances  
+- Document review and filing
+- Legal strategy and case preparation
+
+## 3. Accuracy and Completeness
+While we strive to provide accurate and up-to-date legal information based on Indian laws and regulations:
+
+- Laws and regulations are subject to frequent changes through amendments, notifications, and judicial pronouncements
+- Case law interpretations may vary between courts and over time
+- State-specific laws may differ from central legislation
+- Information is current as of [Last Update Date] and may not reflect recent changes
+- **Users must independently verify all citations, statutes, and case laws before relying on them**
+
+## 4. Case Law and Citations
+LegalMitra provides case law citations and legal precedents sourced from:
+- Indian Kanoon (indiankanoon.org) and other legal databases
+- Publicly available court judgments and legal repositories
+
+**Important:**
+- Always verify case citations independently
+- Check current validity status (not overruled/distinguished)
+- Case law should be verified through official law reports (AIR, SCC, etc.)
+- We provide attribution to original sources but are not responsible for accuracy of third-party content
+
+## 5. No Warranties
+LegalMitra is provided "as is" without warranties of any kind, either express or implied. We disclaim all warranties, including but not limited to:
+- Accuracy, completeness, or timeliness of information
+- Merchantability or fitness for a particular purpose
+- Non-infringement of third-party rights
+- Uninterrupted or error-free service
+
+## 6. Limitation of Liability
+To the fullest extent permitted by law, LegalMitra and its operators shall not be liable for any:
+- Direct, indirect, incidental, special, or consequential damages
+- Loss of data, loss of profits, or business interruption
+- Legal consequences arising from reliance on information provided
+- Damages resulting from unauthorized access to your data
+- Errors or omissions in the content provided
+
+**Maximum liability is limited to the amount paid (if any) for use of this service.**
+
+## 7. User Responsibility
+Users are solely responsible for:
+- ✅ Verifying accuracy and applicability of all information
+- ✅ Consulting qualified legal professionals before taking legal action
+- ✅ Ensuring compliance with applicable laws
+- ✅ Making informed decisions based on professional legal advice
+- ✅ Checking limitation periods and procedural deadlines
+- ✅ Maintaining confidentiality of their own sensitive information
+
+## 8. Data Privacy and Security ⭐ **NEW - IMPORTANT**
+
+### 8.1 Data Collection
+**Current Version (v1.0):**
+- We do NOT store your conversations or queries
+- We do NOT collect personal identifiable information
+- All conversations are processed in real-time and not saved
+
+**Future Versions:**
+- If we implement conversation history, you will be notified
+- Data handling will comply with the Digital Personal Data Protection (DPDP) Act, 2023
+
+### 8.2 Your Rights Under DPDP Act, 2023
+As a Data Principal, you have the right to:
+- Access your data (if we store any in future)
+- Correct inaccurate data
+- Request erasure of your data
+- Withdraw consent at any time
+- File complaints with the Data Protection Board
+
+### 8.3 What NOT to Share
+**DO NOT input highly sensitive information including:**
+- ❌ Aadhaar numbers, PAN cards, or government IDs
+- ❌ Bank account details or financial passwords
+- ❌ Confidential case details that could identify parties
+- ❌ Sensitive personal data of third parties
+- ❌ Trade secrets or confidential business information
+- ❌ Information that could prejudice ongoing legal proceedings
+
+### 8.4 Data Security
+While we implement reasonable security measures:
+- We cannot guarantee absolute security of data transmission over the internet
+- Users are responsible for maintaining confidentiality of information they input
+- In case of a data breach (if applicable), we will notify affected users as required by law
+
+## 9. Intellectual Property
+
+### 9.1 Service Content
+- LegalMitra's software, design, and original content are proprietary
+- Case laws, statutes, and regulations belong to their respective sources
+
+### 9.2 User-Generated Content
+- You retain ownership of content you input
+- We may use anonymized data to improve service quality
+- Generated documents are provided for your use but should be reviewed by a legal professional
+
+## 10. Prohibited Uses
+You agree NOT to use LegalMitra for:
+- ❌ Illegal activities or purposes
+- ❌ Harassing, threatening, or defaming others
+- ❌ Attempting to gain unauthorized access to the system
+- ❌ Reverse engineering or copying the service
+- ❌ Commercial resale without authorization
+- ❌ Automated scraping or bulk data extraction
+
+## 11. Third-Party Services and Links
+LegalMitra may contain links to third-party websites or services (e.g., Indian Kanoon, government portals):
+- We are not responsible for content or practices of third-party sites
+- Links do not imply endorsement
+- Use of third-party services is subject to their terms and conditions
+
+## 12. Age Restriction
+LegalMitra is intended for users aged 18 years and above. Users under 18 should use this service only under parental or guardian supervision.
+
+## 13. Jurisdictional Limitations
+
+### 13.1 Governing Law
+This disclaimer and your use of LegalMitra are governed by the laws of India.
+
+### 13.2 Jurisdiction
+Any disputes arising from use of this service shall be subject to the exclusive jurisdiction of the courts in **[Your City, e.g., Bangalore, Karnataka]**, India.
+
+### 13.3 Geographic Scope
+- This service provides information on Indian laws only
+- Information may not be applicable in other jurisdictions
+- Users outside India use this service at their own risk
+
+## 14. Updates and Amendments
+
+### 14.1 Right to Modify
+We reserve the right to modify this disclaimer at any time without prior notice.
+
+### 14.2 Notification of Changes
+- Material changes will be notified through the platform
+- Updated disclaimer will show "Last Updated" date
+- Continued use after changes constitutes acceptance
+
+### 14.3 User Responsibility
+Users should review this disclaimer periodically for updates.
+
+## 15. Service Availability
+- We do not guarantee uninterrupted or error-free service
+- Service may be suspended for maintenance without notice
+- We reserve the right to discontinue service at any time
+
+## 16. Severability
+If any provision of this disclaimer is found to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.
+
+## 17. Entire Agreement
+This disclaimer, together with our Privacy Policy and Terms of Service, constitutes the entire agreement between you and LegalMitra regarding use of this service.
+
+## 18. Contact Information ⭐ **NEW**
+For questions, concerns, or complaints regarding this disclaimer:
+
+**Email:** jayamurli1954@gmail.com 
+**Address:** 
+LegalMitra  
+Flat No. 201, Sarvajit Heights Apartment
+Kembathalli Main Road, Gottigere, Bengaluru 560083]  
+Karnataka India 
+
+  
+
+---
+
+## Important Notice
+**BY USING LEGALMITRA, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY THIS DISCLAIMER.**
+
+**IF YOU DO NOT AGREE WITH ANY PART OF THIS DISCLAIMER, YOU SHOULD NOT USE THIS SERVICE.**
+
+---
+
+**Last Updated:** December 15, 2025  
+**Version:** 1.1  
+**Effective Date:** December 15, 2025
