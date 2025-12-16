@@ -74,7 +74,7 @@ class AIService:
         if self.settings.AI_PROVIDER.lower() in ["gemini", "google"] and genai:
             genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
             self._gemini_client = genai
-
+    
     async def process_legal_query(
         self,
         query: str,
@@ -90,7 +90,7 @@ class AIService:
             f"Query type: {query_type}",
             f"User query: {query}",
         ]
-
+        
         if context:
             prompt_parts.append(f"Additional context: {context}")
         if relevant_cases:
@@ -100,7 +100,7 @@ class AIService:
 
         user_text = "\n\n".join(prompt_parts)
         return await self._generate_text(user_text)
-
+    
     async def draft_document(
         self,
         document_type: str,
@@ -135,7 +135,17 @@ class AIService:
         """
         Route the request to the configured AI provider.
         """
-        provider = self.settings.AI_PROVIDER.lower()
+        provider = self.settings.AI_PROVIDER.lower().strip()
+        
+        # Normalize provider names - handle variations (google -> gemini)
+        original_provider = provider
+        if provider == "google":
+            provider = "gemini"
+        
+        # Debug: Log the provider value after normalization
+        print(f"DEBUG: AI_PROVIDER={repr(self.settings.AI_PROVIDER)}, original={repr(original_provider)}, normalized={repr(provider)}, type={type(provider)}")
+        print(f"DEBUG: Direct comparison test - provider == 'gemini': {provider == 'gemini'}")
+        print(f"DEBUG: Provider checks - anthropic={provider == 'anthropic'}, openai={provider == 'openai'}, gemini={provider == 'gemini'}, grok={provider == 'grok'}")
 
         if provider == "anthropic":
             if not self._anthropic_client:
@@ -157,8 +167,7 @@ class AIService:
                 if getattr(block, "type", None) == "text":
                     parts.append(block.text)
             return "\n".join(parts).strip()
-
-        if provider == "openai":
+        elif provider == "openai":
             if not self._openai_client:
                 raise RuntimeError(
                     "OpenAI client not available. "
@@ -175,8 +184,8 @@ class AIService:
                 max_tokens=2048,
             )
             return (response.choices[0].message.content or "").strip()
-
-        if provider in ["gemini", "google"]:
+        elif provider == "gemini":
+            print(f"DEBUG: ✅✅✅ ENTERED GEMINI BLOCK! provider={repr(provider)}, _gemini_client exists={self._gemini_client is not None}")
             if not self._gemini_client:
                 raise RuntimeError(
                     "Google Gemini client not available. "
@@ -191,40 +200,51 @@ class AIService:
             loop = asyncio.get_event_loop()
             
             # Try to find an available Gemini model
-            # Priority: gemini-pro (60 req/min free tier) > gemini-1.5-pro > gemini-1.5-flash > gemini-2.5-flash
-            preferred_models = ["gemini-pro", "gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.5-flash"]
+            # Updated priority: Try newer models first, then fallback to older ones
+            # gemini-1.5-flash is the most widely available and cost-effective
+            preferred_models = [
+                "gemini-1.5-flash",      # Fast, cost-effective, widely available
+                "gemini-1.5-pro",        # Higher capability
+                "gemini-1.0-pro",        # Stable successor to gemini-pro
+                "gemini-pro",            # Legacy (may not be available)
+                "gemini-2.5-flash"       # Latest (may have rate limits)
+            ]
             model_name = None
             
-            # First, try to get a working model
-            for candidate in preferred_models:
-                try:
-                    test_model = self._gemini_client.GenerativeModel(candidate)
-                    # Test if model is accessible by checking its name (this is a lightweight check)
-                    model_name = candidate
-                    print(f"✅ Using Gemini model: {model_name}")
-                    break
-                except Exception:
-                    continue
-            
-            # If no preferred model works, try listing available models
-            if not model_name:
-                try:
-                    available_models = await loop.run_in_executor(
-                        None, lambda: list(self._gemini_client.list_models())
-                    )
-                    for model_info in available_models:
-                        if hasattr(model_info, 'name'):
-                            model_id = model_info.name.split('/')[-1]
-                            if 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                                try:
-                                    test_model = self._gemini_client.GenerativeModel(model_id)
-                                    model_name = model_id
-                                    print(f"✅ Using available Gemini model: {model_name}")
-                                    break
-                                except Exception:
-                                    continue
-                except Exception as list_error:
-                    print(f"⚠️ Could not list Gemini models: {list_error}")
+            # First, try to list available models from API (most reliable)
+            model_name = None
+            try:
+                print("🔍 Listing available Gemini models from API...")
+                available_models = await loop.run_in_executor(
+                    None, lambda: list(self._gemini_client.list_models())
+                )
+                
+                # Create a list of available model IDs
+                available_model_ids = []
+                for model_info in available_models:
+                    if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                        model_id = model_info.name.split('/')[-1]
+                        available_model_ids.append(model_id)
+                
+                print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
+                
+                # Try preferred models first (in order), but only if they're in the available list
+                for preferred in preferred_models:
+                    if preferred in available_model_ids:
+                        model_name = preferred
+                        print(f"✅ Using preferred Gemini model: {model_name}")
+                        break
+                
+                # If no preferred model is available, use the first available model
+                if not model_name and available_model_ids:
+                    model_name = available_model_ids[0]
+                    print(f"✅ Using first available Gemini model: {model_name}")
+                    
+            except Exception as list_error:
+                print(f"⚠️ Could not list Gemini models: {list_error}")
+                print("⚠️ Falling back to trying preferred models directly...")
+                # Fallback: try preferred models in order
+                model_name = preferred_models[0]
             
             if not model_name:
                 raise RuntimeError(
@@ -258,16 +278,31 @@ class AIService:
                 except Exception as e:
                     error_str = str(e)
                     
-                    # Check if model doesn't exist (404) - try next model in list
-                    if "404" in error_str and "not found" in error_str.lower():
-                        # Model not available, try next preferred model
-                        current_index = preferred_models.index(model_name) if model_name in preferred_models else -1
-                        if current_index >= 0 and current_index < len(preferred_models) - 1:
-                            model_name = preferred_models[current_index + 1]
-                            print(f"⚠️ Model not available, trying: {model_name}")
-                            continue
-                        else:
-                            raise RuntimeError(f"Gemini model not available: {model_name}. Error: {error_str[:300]}")
+                    # Check if model doesn't exist (404) - try to list available models and use one
+                    if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
+                        print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
+                        try:
+                            # List available models and pick the first one that supports generateContent
+                            available_models = await loop.run_in_executor(
+                                None, lambda: list(self._gemini_client.list_models())
+                            )
+                            for model_info in available_models:
+                                if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                                    model_id = model_info.name.split('/')[-1]
+                                    model_name = model_id
+                                    print(f"✅ Switched to available model: {model_name}")
+                                    continue  # Retry with new model
+                            
+                            # If we get here, no models were found
+                            raise RuntimeError(
+                                f"No available Gemini models found. Please check your API key. "
+                                f"Last error: {error_str[:200]}"
+                            )
+                        except RuntimeError:
+                            raise  # Re-raise if it's our RuntimeError
+                        except Exception as list_err:
+                            # If listing fails, raise original error
+                            raise RuntimeError(f"Gemini model {model_name} not available and could not list alternatives. Error: {error_str[:200]}")
                     
                     # Check for rate limit error (429)
                     if "429" in error_str or "quota" in error_str.lower() or "rate limit" in error_str.lower() or "exceeded" in error_str.lower():
@@ -293,8 +328,7 @@ class AIService:
                     else:
                         # Not a rate limit error, re-raise immediately
                         raise RuntimeError(f"Gemini API error ({model_name}): {error_str}")
-
-        if provider == "grok":
+        elif provider == "grok":
             if not httpx:
                 raise RuntimeError(
                     "httpx package required for Grok API. "
@@ -327,9 +361,62 @@ class AIService:
                 data = response.json()
                 return (data["choices"][0]["message"]["content"] or "").strip()
 
+        # This should never be reached if provider checks are correct
+        # But if we're here, try one more time with explicit handling
+        print(f"ERROR: Reached final error block! provider={repr(provider)}, type={type(provider)}")
+        print(f"ERROR: provider == 'gemini': {provider == 'gemini'}")
+        print(f"ERROR: provider in ('gemini', 'google'): {provider in ('gemini', 'google')}")
+        print(f"ERROR: All elif checks failed - this shouldn't happen!")
+        
+        # Last resort: handle gemini/google directly here by recursing
+        if provider in ('gemini', 'google') or provider == 'gemini':
+            print(f"WARNING: Caught gemini provider in fallback - handling directly")
+            # Call the gemini logic directly
+            if not self._gemini_client:
+                raise RuntimeError(
+                    "Google Gemini client not available. "
+                    "Ensure `google-generativeai` package is installed and "
+                    "GOOGLE_GEMINI_API_KEY is set."
+                )
+            # Use the same logic as the elif block - just copy it here as fallback
+            import asyncio
+            import time
+            import re
+            loop = asyncio.get_event_loop()
+            preferred_models = [
+                "gemini-1.5-flash",      # Fast, cost-effective, widely available
+                "gemini-1.5-pro",        # Higher capability
+                "gemini-1.0-pro",        # Stable successor to gemini-pro
+                "gemini-pro",            # Legacy (may not be available)
+                "gemini-2.5-flash"       # Latest (may have rate limits)
+            ]
+            model_name = None
+            for candidate in preferred_models:
+                try:
+                    test_model = self._gemini_client.GenerativeModel(candidate)
+                    model_name = candidate
+                    print(f"✅ Using Gemini model: {model_name}")
+                    break
+                except Exception:
+                    continue
+            if not model_name:
+                raise RuntimeError("No available Gemini models found.")
+            model = self._gemini_client.GenerativeModel(model_name)
+            full_prompt = f"{self.system_prompt}\n\n{user_text}"
+            response = await loop.run_in_executor(
+                None, lambda: model.generate_content(
+                    full_prompt,
+                    generation_config={"temperature": 0.3, "max_output_tokens": 8000}
+                )
+            )
+            return response.text.strip()
+        
         raise RuntimeError(
-            f"Unsupported AI provider '{self.settings.AI_PROVIDER}'. "
-            "Use 'anthropic', 'openai', 'gemini', or 'grok'."
+            f"Unsupported AI provider '{self.settings.AI_PROVIDER}' (normalized: '{provider}'). "
+            "Use 'anthropic', 'openai', 'gemini', 'google', or 'grok'. "
+            f"Available provider checks: anthropic={provider == 'anthropic'}, "
+            f"openai={provider == 'openai'}, gemini={provider == 'gemini'}, "
+            f"gemini/google={provider in ['gemini', 'google']}, grok={provider == 'grok'}"
         )
 
 

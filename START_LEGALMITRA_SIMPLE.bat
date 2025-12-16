@@ -73,6 +73,16 @@ if not exist ".env" (
 
 echo.
 echo ========================================
+echo    Clearing Python Cache...
+echo ========================================
+REM Clear Python cache to ensure fresh code load
+if exist __pycache__ rmdir /s /q __pycache__ 2>nul
+for /d /r . %%d in (__pycache__) do @if exist "%%d" rmdir /s /q "%%d" 2>nul
+for /r . %%f in (*.pyc) do @if exist "%%f" del /f /q "%%f" 2>nul
+echo Cache cleared!
+echo.
+
+echo ========================================
 echo    Starting Server...
 echo ========================================
 echo.
@@ -113,8 +123,8 @@ if exist "%FRONTEND_PATH%" (
 )
 echo.
 
-REM Start the server
-python -m app.main
+REM Start the server with uvicorn and reload to pick up code changes
+python -m uvicorn app.main:app --reload --port 8888
 
 REM If we get here, server stopped
 echo.
