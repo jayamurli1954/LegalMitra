@@ -145,7 +145,7 @@ class AIService:
         # Debug: Log the provider value after normalization
         print(f"DEBUG: AI_PROVIDER={repr(self.settings.AI_PROVIDER)}, original={repr(original_provider)}, normalized={repr(provider)}, type={type(provider)}")
         print(f"DEBUG: Direct comparison test - provider == 'gemini': {provider == 'gemini'}")
-        print(f"DEBUG: Provider checks - anthropic={provider == 'anthropic'}, openai={provider == 'openai'}, gemini={provider == 'gemini'}, grok={provider == 'grok'}")
+        print(f"DEBUG: Provider checks - anthropic={provider == 'anthropic'}, openai={provider == 'openai'}, gemini={provider == 'gemini'}, grok={provider == 'grok'}, zai={provider == 'zai'}")
 
         if provider == "anthropic":
             if not self._anthropic_client:
@@ -348,7 +348,39 @@ class AIService:
                         "Content-Type": "application/json",
                     },
                     json={
-                        "model": "grok-beta",
+                        "model": "grok-2-1212",
+                        "messages": [
+                            {"role": "system", "content": self.system_prompt},
+                            {"role": "user", "content": user_text},
+                        ],
+                        "max_tokens": 2048,
+                    },
+                    timeout=60.0,
+                )
+                response.raise_for_status()
+                data = response.json()
+                return (data["choices"][0]["message"]["content"] or "").strip()
+        elif provider == "zai":
+            if not httpx:
+                raise RuntimeError(
+                    "httpx package required for Z AI API. "
+                    "Install with: pip install httpx"
+                )
+            if not self.settings.ZAI_API_KEY:
+                raise RuntimeError(
+                    "ZAI_API_KEY not set in .env file."
+                )
+
+            # Z AI GLM 4.6 uses OpenAI-compatible API
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    "https://api.z.ai/api/paas/v4/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {self.settings.ZAI_API_KEY}",
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "model": "glm-4.6",
                         "messages": [
                             {"role": "system", "content": self.system_prompt},
                             {"role": "user", "content": user_text},
@@ -413,10 +445,10 @@ class AIService:
         
         raise RuntimeError(
             f"Unsupported AI provider '{self.settings.AI_PROVIDER}' (normalized: '{provider}'). "
-            "Use 'anthropic', 'openai', 'gemini', 'google', or 'grok'. "
+            "Use 'anthropic', 'openai', 'gemini', 'google', 'grok', or 'zai'. "
             f"Available provider checks: anthropic={provider == 'anthropic'}, "
             f"openai={provider == 'openai'}, gemini={provider == 'gemini'}, "
-            f"gemini/google={provider in ['gemini', 'google']}, grok={provider == 'grok'}"
+            f"gemini/google={provider in ['gemini', 'google']}, grok={provider == 'grok'}, zai={provider == 'zai'}"
         )
 
 

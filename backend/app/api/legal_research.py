@@ -59,19 +59,33 @@ async def legal_research(request: LegalQueryRequest):
 async def health_check():
     """Health check for legal research service"""
     from app.core.config import get_settings
+    # Clear cache to ensure fresh settings
+    get_settings.cache_clear()
     settings = get_settings()
+    
+    provider = settings.AI_PROVIDER.lower().strip()
     
     health_info = {
         "status": "healthy",
         "service": "legal_research",
-        "ai_provider": settings.AI_PROVIDER,
-        "gemini_configured": bool(settings.GOOGLE_GEMINI_API_KEY),
+        "ai_provider": provider,
     }
     
-    # If using Gemini, show model info
-    if settings.AI_PROVIDER.lower() in ["gemini", "google"]:
+    # Provider-specific info
+    if provider in ["gemini", "google"]:
+        health_info["gemini_configured"] = bool(settings.GOOGLE_GEMINI_API_KEY)
         health_info["gemini_model"] = "gemini-pro"
         health_info["rate_limit_info"] = "60 requests/minute (free tier)"
+    elif provider == "grok":
+        health_info["grok_configured"] = bool(settings.GROK_API_KEY)
+        health_info["grok_model"] = "grok-2-1212"
+    elif provider == "zai":
+        health_info["zai_configured"] = bool(settings.ZAI_API_KEY)
+        health_info["zai_model"] = "glm-4.6"
+    elif provider == "anthropic":
+        health_info["anthropic_configured"] = bool(settings.ANTHROPIC_API_KEY)
+    elif provider == "openai":
+        health_info["openai_configured"] = bool(settings.OPENAI_API_KEY)
     
     return health_info
 

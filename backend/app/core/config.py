@@ -12,7 +12,7 @@ except ImportError:
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables / .env."""
 
-    # AI provider selection: "anthropic", "openai", "google", "grok"
+    # AI provider selection: "anthropic", "openai", "google", "grok", "zai"
     AI_PROVIDER: str = "anthropic"
 
     # API keys (only the one for the selected provider is required)
@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     ANTHROPIC_API_KEY: Optional[str] = None
     GOOGLE_GEMINI_API_KEY: Optional[str] = None
     GROK_API_KEY: Optional[str] = None
+    ZAI_API_KEY: Optional[str] = None
 
     # Server configuration
     PORT: int = 8888
