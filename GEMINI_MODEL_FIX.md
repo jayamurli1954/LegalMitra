@@ -34,3 +34,4 @@ Check server console logs for messages like:
 - `✅ Using Gemini model: gemini-1.5-flash`
 - Or `✅ Using available Gemini model: [model-name]`
 
+

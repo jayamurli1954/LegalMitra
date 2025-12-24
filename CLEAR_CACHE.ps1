@@ -9,3 +9,4 @@ Get-ChildItem -Path . -Recurse -Filter *.pyc | Remove-Item -Force -ErrorAction S
 
 Write-Host "Cache cleared!" -ForegroundColor Green
 
+

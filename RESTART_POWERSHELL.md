@@ -35,3 +35,4 @@ cd D:\LegalMitra\backend
 python -m uvicorn app.main:app --reload --port 8888
 ```
 
+

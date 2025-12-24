@@ -47,3 +47,4 @@ If you DON'T see these messages, the old code is still running - restart again.
 2. Verify the file `backend/app/services/ai_service.py` has the `elif provider == "gemini":` line
 3. Make sure you're checking the SERVER console output, not browser console
 
+

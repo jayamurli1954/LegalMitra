@@ -48,3 +48,4 @@ Check the server console output - the debug messages will show exactly what's ha
 ## Verification:
 After restart, the server console should show debug output when you make a query. If you don't see debug messages, the old code is still running.
 
+
