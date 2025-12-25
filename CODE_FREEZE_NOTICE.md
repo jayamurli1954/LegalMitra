@@ -49,5 +49,16 @@ Only critical bug fixes are allowed. All other changes are prohibited.
 
 ---
 
+## 🔮 Future Versions
+
+**Version 1.0 is FROZEN. All future changes will be versioned as:**
+
+- **v1.1** - Minor updates (bug fixes, small improvements)
+- **v2.0** - Major updates (new features, redesigns)
+
+See `VERSIONING_STRATEGY.md` for detailed guidelines.
+
+---
+
 **This version is COMPLETE and STABLE. NO MORE CHANGES.**
 
