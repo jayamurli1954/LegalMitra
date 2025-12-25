@@ -116,7 +116,8 @@ if not exist "%FRONTEND_PATH%" (
     set "FRONTEND_PATH=%SCRIPT_DIR%frontend\index_new.html"
 )
 if exist "%FRONTEND_PATH%" (
-    start "" "%FRONTEND_PATH%"
+    REM Use default browser instead of system default handler
+    start "" "msedge" "%FRONTEND_PATH%" 2>nul || start "" "chrome" "%FRONTEND_PATH%" 2>nul || start "" "%FRONTEND_PATH%"
 ) else (
     echo WARNING: Frontend file not found at %FRONTEND_PATH%
     echo Please open frontend\index.html or frontend\index_new.html manually

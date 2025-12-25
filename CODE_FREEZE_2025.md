@@ -23,19 +23,19 @@
 - ✅ Contact/Feedback form
 - ✅ Welcome message
 - ✅ Follow-up questions after responses
-- ✅ Gemini API with automatic model discovery
-- ✅ Fallback to other AI providers (Anthropic, Grok, Z AI)
+- ✅ Grok AI (xAI) - Currently Active and Working
+- ✅ Fallback to other AI providers (Anthropic, OpenAI, Z AI, Gemini)
 - ✅ Rate limit handling with retry logic
-- ✅ Dynamic model selection (lists available models from API)
+- ✅ UTF-8 encoding support for Windows console
 
 ### 🔧 Key Technical Details:
 
 **Backend:**
 - Framework: FastAPI
 - Port: 8888
-- AI Provider: Gemini (with automatic model discovery)
-- Model Selection: Dynamically lists available models from Google API
-- Fallback: Anthropic, Grok, Z AI GLM 4.6
+- AI Provider: **Grok (xAI)** - Currently Active ⭐
+- Model: grok-2-1212
+- Alternative Providers: Anthropic, OpenAI, Z AI GLM 4.6, Gemini
 
 **Frontend:**
 - Single HTML file: `frontend/index.html`
@@ -44,7 +44,8 @@
 
 **Configuration:**
 - Environment file: `backend/.env`
-- Required: `AI_PROVIDER=gemini` and `GOOGLE_GEMINI_API_KEY`
+- Required: `AI_PROVIDER=grok` and `GROK_API_KEY`
+- Alternative: Can switch to `zai`, `anthropic`, `openai`, or `gemini`
 
 ---
 
@@ -121,6 +122,13 @@ If bugs appear or code gets modified:
 **⚠️ WARNING: This code is frozen. Any modifications should be done in a separate branch or with explicit approval.**
 
 **Last Verified Working:** January 2025  
-**Freeze Reason:** System is stable and working correctly
+**Freeze Reason:** System is stable and working correctly  
+**Version:** v1.1-stable-grok (updated from v1.0-stable-freeze)
+
+**Note:** This freeze includes bug fixes applied after initial freeze:
+- UTF-8 encoding fix (Windows console)
+- Provider switch from Gemini to Grok (due to API issues)
+- Package installation (httpx for Grok)
+- See STABILITY_REPORT.md for details on why changes were necessary
 
 

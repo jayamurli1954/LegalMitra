@@ -31,3 +31,4 @@ The "Google Gemini client not available" error should now be resolved.
 
 **The server is now running with all fixes applied!**
 
+

@@ -37,3 +37,4 @@ The server is now using Grok AI instead of Gemini! 🚀
 3. Add `ZAI_API_KEY=your_key_here` (your key is in LegalMitra_API-Key.txt)
 4. Restart server
 
+

@@ -44,3 +44,4 @@ The "Google Gemini client not available" error should be gone. The system is now
 - `AI_PROVIDER=openai` - OpenAI GPT
 - `AI_PROVIDER=gemini` - Google Gemini (if fixed)
 
+

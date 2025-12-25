@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     GOOGLE_GEMINI_API_KEY: Optional[str] = None
     GROK_API_KEY: Optional[str] = None
     ZAI_API_KEY: Optional[str] = None
+    
+    # Web Search API (for fetching latest legal information)
+    GOOGLE_CUSTOM_SEARCH_API_KEY: Optional[str] = None
+    GOOGLE_CUSTOM_SEARCH_ENGINE_ID: Optional[str] = None
 
     # Server configuration
     PORT: int = 8888

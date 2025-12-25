@@ -30,3 +30,4 @@ The server is now using Grok AI and it's working correctly! 🚀
 
 **Note:** If you want to use Z AI GLM 4.6 instead, change `AI_PROVIDER=zai` in .env and restart.
 
+

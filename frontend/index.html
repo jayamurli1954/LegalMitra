@@ -15,37 +15,175 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border-radius: 0;
+            box-shadow: none;
             overflow: hidden;
+            min-height: 100vh;
         }
 
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 35px 40px;
             text-align: center;
+            width: 100%;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2.8em;
+            margin-bottom: 12px;
         }
 
         .header p {
-            font-size: 1.1em;
+            font-size: 1.2em;
             opacity: 0.9;
         }
 
         .content {
-            padding: 40px;
+            padding: 30px 40px;
+            max-width: 100%;
+        }
+
+        /* 2-Column Layout for Legal Research Tab */
+        .research-layout {
+            display: flex;
+            gap: 40px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .research-left {
+            flex: 0 0 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            min-width: 380px;
+        }
+
+        .research-right {
+            flex: 1;
+            min-width: 500px;
+            max-width: 100%;
+        }
+
+        .info-box {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 18px;
+            font-size: 1.35em;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-box li {
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .info-box li:hover {
+            background: #e8eaf6;
+            border-left-color: #764ba2;
+            transform: translateX(5px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .case-item-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 1.05em;
+        }
+
+        .case-item-court {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .case-item-summary {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .news-item-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 1.05em;
+        }
+
+        .news-item-meta {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .news-item-summary {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .loading-box {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+
+        /* Make responsive */
+        @media (max-width: 1200px) {
+            .research-layout {
+                gap: 30px;
+            }
+            .research-left {
+                flex: 0 0 380px;
+                min-width: 350px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .research-layout {
+                flex-direction: column;
+            }
+            .research-left {
+                flex: 1;
+                min-width: auto;
+            }
+            .research-right {
+                min-width: auto;
+            }
         }
 
         .tabs {
@@ -113,8 +251,9 @@
         }
 
         textarea {
-            min-height: 150px;
+            min-height: 160px;
             resize: vertical;
+            line-height: 1.6;
         }
 
         button {
@@ -244,9 +383,10 @@
         .footer {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px 40px;
-            margin-top: 40px;
+            padding: 35px 50px;
+            margin-top: 50px;
             text-align: center;
+            width: 100%;
         }
 
         .footer-links {
@@ -342,6 +482,98 @@
             margin-left: 20px;
             margin-bottom: 20px;
         }
+
+        /* Article Modal Styles */
+        .article-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow: auto;
+        }
+
+        .article-modal.show {
+            display: block;
+        }
+
+        .article-modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 40px;
+            border: none;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .article-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .article-modal-title {
+            color: #667eea;
+            font-size: 1.8em;
+            margin: 0;
+            flex: 1;
+        }
+
+        .article-close {
+            color: #aaa;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .article-close:hover,
+        .article-close:focus {
+            color: #000;
+        }
+
+        .article-body {
+            line-height: 1.8;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .article-loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .article-back-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .article-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -367,36 +599,67 @@
                     <p><strong>How can I assist you today?</strong></p>
                     <button onclick="document.getElementById('welcome-message').style.display='none'" class="close-welcome">Got it!</button>
                 </div>
-                <div class="info">
-                    <strong>💡 Tip:</strong> Ask any legal question about Indian laws, regulations, compliance, or case laws. Examples: "What is the limitation period for GST appeal?", "Explain Section 138 of Negotiable Instruments Act"
-                </div>
-                <div class="form-group">
-                    <label for="research-query">Your Legal Question:</label>
-                    <textarea id="research-query" placeholder="Enter your legal question here..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="query-type">Query Type:</label>
-                    <select id="query-type">
-                        <option value="research">Research</option>
-                        <option value="opinion">Legal Opinion</option>
-                        <option value="case_prep">Case Preparation</option>
-                    </select>
-                </div>
-                <button onclick="performResearch()">🔍 Research</button>
                 
-                <!-- Recent Queries Section -->
-                <div class="recent-queries-container" style="margin-top: 25px;">
-                    <h3 class="recent-queries-toggle" onclick="toggleRecentQueries()" style="cursor: pointer; color: #667eea; font-size: 1.1em; margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
-                        <span>📜 Recent Queries</span>
-                        <span id="toggle-icon" style="font-size: 0.9em;">▼</span>
-                    </h3>
-                    <div id="recent-queries-list" class="recent-queries-list" style="display: none; max-height: 300px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; background: #fafafa;">
-                        <!-- Recent queries will be loaded here by JavaScript -->
+                <div class="research-layout">
+                    <!-- Left Sidebar: Major Cases and Latest Legal News -->
+                    <div class="research-left">
+                        <!-- Major Cases Box -->
+                        <div class="info-box">
+                            <h3>⚖️ Recent Major Judgments<br><span style="font-size: 0.7em; font-weight: normal; color: #666;">Supreme Court / High Court</span></h3>
+                            <div id="major-cases-container">
+                                <div class="loading-box">
+                                    <div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>
+                                    Loading recent judgments...
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Latest Legal News Box -->
+                        <div class="info-box">
+                            <h3>📰 Latest Legal News</h3>
+                            <div id="legal-news-container">
+                                <div class="loading-box">
+                                    <div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>
+                                    Loading legal news...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Chat/Query Box -->
+                    <div class="research-right">
+                        <div class="info">
+                            <strong>💡 Tip:</strong> Ask any legal question about Indian laws, regulations, compliance, or case laws. Click on any case or news item above to learn more.
+                        </div>
+                        <div class="form-group">
+                            <label for="research-query">Your Legal Question:</label>
+                            <textarea id="research-query" placeholder="Enter your legal question here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="query-type">Query Type:</label>
+                            <select id="query-type">
+                                <option value="research">Research</option>
+                                <option value="opinion">Legal Opinion</option>
+                                <option value="case_prep">Case Preparation</option>
+                            </select>
+                        </div>
+                        <button onclick="performResearch()">🔍 Research</button>
+                        
+                        <!-- Recent Queries Section -->
+                        <div class="recent-queries-container" style="margin-top: 25px;">
+                            <h3 class="recent-queries-toggle" onclick="toggleRecentQueries()" style="cursor: pointer; color: #667eea; font-size: 1.1em; margin-bottom: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+                                <span>📜 Recent Queries</span>
+                                <span id="toggle-icon" style="font-size: 0.9em;">▼</span>
+                            </h3>
+                            <div id="recent-queries-list" class="recent-queries-list" style="display: none; max-height: 300px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; background: #fafafa;">
+                                <!-- Recent queries will be loaded here by JavaScript -->
+                            </div>
+                        </div>
+                        
+                        <!-- Response container - MUST be after Recent Queries -->
+                        <div id="research-response" style="margin-top: 25px; min-height: 50px;"></div>
                     </div>
                 </div>
-                
-                <!-- Response container - MUST be after Recent Queries -->
-                <div id="research-response" style="margin-top: 25px; min-height: 50px;"></div>
             </div>
 
             <!-- Document Drafting Tab -->
@@ -1838,6 +2101,22 @@
         </div>
     </div>
 
+    <!-- Article Modal -->
+    <div id="article-modal" class="article-modal">
+        <div class="article-modal-content">
+            <div class="article-modal-header">
+                <h2 id="article-modal-title" class="article-modal-title">Article</h2>
+                <span class="article-close" onclick="closeArticleModal()">&times;</span>
+            </div>
+            <div id="article-modal-body" class="article-body">
+                <!-- Article content will be loaded here -->
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="article-back-btn" onclick="closeArticleModal()">← Back to Home</button>
+            </div>
+        </div>
+    </div>
+
     <!-- About Modal -->
     <div id="about-modal" class="modal">
         <div class="modal-content">
@@ -2195,6 +2474,227 @@
         }
 
 
+        // Load Major Cases and Legal News
+        async function loadMajorCases() {
+            const container = document.getElementById('major-cases-container');
+            if (!container) return;
+
+            try {
+                const response = await fetch('http://localhost:8888/api/v1/major-cases');
+                if (!response.ok) throw new Error('Failed to fetch major cases');
+                
+                const data = await response.json();
+                
+                if (data.cases && data.cases.length > 0) {
+                    container.innerHTML = '<ul>' + data.cases.map((caseItem, index) => {
+                        const courtYear = caseItem.year ? `${caseItem.court} (${caseItem.year})` : caseItem.court;
+                        const queryEscaped = escapeHtml(caseItem.query);
+                        return `
+                            <li class="clickable-case-item" data-query="${queryEscaped.replace(/"/g, '&quot;')}" style="cursor: pointer;">
+                                <div class="case-item-title">${escapeHtml(caseItem.title)}</div>
+                                <div class="case-item-court">${escapeHtml(courtYear)}</div>
+                                <div class="case-item-summary">${escapeHtml(caseItem.summary)}</div>
+                            </li>
+                        `;
+                    }).join('') + '</ul>';
+                    // Attach event listeners to all case items
+                    container.querySelectorAll('.clickable-case-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const query = this.getAttribute('data-query');
+                            loadCaseDetails(query);
+                        });
+                    });
+                } else {
+                    container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No recent cases available.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading major cases:', error);
+                console.error('Error details:', error.message, error.stack);
+                // Show default cases as fallback
+                container.innerHTML = '<ul>' + [
+                    {title: 'Recent GST Case', court: 'Supreme Court of India', year: 2025, summary: 'Latest important judgment related to GST law and taxation.', query: 'What are the latest important GST judgments from Supreme Court?'},
+                    {title: 'Corporate Law Decision', court: 'Supreme Court of India', year: 2025, summary: 'Recent significant decision affecting corporate governance and compliance.', query: 'What are the latest corporate law judgments?'},
+                    {title: 'Constitutional Matter', court: 'Supreme Court of India', year: 2025, summary: 'Recent constitutional interpretation or fundamental rights case.', query: 'What are the latest constitutional law judgments?'}
+                ].map((caseItem) => {
+                    const courtYear = caseItem.year ? `${caseItem.court} (${caseItem.year})` : caseItem.court;
+                    const queryEscaped = escapeHtml(caseItem.query);
+                    return `
+                        <li class="clickable-case-item" data-query="${queryEscaped.replace(/"/g, '&quot;')}" style="cursor: pointer;">
+                            <div class="case-item-title">${escapeHtml(caseItem.title)}</div>
+                            <div class="case-item-court">${escapeHtml(courtYear)}</div>
+                            <div class="case-item-summary">${escapeHtml(caseItem.summary)}</div>
+                        </li>
+                    `;
+                }).join('') + '</ul>';
+                container.querySelectorAll('.clickable-case-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const query = this.getAttribute('data-query');
+                        loadCaseDetails(query);
+                    });
+                });
+            }
+        }
+
+        async function loadLegalNews() {
+            const container = document.getElementById('legal-news-container');
+            if (!container) return;
+
+            try {
+                const response = await fetch('http://localhost:8888/api/v1/legal-news');
+                if (!response.ok) throw new Error('Failed to fetch legal news');
+                
+                const data = await response.json();
+                
+                if (data.news && data.news.length > 0) {
+                    container.innerHTML = '<ul>' + data.news.map((newsItem, index) => {
+                        const meta = [];
+                        if (newsItem.source) meta.push(newsItem.source);
+                        if (newsItem.date) meta.push(newsItem.date);
+                        const metaText = meta.length > 0 ? meta.join(' • ') : '';
+                        const queryEscaped = escapeHtml(newsItem.query);
+                        
+                        return `
+                            <li class="clickable-news-item" data-query="${queryEscaped.replace(/"/g, '&quot;')}" style="cursor: pointer;">
+                                <div class="news-item-title">${escapeHtml(newsItem.title)}</div>
+                                ${metaText ? `<div class="news-item-meta">${escapeHtml(metaText)}</div>` : ''}
+                                <div class="news-item-summary">${escapeHtml(newsItem.summary)}</div>
+                            </li>
+                        `;
+                    }).join('') + '</ul>';
+                    // Attach event listeners to all news items
+                    container.querySelectorAll('.clickable-news-item').forEach(item => {
+                        item.addEventListener('click', function() {
+                            const query = this.getAttribute('data-query');
+                            loadNewsDetails(query);
+                        });
+                    });
+                } else {
+                    container.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No recent news available.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading legal news:', error);
+                console.error('Error details:', error.message, error.stack);
+                // Show default news as fallback
+                container.innerHTML = '<ul>' + [
+                    {title: 'GST 2.0 Reforms Update', source: 'CBIC', date: '2025', summary: 'Latest updates on GST 2.0 reforms and rate structure changes.', query: 'Tell me about GST 2.0 reforms and latest amendments'},
+                    {title: 'Finance Act Updates', source: 'Ministry of Finance', date: '2025', summary: 'Recent amendments introduced through Finance Act affecting tax laws.', query: 'What are the latest Finance Act amendments?'},
+                    {title: 'Legal Reforms News', source: 'Legal Updates', date: '2025', summary: 'Recent legal reforms and regulatory changes affecting businesses.', query: 'What are the latest legal reforms in India?'}
+                ].map((newsItem) => {
+                    const meta = [];
+                    if (newsItem.source) meta.push(newsItem.source);
+                    if (newsItem.date) meta.push(newsItem.date);
+                    const metaText = meta.length > 0 ? meta.join(' • ') : '';
+                    const queryEscaped = escapeHtml(newsItem.query);
+                    return `
+                        <li class="clickable-news-item" data-query="${queryEscaped.replace(/"/g, '&quot;')}" style="cursor: pointer;">
+                            <div class="news-item-title">${escapeHtml(newsItem.title)}</div>
+                            ${metaText ? `<div class="news-item-meta">${escapeHtml(metaText)}</div>` : ''}
+                            <div class="news-item-summary">${escapeHtml(newsItem.summary)}</div>
+                        </li>
+                    `;
+                }).join('') + '</ul>';
+                container.querySelectorAll('.clickable-news-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        const query = this.getAttribute('data-query');
+                        loadNewsDetails(query);
+                    });
+                });
+            }
+        }
+
+        async function loadCaseDetails(query) {
+            // Open article modal and fetch full article
+            openArticleModal(query, 'Case Details');
+        }
+
+        async function loadNewsDetails(query) {
+            // Open article modal and fetch full article
+            openArticleModal(query, 'Legal News');
+        }
+
+        async function openArticleModal(query, title) {
+            const modal = document.getElementById('article-modal');
+            const modalTitle = document.getElementById('article-modal-title');
+            const modalBody = document.getElementById('article-modal-body');
+            
+            if (!modal || !modalTitle || !modalBody) return;
+            
+            // Show modal with loading state
+            modal.classList.add('show');
+            modalTitle.textContent = title;
+            modalBody.innerHTML = '<div class="article-loading"><div class="spinner" style="width: 50px; height: 50px; border-width: 4px; margin: 0 auto 20px;"></div>Loading full article...</div>';
+            
+            try {
+                // Fetch full article using the query
+                const response = await fetch('http://localhost:8888/api/v1/legal-research', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        query_type: 'research'
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch article');
+                }
+                
+                const data = await response.json();
+                const articleContent = data.response || 'Article content not available.';
+                
+                // Display article content
+                modalBody.innerHTML = `<div class="article-body">${formatArticleContent(articleContent)}</div>`;
+                
+            } catch (error) {
+                console.error('Error loading article:', error);
+                modalBody.innerHTML = `
+                    <div class="article-body">
+                        <p style="color: #e74c3c;">Error loading article. Please try again.</p>
+                        <p>You can use the query: "${escapeHtml(query)}" in the search box to get this information.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function closeArticleModal() {
+            const modal = document.getElementById('article-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+
+        function formatArticleContent(content) {
+            // Convert plain text to formatted HTML
+            // Preserve line breaks and structure
+            let html = escapeHtml(content);
+            
+            // Convert double line breaks to paragraphs
+            html = html.replace(/\n\n+/g, '</p><p>');
+            html = '<p>' + html + '</p>';
+            
+            // Convert single line breaks to <br>
+            html = html.replace(/\n/g, '<br>');
+            
+            // Format headings (lines that are all caps or end with :)
+            html = html.replace(/<p>(<strong>)?([A-Z][^:]+):(<\/strong>)?<\/p>/g, '<h3>$2</h3>');
+            
+            // Format bold text patterns
+            html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            
+            return html;
+        }
+
+        // Initialize cases and news on page load
+        function initCasesAndNews() {
+            // Wait for DOM to be ready
+            setTimeout(() => {
+                loadMajorCases();
+                loadLegalNews();
+            }, 200);
+        }
+
         // Load recent queries when page loads and when tab is switched
         function initRecentQueries() {
             // Wait a bit to ensure DOM is ready
@@ -2205,6 +2705,24 @@
         
         window.addEventListener('DOMContentLoaded', function() {
             initRecentQueries();
+            initCasesAndNews();
+            
+            // Close article modal when clicking outside
+            const articleModal = document.getElementById('article-modal');
+            if (articleModal) {
+                articleModal.addEventListener('click', function(event) {
+                    if (event.target === articleModal) {
+                        closeArticleModal();
+                    }
+                });
+            }
+            
+            // Close article modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeArticleModal();
+                }
+            });
         });
 
         async function performResearch() {

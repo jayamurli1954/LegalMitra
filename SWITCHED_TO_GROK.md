@@ -49,3 +49,4 @@ The server should now work with Grok AI! 🚀
 
 **Note:** Z AI GLM 4.6 support has been added. To use it, set `AI_PROVIDER=zai` and add `ZAI_API_KEY=your_key` to .env file.
 
+

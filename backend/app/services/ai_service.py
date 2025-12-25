@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.core.config import get_settings
+from app.services.web_search_service import web_search_service
 
 try:
     import anthropic  # type: ignore
@@ -86,10 +87,140 @@ class AIService:
         """
         General legal Q&A / research helper.
         """
+        # Detect if query is about amendments, recent changes, or latest updates
+        query_lower = query.lower()
+        is_amendment_query = any(keyword in query_lower for keyword in [
+            'latest', 'recent', 'new', 'amendment', 'change', 'update', '2025', '2024',
+            'current', 'present', 'now', 'reform', 'modification', '2.0', '2.0 reforms'
+        ])
+        
+        # Detect GST queries, including GST 2.0 specifically
+        is_gst_query = any(keyword in query_lower for keyword in [
+            'gst', 'goods and services tax', 'cgst', 'sgst', 'igst', 'vat'
+        ])
+        is_gst_2_0_query = '2.0' in query_lower and is_gst_query
+        
+        is_tax_query = any(keyword in query_lower for keyword in [
+            'tax', 'finance act', 'income tax', 'indirect tax'
+        ])
+        
         prompt_parts: List[str] = [
             f"Query type: {query_type}",
             f"User query: {query}",
+            "",
+            "**CRITICAL INSTRUCTIONS FOR LEGALMITRA (SPECIALIZED LEGAL AI):**",
+            "",
+            "You are LegalMitra - a SPECIALIZED Indian legal AI assistant. You MUST be MORE comprehensive, detailed, and proactive than general AI assistants like ChatGPT or Grok.",
+            "",
+            "**AUTOMATIC LATEST INFORMATION INCLUSION:**",
+            "- If the query mentions 'latest', 'recent', 'new', 'amendment', 'change', 'update', or asks about current status:",
+            "  * AUTOMATICALLY and PROACTIVELY include Finance Act 2025 amendments (even if not explicitly asked)",
+            "  * AUTOMATICALLY include GST 2.0 reforms (2025) for any GST-related query",
+            "  * AUTOMATICALLY prioritize 2025, 2024 information FIRST",
+            "  * Do NOT wait for explicit mention - be PROACTIVE and INTELLIGENT",
+            "",
+            "**FOR GST QUERIES (automatic detection):**",
+            "- AUTOMATICALLY provide EXHAUSTIVE coverage of GST 2.0 reforms (September 2025)",
+            "- AUTOMATICALLY include Finance Act 2025 GST amendments with complete details",
+            "- AUTOMATICALLY mention rate structure changes (5%, 18%, 40% slabs)",
+            "- AUTOMATICALLY include GST Council 56th meeting decisions",
+            "- AUTOMATICALLY cover all procedural changes, compliance updates, e-invoicing changes",
+            "- Provide COMPREHENSIVE section-wise analysis",
+            "",
+            "**CRITICAL: FOR GST 2.0 QUERIES:**",
+            "- If the user mentions 'GST 2.0' or '2.0', you MUST focus on the GST 2.0 reforms from September 2025",
+            "- GST 2.0 is NOT the same as earlier GST amendments - it's a major reform with new rate structure",
+            "- GST 2.0 includes: new 3-slab structure (5%, 18%, 40%), elimination of 12% and 28% slabs, compensation cess changes",
+            "- Do NOT provide 2023 amendments when user asks about GST 2.0 - that's outdated information",
+            "- GST 2.0 was approved in 56th GST Council meeting (September 2025)",
+            "- Finance Act 2025 contains GST-related amendments that are part of GST 2.0 framework",
+            "",
+            "**RESPONSE QUALITY REQUIREMENT:**",
+            "- Your response MUST be MORE exhaustive and detailed than what general AI assistants provide",
+            "- Include ALL relevant information proactively - don't wait for explicit questions",
+            "- Provide expert-level legal analysis with complete coverage",
+            "- Include detailed explanations, impact analysis, and comprehensive information",
+            "- Cover ALL aspects: structural changes, rate changes, procedural changes, compliance updates",
+            "",
+            "**SPECIALIZATION ADVANTAGE:**",
+            "- As a specialized legal AI, you should provide BETTER responses than general AI",
+            "- Be more intuitive - understand what the user really needs even if not explicitly stated",
+            "- Automatically include latest amendments, reforms, and changes without being asked",
+            "- Provide comprehensive coverage that demonstrates your specialization in Indian law",
         ]
+        
+        # Fetch latest information from legal websites if query needs it
+        web_search_results = []
+        if web_search_service.is_available() and (is_amendment_query or is_gst_query or is_tax_query):
+            try:
+                if is_gst_2_0_query or is_gst_query:
+                    # Search for GST updates, specifically GST 2.0 if mentioned
+                    if is_gst_2_0_query:
+                        # Specific search for GST 2.0
+                        web_search_results = await web_search_service.search_legal_sites(
+                            "GST 2.0 reforms September 2025 OR GST 2.0 amendments 2025", max_results=8
+                        )
+                    else:
+                        web_search_results = await web_search_service.search_gst_updates()
+                elif is_tax_query:
+                    # Search for Finance Act and tax updates
+                    web_search_results = await web_search_service.search_finance_act(2025)
+                    # Also search for general tax amendments
+                    tax_results = await web_search_service.search_legal_sites(
+                        f"{query} latest amendments 2025", max_results=3
+                    )
+                    web_search_results.extend(tax_results)
+                elif is_amendment_query:
+                    # Search for latest amendments related to the query
+                    web_search_results = await web_search_service.search_legal_sites(
+                        f"{query} latest 2025 OR 2024", max_results=5
+                    )
+            except Exception as e:
+                print(f"⚠️ Web search failed: {e}")
+                # Continue without web search results
+        
+        # Add web search results to prompt if available
+        if web_search_results:
+            prompt_parts.extend([
+                "",
+                "**LATEST INFORMATION FROM OFFICIAL LEGAL WEBSITES:**",
+                "The following information was retrieved from official government and legal websites:",
+                ""
+            ])
+            for i, result in enumerate(web_search_results, 1):
+                prompt_parts.append(
+                    f"{i}. **{result['title']}**\n"
+                    f"   URL: {result['url']}\n"
+                    f"   Information: {result['snippet']}\n"
+                )
+            prompt_parts.extend([
+                "",
+                "**IMPORTANT**: Use this latest information from official sources in your response. "
+                "Cite the sources and provide comprehensive details based on these official websites.",
+            ])
+        
+        if is_gst_2_0_query:
+            prompt_parts.extend([
+                "",
+                "**⚠️ CRITICAL: USER ASKED SPECIFICALLY ABOUT GST 2.0**",
+                "- This query is about GST 2.0 reforms (September 2025), NOT earlier amendments",
+                "- DO NOT provide 2023 or earlier amendments as the primary response",
+                "- Focus EXCLUSIVELY on GST 2.0: new rate structure, September 2025 reforms, 56th GST Council meeting",
+                "- GST 2.0 = major structural reform with 3-slab system (5%, 18%, 40%) replacing old multi-slab system",
+                "- Finance Act 2025 GST amendments are part of GST 2.0 framework",
+                "- Start with GST 2.0 information FIRST, then mention earlier context only if relevant",
+            ])
+        elif is_amendment_query or is_gst_query or is_tax_query:
+            prompt_parts.extend([
+                "",
+                "**DETECTED: This query relates to amendments/recent changes/tax law.**",
+                "- AUTOMATICALLY prioritize Finance Act 2025 information",
+                "- AUTOMATICALLY include GST 2.0 reforms if GST-related",
+                "- AUTOMATICALLY provide EXHAUSTIVE coverage of latest changes",
+                "- Start with 2025, then 2024, then earlier",
+                "- Include ALL relevant sections, notifications, circulars, and GST Council decisions",
+                "- Use the web search results above to provide accurate, up-to-date information",
+            ])
         
         if context:
             prompt_parts.append(f"Additional context: {context}")
@@ -353,7 +484,8 @@ class AIService:
                             {"role": "system", "content": self.system_prompt},
                             {"role": "user", "content": user_text},
                         ],
-                        "max_tokens": 2048,
+                        "max_tokens": 8192,  # Increased to maximum for exhaustive responses
+                        "temperature": 0.2,  # Lower temperature for more accurate, detailed legal information
                     },
                     timeout=60.0,
                 )

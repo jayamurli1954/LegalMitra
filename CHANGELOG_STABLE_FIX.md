@@ -31,3 +31,4 @@ Modified `backend/app/services/ai_service.py` to:
 **This fix ensures stability when Google changes model availability.**
 
 
+
