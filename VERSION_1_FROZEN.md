@@ -161,7 +161,7 @@ See `VERSIONING_STRATEGY.md` for details.
 
 ## 📝 Version History
 
-- **Version 1.0** (December 15, 2025): Initial stable release - FROZEN
+- **Version 1.0** (December 25, 2025): Initial stable release - FROZEN
 
 ---
 
