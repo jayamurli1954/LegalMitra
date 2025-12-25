@@ -148,6 +148,17 @@
 
 ---
 
+## 📌 Future Changes
+
+**Version 1.0 is FROZEN. All future changes must be versioned as:**
+
+- **v1.1** - For minor updates, small improvements, bug fixes
+- **v2.0** - For major updates, significant features, redesigns
+
+See `VERSIONING_STRATEGY.md` for details.
+
+---
+
 ## 📝 Version History
 
 - **Version 1.0** (December 15, 2025): Initial stable release - FROZEN
