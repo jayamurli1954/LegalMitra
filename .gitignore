@@ -12,6 +12,7 @@ ENV/
 # Environment variables
 .env
 .env.local
+.env.*.local
 
 # IDE
 .vscode/
@@ -19,42 +20,151 @@ ENV/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
-Thumbs.db
 
 # Logs
 *.log
 logs/
 
-# Database
-*.db
-*.sqlite
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
 
-# Build
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build files
 dist/
 build/
 *.egg-info/
 
-# Frontend (if added later)
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Node modules (if any)
 node_modules/
-.next/
-out/
 
-# Backups
-BACKUP_*/
+# Cache
+.cache/
+*.cache
 
-# Temporary files
-*.tmp
-*.bak
-*_old.html
+# Old/backup HTML files
 index.html.old
+*.old.html
 
+# Temporary test/debug scripts (keep essential)
+TEST_ENDPOINTS_DIRECTLY.py
+legal_assistant_test.py
 
+# API Keys and secrets (never commit these!)
+Google search API Key.txt
+LegalMitra_API-Key.txt
+*API-Key*.txt
+*API_Key*.txt
 
+# Temporary query/response files
+query_response.txt
 
+# Duplicate/old prompt files
+legal_system_prompt (1).txt
+legal_system_prompt (2).txt
+legal_assistant_system_prompt (1).md
+legal_assistant_system_prompt (2).md
+legal_system_prompt.txt
+legal_assistant_system_prompt.md
 
+# Temporary fix/debug documentation (remove from git but keep locally)
+# These are development notes, not essential documentation
 
+# Debug/Fix documentation
+DEBUG_*.md
+FIX_*.md
+*_FIX*.md
+*_FIX_INSTRUCTIONS.md
+FIX_NOW.bat
+FIX_PYTHON_PATH.bat
+FIX_ENV_NOW.bat
+FIX_FILE_ASSOCIATION.md
 
+# Setup guides (one-time setup, not needed in repo)
+*_SETUP.md
+HOW_TO_ADD_API_KEYS*.md
+UPDATE_ENV_FILE.md
 
+# Temporary status/completion docs
+*_COMPLETE.md
+*_WORKING.md
+GROK_WORKING.md
+SWITCHED_TO_GROK*.md
+
+# Urgent/temporary instructions
+URGENT_*.md
+QUICK_*.md
+RESTART_*.md
+RESTART_CRITICAL.md
+RESTART_POWERSHELL.md
+RESTART_SERVER.md
+
+# Changelog and update summaries (keep only if essential)
+CHANGELOG_*.md
+UPDATES_SUMMARY.md
+FINAL_SUMMARY.md
+FINAL_*.md
+
+# Feature implementation docs (temporary)
+WEB_*.md
+LANDING_*.md
+ARTICLE_*.md
+GOOGLE_*.md
+FULL_*.md
+GST_*.md
+SYSTEM_PROMPT_UPDATE.md
+INTELLIGENT_PROMPT_UPDATE.md
+
+# Troubleshooting guides (temporary)
+TROUBLESHOOT_*.md
+WHAT_TO_DO_IF_*.md
+UNDERSTANDING_*.md
+
+# Project planning docs (temporary)
+IMPLEMENTATION_PLAN.md
+IMPLEMENTATION_GUIDE.md
+PROJECT_SUMMARY.md
+project_structure.md
+NEXT_STEPS.md
+YOUR_CONFIGURATION.md
+
+# Old freeze points
+NEW_FREEZE_POINT.md
+FREEZE_CODE.md
+FREEZE_CHECKLIST.md
+CODE_FREEZE_2025.md
+
+# Keep these essential documentation files:
+# VERSION_1_FROZEN.md
+# CODE_FREEZE_NOTICE.md
+# VERSIONING_STRATEGY.md
+# CODE_STABILITY_GUIDE.md
+# README_VERSIONING.md
+# README.md
+# CLEANUP_UNNECESSARY_FILES.md
+# GITHUB_REPOSITORY_CLEANUP.md
+
+# Keep these text files:
+# Disclaimer.txt
+# Privacy_Policy.txt
+# Terms_of_Use.txt
+# backend/requirements.txt
+# backend/app/prompts/legal_system_prompt.txt
+# QUICK_START.txt (if essential)
+
+# Keep batch/PowerShell scripts that are used:
+# START_LEGALMITRA_SIMPLE.bat
+# START_LEGALMITRA.bat
+# STOP_SERVER.bat
+# etc.
