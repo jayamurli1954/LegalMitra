@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List, Dict
 from app.services.ai_service import ai_service
+from app.services.web_search_service import web_search_service
 
 router = APIRouter()
 
@@ -37,7 +38,48 @@ async def search_cases(request: CaseSearchRequest):
     }
     """
     try:
-        # Build search query
+        # Detect if the query contains a case citation
+        is_case_citation, case_citation = ai_service._detect_case_citation(request.query)
+        
+        # If it's a specific case citation, search the web for real case details
+        if is_case_citation and web_search_service.is_available():
+            try:
+                print(f"🔍 Case search: Detected citation {case_citation}, searching web...")
+                # Search for the specific case
+                search_results = await web_search_service.search_case_citation(
+                    case_citation or request.query,
+                    max_results=10
+                )
+                
+                if not search_results:
+                    # Try broader search
+                    search_results = await web_search_service.search_case_details(
+                        request.query,
+                        max_results=10
+                    )
+                
+                if search_results:
+                    print(f"📋 Found {len(search_results)} web results for case citation")
+                    # Build query with web search results for AI to synthesize
+                    search_context = "\n\n".join([
+                        f"**{r['title']}**\nURL: {r['url']}\n{r['snippet']}"
+                        for r in search_results
+                    ])
+                    enhanced_query = f"User is asking about case: {request.query}\n\nInformation found from case law databases:\n{search_context}\n\nProvide comprehensive case details based on the above information."
+                    response_text = await ai_service.process_legal_query(
+                        query=enhanced_query,
+                        query_type="research"
+                    )
+                    return CaseSearchResponse(
+                        cases=[{"content": response_text, "source": "web_search", "urls": [r['url'] for r in search_results]}],
+                        query=request.query,
+                        total_found=len(search_results)
+                    )
+            except Exception as e:
+                print(f"⚠️ Web search failed in case_search: {e}")
+                # Fall through to regular AI processing
+        
+        # Build search query for general case search
         search_query = request.query
         if request.court:
             search_query += f" in {request.court}"

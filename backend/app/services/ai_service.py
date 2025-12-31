@@ -76,6 +76,54 @@ class AIService:
             genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
             self._gemini_client = genai
     
+    def _detect_case_citation(self, query: str) -> tuple[bool, Optional[str]]:
+        """
+        Detect if query contains a case citation
+        
+        Returns:
+            Tuple of (is_case_citation, detected_citation_string)
+        """
+        import re
+        
+        # Patterns to detect case citations
+        patterns = [
+            # Format: CRL. A 567 / 2019
+            r'\b(?:CRL|CRA|CRL\.A|CRA\.|CRL\.?A\.?)\s*\d+\s*[/-]\s*\d{4}',
+            # Format: 2025:KHC:15464 (Karnataka High Court)
+            r'\d{4}\s*:\s*(?:KHC|BHC|DHC|MHC|CHC|AHC|GHC|PHC|ORI|JHC|MPHC|RHC|SCC|SC|AIR)\s*:\s*\d+',
+            # Format: SCC 2025 1 123
+            r'\b(?:SCC|AIR|SCALE|SCR|ITR|STR|GST|COMP|CLR|GCR)\s+\d{4}\s+\d+\s+\d+',
+            # Format: (2025) 1 SCC 123
+            r'\(\d{4}\)\s+\d+\s+(?:SCC|AIR|SCALE|SCR|ITR|STR|GST|COMP|CLR|GCR)\s+\d+',
+            # Format: case number patterns like WP 123/2025
+            r'\b(?:WP|W\.P|WP\.|S\.LP|SLP|CA|C\.A|CRL|CRA|ARB|ARB\.A|O\.A|OA)\s*\.?\s*\d+\s*[/-]\s*\d{4}',
+            # Format: Appeal No. 123 of 2025
+            r'(?:Appeal|Petition|Case|Writ)\s*(?:No\.?|Number)\s*\d+\s*(?:of|/)\s*\d{4}',
+        ]
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, query, re.IGNORECASE)
+            if matches:
+                return True, matches[0]
+        
+        # Check for common case citation keywords
+        query_lower = query.lower()
+        case_keywords = [
+            'case', 'judgment', 'judgement', 'order', 'citation',
+            'crl.a', 'criminal appeal', 'writ petition', 'civil appeal',
+            'special leave petition', 'slp'
+        ]
+        
+        # If query contains citation-like patterns and case keywords
+        if any(keyword in query_lower for keyword in case_keywords):
+            # Extract potential citation (numbers with colons, slashes, etc.)
+            citation_pattern = r'(?:[A-Z]+\.?\s*)?\d+[:\-/]\d{4}'
+            citations = re.findall(citation_pattern, query, re.IGNORECASE)
+            if citations:
+                return True, citations[0]
+        
+        return False, None
+    
     async def process_legal_query(
         self,
         query: str,
@@ -103,6 +151,9 @@ class AIService:
         is_tax_query = any(keyword in query_lower for keyword in [
             'tax', 'finance act', 'income tax', 'indirect tax'
         ])
+        
+        # Detect case citation queries
+        is_case_citation, case_citation = self._detect_case_citation(query)
         
         prompt_parts: List[str] = [
             f"Query type: {query_type}",
@@ -151,9 +202,25 @@ class AIService:
         
         # Fetch latest information from legal websites if query needs it
         web_search_results = []
-        if web_search_service.is_available() and (is_amendment_query or is_gst_query or is_tax_query):
+        if web_search_service.is_available():
             try:
-                if is_gst_2_0_query or is_gst_query:
+                # Priority 1: Case citation queries - ALWAYS search the web for real case details
+                if is_case_citation:
+                    print(f"🔍 Detected case citation: {case_citation}")
+                    # Search for the specific case citation
+                    citation_results = await web_search_service.search_case_citation(
+                        case_citation or query,
+                        max_results=10
+                    )
+                    # Also try broader search with full query
+                    if not citation_results:
+                        citation_results = await web_search_service.search_case_details(
+                            query,
+                            max_results=10
+                        )
+                    web_search_results.extend(citation_results)
+                    print(f"📋 Found {len(citation_results)} results for case citation")
+                elif is_gst_2_0_query or is_gst_query:
                     # Search for GST updates, specifically GST 2.0 if mentioned
                     if is_gst_2_0_query:
                         # Specific search for GST 2.0
@@ -181,23 +248,58 @@ class AIService:
         
         # Add web search results to prompt if available
         if web_search_results:
-            prompt_parts.extend([
-                "",
-                "**LATEST INFORMATION FROM OFFICIAL LEGAL WEBSITES:**",
-                "The following information was retrieved from official government and legal websites:",
-                ""
-            ])
-            for i, result in enumerate(web_search_results, 1):
-                prompt_parts.append(
-                    f"{i}. **{result['title']}**\n"
-                    f"   URL: {result['url']}\n"
-                    f"   Information: {result['snippet']}\n"
-                )
-            prompt_parts.extend([
-                "",
-                "**IMPORTANT**: Use this latest information from official sources in your response. "
-                "Cite the sources and provide comprehensive details based on these official websites.",
-            ])
+            if is_case_citation:
+                prompt_parts.extend([
+                    "",
+                    "**⚠️ CRITICAL: USER ASKED FOR SPECIFIC CASE DETAILS**",
+                    f"The user is requesting details for a specific case citation: {case_citation or query}",
+                    "",
+                    "**CASE INFORMATION FROM CASE LAW DATABASES:**",
+                    "The following information was retrieved from case law databases and legal websites:",
+                    ""
+                ])
+                for i, result in enumerate(web_search_results, 1):
+                    prompt_parts.append(
+                        f"{i}. **{result['title']}**\n"
+                        f"   URL: {result['url']}\n"
+                        f"   Information: {result['snippet']}\n"
+                    )
+                prompt_parts.extend([
+                    "",
+                    "**CRITICAL INSTRUCTIONS FOR CASE DETAILS:**",
+                    "- You MUST provide the ACTUAL case details found in the web search results above",
+                    "- DO NOT generate generic or hypothetical case information",
+                    "- Extract and provide the REAL facts, judgment, key principles, and outcome from the search results",
+                    "- If the search results contain the full judgment text, provide comprehensive case details including:",
+                    "  * Case name and parties",
+                    "  * Court, bench, and date of judgment",
+                    "  * Facts of the case",
+                    "  * Legal issues involved",
+                    "  * Court's reasoning and analysis",
+                    "  * Judgment/Order passed",
+                    "  * Key precedents cited (if any)",
+                    "- Cite the sources (URLs) where you found the information",
+                    "- If the search results don't contain enough detail, explicitly state that and provide what is available",
+                    "- DO NOT make up or assume case details - only provide information found in the search results",
+                ])
+            else:
+                prompt_parts.extend([
+                    "",
+                    "**LATEST INFORMATION FROM OFFICIAL LEGAL WEBSITES:**",
+                    "The following information was retrieved from official government and legal websites:",
+                    ""
+                ])
+                for i, result in enumerate(web_search_results, 1):
+                    prompt_parts.append(
+                        f"{i}. **{result['title']}**\n"
+                        f"   URL: {result['url']}\n"
+                        f"   Information: {result['snippet']}\n"
+                    )
+                prompt_parts.extend([
+                    "",
+                    "**IMPORTANT**: Use this latest information from official sources in your response. "
+                    "Cite the sources and provide comprehensive details based on these official websites.",
+                ])
         
         if is_gst_2_0_query:
             prompt_parts.extend([

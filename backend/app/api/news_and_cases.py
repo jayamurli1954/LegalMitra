@@ -8,6 +8,10 @@ from typing import List, Dict, Optional
 from app.services.ai_service import ai_service
 from app.services.web_search_service import web_search_service
 from datetime import datetime
+import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -49,32 +53,126 @@ async def get_major_cases():
     Uses Google Custom Search to fetch latest information
     """
     try:
+        # Clear settings cache to ensure fresh API key is loaded
+        from app.core.config import get_settings
+        get_settings.cache_clear()
+        
+        # Reload web search service to get fresh settings
+        from app.services.web_search_service import WebSearchService
+        fresh_web_search = WebSearchService()
+        
         current_year = datetime.now().year
         
         # Use Google Custom Search to get latest major cases
-        if web_search_service.is_available():
+        # Log search availability
+        logger.info(f"Web search service available: {fresh_web_search.is_available()}")
+        logger.info(f"API Key configured: {bool(fresh_web_search.api_key)}")
+        logger.info(f"Engine ID configured: {bool(fresh_web_search.search_engine_id)}")
+        
+        if fresh_web_search.is_available():
             try:
-                # Search for recent Supreme Court and High Court judgments
-                search_query = f"Supreme Court India recent judgments {current_year} OR High Court India recent judgments {current_year} landmark cases"
-                search_results = await web_search_service.search_legal_sites(
-                    search_query,
-                    max_results=5
-                )
+                logger.info(f"Searching for major cases for year {current_year}...")
+                
+                # Try multiple search strategies with better queries
+                # Strategy 1: Search case law databases for recent judgments
+                search_queries = [
+                    f'"{current_year}" "Supreme Court" "judgment" India',
+                    f'"{current_year-1}" "Supreme Court" "judgment" India',
+                    f'"{current_year}" "High Court" "judgment" India',
+                    f'"recent judgment" "{current_year}" India court',
+                ]
+                
+                all_results = []
+                for search_query in search_queries:
+                    # First try case law databases
+                    case_results = await fresh_web_search.search_legal_sites(
+                        search_query,
+                        max_results=5,
+                        sites=fresh_web_search.CASE_LAW_SITES
+                    )
+                    all_results.extend(case_results)
+                    
+                    # If we don't have enough, try broader search without site restriction
+                    if len(all_results) < 5:
+                        # Use general search (no site restriction) via direct API call
+                        try:
+                            import httpx
+                            
+                            url = "https://www.googleapis.com/customsearch/v1"
+                            async with httpx.AsyncClient(timeout=15.0) as client:
+                                response = await client.get(
+                                    url,
+                                    params={
+                                        "key": fresh_web_search.api_key,
+                                        "cx": fresh_web_search.search_engine_id,
+                                        "q": f"{search_query} judgment India",
+                                        "num": 5,
+                                    }
+                                )
+                                response.raise_for_status()
+                                data = response.json()
+                                
+                                for item in data.get("items", []):
+                                    # Only add if not duplicate
+                                    if not any(r.get("url") == item.get("link") for r in all_results):
+                                        all_results.append({
+                                            "title": item.get("title", ""),
+                                            "url": item.get("link", ""),
+                                            "snippet": item.get("snippet", ""),
+                                        })
+                                        if len(all_results) >= 5:
+                                            break
+                        except Exception as e:
+                            logger.warning(f"Broader search error: {e}")
+                    
+                    if len(all_results) >= 5:
+                        break
+                
+                logger.info(f"Found {len(all_results)} search results for major cases")
                 
                 # Convert search results to CaseItem format
+                # Filter out homepage/results that don't look like actual cases
                 cases = []
-                for result in search_results:
+                for result in all_results[:10]:  # Check more to filter better
                     title = result.get("title", "Recent Judgment")
                     snippet = result.get("snippet", "")
                     url = result.get("url", "")
                     
+                    # Skip homepages and non-case pages
+                    title_lower = title.lower()
+                    if any(skip_word in title_lower for skip_word in [
+                        'home', 'welcome', 'login', 'register', 'about', 'contact',
+                        'main page', 'index', 'search', 'results'
+                    ]):
+                        continue
+                    
                     # Extract court and year from title/snippet
                     court = "Supreme Court of India"
                     year = current_year
-                    if "High Court" in title or "High Court" in snippet:
+                    
+                    snippet_lower = snippet.lower()
+                    
+                    if "karnataka" in title_lower or "karnataka" in snippet_lower:
+                        court = "Karnataka High Court"
+                    elif "bombay" in title_lower or "bombay" in snippet_lower:
+                        court = "Bombay High Court"
+                    elif "delhi" in title_lower or "delhi" in snippet_lower:
+                        court = "Delhi High Court"
+                    elif "calcutta" in title_lower or "calcutta" in snippet_lower or "kolkata" in title_lower:
+                        court = "Calcutta High Court"
+                    elif "madras" in title_lower or "madras" in snippet_lower or "chennai" in title_lower:
+                        court = "Madras High Court"
+                    elif "allahabad" in title_lower or "allahabad" in snippet_lower:
+                        court = "Allahabad High Court"
+                    elif "high court" in title_lower or "high court" in snippet_lower:
                         court = "High Court"
-                    if "Supreme Court" in title or "Supreme Court" in snippet:
+                    elif "supreme court" in title_lower or "supreme court" in snippet_lower or "sc" in title_lower:
                         court = "Supreme Court of India"
+                    
+                    # Extract year
+                    year_match = re.search(r'\b(20\d{2})\b', title + " " + snippet)
+                    if year_match:
+                        year = int(year_match.group(1))
                     
                     # Create case item
                     cases.append(CaseItem(
@@ -87,9 +185,14 @@ async def get_major_cases():
                     ))
                 
                 if cases:
-                    return CasesResponse(cases=cases[:5])
+                    logger.info(f"Returning {len(cases)} cases from web search")
+                    return CasesResponse(cases=cases)
+                else:
+                    logger.warning("No cases found in web search, using defaults")
             except Exception as e:
-                print(f"Web search error for cases: {e}")
+                import traceback
+                logger.error(f"Web search error for cases: {e}")
+                logger.error(traceback.format_exc())
                 # Fall through to default cases
         
         # Fallback: Return default cases if web search fails or is not available
@@ -114,53 +217,139 @@ async def get_legal_news():
     Uses Google Custom Search to fetch latest information
     """
     try:
+        # Clear settings cache to ensure fresh API key is loaded
+        from app.core.config import get_settings
+        get_settings.cache_clear()
+        
+        # Reload web search service to get fresh settings
+        from app.services.web_search_service import WebSearchService
+        fresh_web_search = WebSearchService()
+        
         current_year = datetime.now().year
         
         # Use Google Custom Search to get latest legal news
-        if web_search_service.is_available():
+        logger.info(f"Web search service available (news): {fresh_web_search.is_available()}")
+        
+        if fresh_web_search.is_available():
             try:
-                # Search for latest legal news in India
-                search_query = f"latest legal news India {current_year} OR legal updates India {current_year} OR legal reforms India {current_year}"
-                search_results = await web_search_service.search_legal_sites(
-                    search_query,
-                    max_results=5
-                )
+                logger.info(f"Searching for legal news for year {current_year}...")
+                
+                # Try multiple search strategies
+                search_queries = [
+                    f"latest legal news India {current_year}",
+                    f"legal updates India {current_year} OR {current_year-1}",
+                    f"legal reforms India {current_year}",
+                    f"law amendments India {current_year}",
+                ]
+                
+                all_results = []
+                for search_query in search_queries:
+                    # Search official legal sites
+                    news_results = await fresh_web_search.search_legal_sites(
+                        search_query,
+                        max_results=5
+                    )
+                    all_results.extend(news_results)
+                    
+                    # If we don't have enough, try broader search
+                    if len(all_results) < 5:
+                        try:
+                            import httpx
+                            url = "https://www.googleapis.com/customsearch/v1"
+                            async with httpx.AsyncClient(timeout=15.0) as client:
+                                response = await client.get(
+                                    url,
+                                    params={
+                                        "key": fresh_web_search.api_key,
+                                        "cx": fresh_web_search.search_engine_id,
+                                        "q": search_query,
+                                        "num": 5,
+                                    }
+                                )
+                                response.raise_for_status()
+                                data = response.json()
+                                
+                                for item in data.get("items", []):
+                                    # Prefer official sites but accept others if needed
+                                    url_check = item.get("link", "").lower()
+                                    if not any(r.get("url") == item.get("link") for r in all_results):
+                                        all_results.append({
+                                            "title": item.get("title", ""),
+                                            "url": item.get("link", ""),
+                                            "snippet": item.get("snippet", ""),
+                                        })
+                                        if len(all_results) >= 5:
+                                            break
+                        except Exception as e:
+                            logger.warning(f"Broader news search error: {e}")
+                    
+                    if len(all_results) >= 5:
+                        break
+                
+                logger.info(f"Found {len(all_results)} search results for legal news")
                 
                 # Convert search results to NewsItem format
                 news_items = []
-                for result in search_results:
+                for result in all_results[:5]:
                     title = result.get("title", "Latest Legal News")
                     snippet = result.get("snippet", "")
                     url = result.get("url", "")
                     
                     # Extract source from URL
                     source = None
-                    if "pib.gov.in" in url:
+                    url_lower = url.lower()
+                    if "pib.gov.in" in url_lower:
                         source = "PIB"
-                    elif "prsindia.org" in url:
+                    elif "prsindia.org" in url_lower:
                         source = "PRS Legislative Research"
-                    elif "legislative.gov.in" in url:
+                    elif "legislative.gov.in" in url_lower:
                         source = "Legislative Department"
-                    elif "legalaffairs.gov.in" in url:
+                    elif "legalaffairs.gov.in" in url_lower:
                         source = "Department of Legal Affairs"
-                    elif "egazette.nic.in" in url:
+                    elif "egazette.nic.in" in url_lower:
                         source = "eGazette"
-                    elif "indiancode.nic.in" in url:
+                    elif "indiancode.nic.in" in url_lower:
                         source = "India Code"
+                    elif "cbic.gov.in" in url_lower or "gst.gov.in" in url_lower:
+                        source = "CBIC"
+                    elif "finmin.nic.in" in url_lower:
+                        source = "Ministry of Finance"
+                    elif "mca.gov.in" in url_lower:
+                        source = "Ministry of Corporate Affairs"
+                    else:
+                        # Extract domain name as source
+                        domain_match = re.search(r'://(?:www\.)?([^/]+)', url)
+                        if domain_match:
+                            source = domain_match.group(1).replace('.in', '').replace('.org', '').title()
+                    
+                    # Extract date
+                    date_match = re.search(r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},?\s+(\d{4})\b', title + " " + snippet, re.IGNORECASE)
+                    date_str = str(current_year)
+                    if date_match:
+                        date_str = date_match.group(2)
+                    else:
+                        year_match = re.search(r'\b(20\d{2})\b', title + " " + snippet)
+                        if year_match:
+                            date_str = year_match.group(1)
                     
                     # Create news item
                     news_items.append(NewsItem(
                         title=title[:200],
-                        source=source,
-                        date=str(current_year),
+                        source=source or "Legal Updates",
+                        date=date_str,
                         summary=snippet[:300] if snippet else "Latest legal news and updates from India.",
                         query=f"Tell me more about: {title}"
                     ))
                 
                 if news_items:
-                    return NewsResponse(news=news_items[:5])
+                    logger.info(f"Returning {len(news_items)} news items from web search")
+                    return NewsResponse(news=news_items)
+                else:
+                    logger.warning("No news items found in web search, using defaults")
             except Exception as e:
-                print(f"Web search error for news: {e}")
+                import traceback
+                logger.error(f"Web search error for news: {e}")
+                print(traceback.format_exc())
                 # Fall through to default news
         
         # Fallback: Return default news if web search fails or is not available
