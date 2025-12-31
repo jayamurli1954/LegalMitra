@@ -125,7 +125,9 @@ class DocumentProcessor:
         # If no text was extracted, try OCR on image-based PDF
         # Convert PDF pages to images and use Gemini OCR
         ocr_error_msg = None  # Store OCR error if it occurs
+        ocr_attempted = False  # Track if OCR was attempted
         if not text_parts and PDF2IMAGE_AVAILABLE and PIL_AVAILABLE:
+            ocr_attempted = True
             try:
                 logger.info("No text extracted from PDF. Attempting OCR on image-based PDF...")
                 pdf_file.seek(0)
@@ -169,6 +171,9 @@ class DocumentProcessor:
                     return extracted_text
                 else:
                     logger.warning("OCR processing completed but no text was extracted from any page")
+                    # If no text was extracted but no errors were raised, it might be an API issue
+                    if not ocr_error_msg:
+                        ocr_error_msg = "OCR processing completed but returned no text from any page. This could indicate an API key issue, empty pages, or API quota limit."
                     
             except Exception as ocr_error:
                 ocr_error_msg = str(ocr_error)
@@ -187,7 +192,12 @@ class DocumentProcessor:
             error_msg += "Install pdf2image package (pip install pdf2image) to enable OCR processing of scanned PDFs. "
             error_msg += "Note: On Windows, you may also need to install poppler (https://github.com/oschwartz10612/poppler-windows/releases)."
         else:
-            error_msg += "The PDF might be image-based (scanned) or encrypted, and OCR processing also failed. "
+            error_msg += "The PDF might be image-based (scanned) or encrypted"
+            if ocr_attempted:
+                error_msg += ", and OCR processing also failed"
+            else:
+                error_msg += ". OCR processing was not attempted"
+            error_msg += ". "
             
             # Include detailed OCR error information
             if ocr_error_msg:
@@ -217,7 +227,22 @@ class DocumentProcessor:
                     error_msg += "4. Verify Gemini API is enabled in Google Cloud Console\n"
                     error_msg += "5. Restart the server after changing .env file\n\n"
             else:
-                error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is configured for OCR processing."
+                # If OCR was attempted but no error was captured, provide general troubleshooting
+                if ocr_attempted:
+                    error_msg += "\n\n**OCR Processing Status:** OCR was attempted but no specific error was captured.\n\n"
+                    error_msg += "**Possible causes:**\n"
+                    error_msg += "1. Gemini API key not configured or invalid (check GOOGLE_GEMINI_API_KEY in .env)\n"
+                    error_msg += "2. API quota exceeded (check Google Cloud Console)\n"
+                    error_msg += "3. Poppler not installed (Windows only - required for pdf2image)\n"
+                    error_msg += "4. Network connectivity issues\n"
+                    error_msg += "5. Server needs restart after .env changes\n\n"
+                    error_msg += "**Check server console logs** for detailed error information (look for 'OCR error' or 'OCR fallback failed' messages).\n\n"
+                    error_msg += "**To get more detailed errors:**\n"
+                    error_msg += "- Ensure GOOGLE_GEMINI_API_KEY is set in .env file\n"
+                    error_msg += "- Restart the server after making changes\n"
+                    error_msg += "- Check the server console output when uploading the PDF\n"
+                else:
+                    error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is configured for OCR processing."
         
         raise Exception(error_msg)
     
