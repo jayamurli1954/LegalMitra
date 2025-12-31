@@ -213,7 +213,8 @@ async def review_document(
                     "**To fix:**\n"
                     "- Verify your API key in the .env file is correct and not expired\n"
                     "- Check your API account dashboard for authentication status\n"
-                    f"- Current AI Provider: {provider.upper()}\n\n"
+                    f"- Current AI Provider: {configured_provider.upper()}\n"
+                    f"- Actual API that failed: {actual_api}\n\n"
                     f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
                 )
             else:
@@ -221,10 +222,12 @@ async def review_document(
                     "**AI Analysis Failed:**\n\n"
                     "The document was successfully processed and text extracted, but the AI analysis encountered an error.\n\n"
                     f"**Error:** {error_msg}\n\n"
-                    f"**Current AI Provider:** {provider.upper()}\n\n"
+                    f"**Current AI Provider:** {configured_provider.upper()}\n"
+                    f"**Actual API that failed:** {actual_api}\n\n"
                     "**Possible solutions:**\n"
                     "- Check your API key configuration in .env file\n"
                     "- Verify your API account status and quotas\n"
+                    "- If you recently changed AI_PROVIDER, make sure to restart the server\n"
                     "- Try switching to a different AI provider (Gemini, OpenAI, Anthropic)\n"
                     "- Check server logs for detailed error information\n\n"
                     f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
