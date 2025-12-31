@@ -95,6 +95,15 @@
             gap: 10px;
         }
 
+        .refresh-btn:hover {
+            background: #5568d3 !important;
+        }
+
+        .refresh-btn:active {
+            background: #4457b8 !important;
+            transform: scale(0.98);
+        }
+
         .info-box ul {
             list-style: none;
             padding: 0;
@@ -605,7 +614,12 @@
                     <div class="research-left">
                         <!-- Major Cases Box -->
                         <div class="info-box">
-                            <h3>⚖️ Recent Major Judgments<br><span style="font-size: 0.7em; font-weight: normal; color: #666;">Supreme Court / High Court</span></h3>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid #667eea;">
+                                <h3 style="margin: 0; padding: 0; border: none;">⚖️ Recent Major Judgments<br><span style="font-size: 0.7em; font-weight: normal; color: #666;">Supreme Court / High Court</span></h3>
+                                <button id="refresh-cases-btn" class="refresh-btn" title="Refresh cases" onclick="refreshCasesAndNews()" style="background: #667eea; color: white; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 0.9em; transition: background 0.3s;">
+                                    🔄 Refresh
+                                </button>
+                            </div>
                             <div id="major-cases-container">
                                 <div class="loading-box">
                                     <div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>
@@ -616,7 +630,12 @@
 
                         <!-- Latest Legal News Box -->
                         <div class="info-box">
-                            <h3>📰 Latest Legal News</h3>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid #667eea;">
+                                <h3 style="margin: 0; padding: 0; border: none;">📰 Latest Legal News</h3>
+                                <button id="refresh-news-btn" class="refresh-btn" title="Refresh news" onclick="refreshCasesAndNews()" style="background: #667eea; color: white; border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 0.9em; transition: background 0.3s;">
+                                    🔄 Refresh
+                                </button>
+                            </div>
                             <div id="legal-news-container">
                                 <div class="loading-box">
                                     <div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>
