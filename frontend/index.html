@@ -2719,9 +2719,13 @@
 
         // Manual refresh function for cases and news
         async function refreshCasesAndNews() {
+            console.log('🔄 Refresh button clicked - refreshing cases and news...');
+            
             // Disable refresh buttons temporarily
             const refreshButtons = document.querySelectorAll('.refresh-btn');
-            refreshButtons.forEach(btn => {
+            const originalTexts = [];
+            refreshButtons.forEach((btn, index) => {
+                originalTexts[index] = btn.textContent;
                 btn.disabled = true;
                 btn.style.opacity = '0.6';
                 btn.style.cursor = 'not-allowed';
@@ -2729,23 +2733,37 @@
             });
 
             try {
+                // Clear existing content to show loading state
+                const casesContainer = document.getElementById('major-cases-container');
+                const newsContainer = document.getElementById('legal-news-container');
+                
+                if (casesContainer) {
+                    casesContainer.innerHTML = '<div class="loading-box"><div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>Refreshing cases...</div>';
+                }
+                if (newsContainer) {
+                    newsContainer.innerHTML = '<div class="loading-box"><div class="spinner" style="width: 30px; height: 30px; border-width: 2px; margin: 0 auto 10px;"></div>Refreshing news...</div>';
+                }
+
                 // Reload both cases and news
                 await Promise.all([
                     loadMajorCases(),
                     loadLegalNews()
                 ]);
+                
+                console.log('✅ Refresh complete');
             } catch (error) {
-                console.error('Error refreshing cases and news:', error);
+                console.error('❌ Error refreshing cases and news:', error);
+                alert('Error refreshing content. Please check the console for details.');
             } finally {
                 // Re-enable refresh buttons after a short delay
                 setTimeout(() => {
-                    refreshButtons.forEach(btn => {
+                    refreshButtons.forEach((btn, index) => {
                         btn.disabled = false;
                         btn.style.opacity = '1';
                         btn.style.cursor = 'pointer';
-                        btn.textContent = '🔄 Refresh';
+                        btn.textContent = originalTexts[index] || '🔄 Refresh';
                     });
-                }, 1000);
+                }, 500);
             }
         }
 
