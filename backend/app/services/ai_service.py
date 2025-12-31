@@ -442,6 +442,9 @@ class AIService:
                     "GOOGLE_GEMINI_API_KEY is set."
                 )
 
+            # Check if using new SDK
+            use_new_sdk = getattr(self, '_gemini_use_new_sdk', False)
+
             # Run Gemini in thread pool since it's synchronous
             import asyncio
             import time
