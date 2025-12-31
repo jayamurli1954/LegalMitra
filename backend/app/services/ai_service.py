@@ -24,10 +24,17 @@ try:
 except Exception:  # pragma: no cover - optional dependency
     OpenAI = None  # type: ignore
 
+# Try new google.genai package (2025 official SDK)
 try:
-    import google.generativeai as genai  # type: ignore
+    from google import genai  # type: ignore
+    GENAI_NEW_SDK = True
 except Exception:  # pragma: no cover - optional dependency
-    genai = None  # type: ignore
+    GENAI_NEW_SDK = False
+    # Fallback to old deprecated package (should not be used)
+    try:
+        import google.generativeai as genai  # type: ignore
+    except Exception:
+        genai = None  # type: ignore
 
 try:
     import httpx  # type: ignore
@@ -73,8 +80,17 @@ class AIService:
         if self.settings.AI_PROVIDER.lower() == "openai" and OpenAI:
             self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
         if self.settings.AI_PROVIDER.lower() in ["gemini", "google"] and genai:
-            genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
-            self._gemini_client = genai
+            if GENAI_NEW_SDK:
+                # Use new google.genai SDK (2025 official)
+                self._gemini_client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                self._gemini_use_new_sdk = True
+            else:
+                # Fallback to old deprecated package (should not be used)
+                genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                self._gemini_client = genai
+                self._gemini_use_new_sdk = False
+        else:
+            self._gemini_use_new_sdk = False
     
     def _detect_case_citation(self, query: str) -> tuple[bool, Optional[str]]:
         """
@@ -422,7 +438,7 @@ class AIService:
             if not self._gemini_client:
                 raise RuntimeError(
                     "Google Gemini client not available. "
-                    "Ensure `google-generativeai` package is installed and "
+                    "Ensure `google-genai` package is installed (pip install google-genai) and "
                     "GOOGLE_GEMINI_API_KEY is set."
                 )
 
@@ -434,50 +450,83 @@ class AIService:
             
             # Try to find an available Gemini model
             # Updated priority: Try newer models first, then fallback to older ones
-            # gemini-1.5-flash is the most widely available and cost-effective
-            preferred_models = [
-                "gemini-1.5-flash",      # Fast, cost-effective, widely available
-                "gemini-1.5-pro",        # Higher capability
-                "gemini-1.0-pro",        # Stable successor to gemini-pro
-                "gemini-pro",            # Legacy (may not be available)
-                "gemini-2.5-flash"       # Latest (may have rate limits)
-            ]
+            # For new SDK, use gemini-2.5-flash or gemini-2.0-flash
+            # For old SDK, use gemini-1.5-flash or gemini-1.5-pro
+            if use_new_sdk:
+                preferred_models = [
+                    "gemini-2.5-flash",   # Latest for new SDK
+                    "gemini-2.0-flash",   # Fallback
+                    "gemini-2.5-pro",     # Higher capability
+                ]
+            else:
+                preferred_models = [
+                    "gemini-1.5-flash",      # Fast, cost-effective, widely available
+                    "gemini-1.5-pro",        # Higher capability
+                    "gemini-1.0-pro",        # Stable successor to gemini-pro
+                    "gemini-pro",            # Legacy (may not be available)
+                ]
             model_name = None
             
             # First, try to list available models from API (most reliable)
-            model_name = None
-            try:
-                print("🔍 Listing available Gemini models from API...")
-                available_models = await loop.run_in_executor(
-                    None, lambda: list(self._gemini_client.list_models())
-                )
-                
-                # Create a list of available model IDs
-                available_model_ids = []
-                for model_info in available_models:
-                    if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                        model_id = model_info.name.split('/')[-1]
-                        available_model_ids.append(model_id)
-                
-                print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
-                
-                # Try preferred models first (in order), but only if they're in the available list
-                for preferred in preferred_models:
-                    if preferred in available_model_ids:
-                        model_name = preferred
-                        print(f"✅ Using preferred Gemini model: {model_name}")
-                        break
-                
-                # If no preferred model is available, use the first available model
-                if not model_name and available_model_ids:
-                    model_name = available_model_ids[0]
-                    print(f"✅ Using first available Gemini model: {model_name}")
+            # Note: New SDK uses different API structure
+            if use_new_sdk:
+                # New SDK: Use client.models.list() instead
+                try:
+                    print("🔍 Listing available Gemini models from API (new SDK)...")
+                    available_models_list = await loop.run_in_executor(
+                        None, lambda: list(self._gemini_client.models.list())
+                    )
+                    available_model_ids = [m.name.split('/')[-1] if hasattr(m, 'name') else str(m) for m in available_models_list]
+                    print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
                     
-            except Exception as list_error:
-                print(f"⚠️ Could not list Gemini models: {list_error}")
-                print("⚠️ Falling back to trying preferred models directly...")
-                # Fallback: try preferred models in order
-                model_name = preferred_models[0]
+                    # Try preferred models first
+                    for preferred in preferred_models:
+                        if preferred in available_model_ids:
+                            model_name = preferred
+                            print(f"✅ Using preferred Gemini model: {model_name}")
+                            break
+                    
+                    if not model_name and available_model_ids:
+                        model_name = available_model_ids[0]
+                        print(f"✅ Using first available Gemini model: {model_name}")
+                except Exception as list_error:
+                    print(f"⚠️ Could not list Gemini models: {list_error}")
+                    print("⚠️ Falling back to trying preferred models directly...")
+                    model_name = preferred_models[0]
+            else:
+                # Old SDK: Use list_models()
+                try:
+                    print("🔍 Listing available Gemini models from API...")
+                    available_models = await loop.run_in_executor(
+                        None, lambda: list(self._gemini_client.list_models())
+                    )
+                    
+                    # Create a list of available model IDs
+                    available_model_ids = []
+                    for model_info in available_models:
+                        if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                            model_id = model_info.name.split('/')[-1]
+                            available_model_ids.append(model_id)
+                    
+                    print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
+                    
+                    # Try preferred models first (in order), but only if they're in the available list
+                    for preferred in preferred_models:
+                        if preferred in available_model_ids:
+                            model_name = preferred
+                            print(f"✅ Using preferred Gemini model: {model_name}")
+                            break
+                    
+                    # If no preferred model is available, use the first available model
+                    if not model_name and available_model_ids:
+                        model_name = available_model_ids[0]
+                        print(f"✅ Using first available Gemini model: {model_name}")
+                        
+                except Exception as list_error:
+                    print(f"⚠️ Could not list Gemini models: {list_error}")
+                    print("⚠️ Falling back to trying preferred models directly...")
+                    # Fallback: try preferred models in order
+                    model_name = preferred_models[0]
             
             if not model_name:
                 raise RuntimeError(
@@ -492,21 +541,40 @@ class AIService:
             
             for attempt in range(max_retries):
                 try:
-                    model = self._gemini_client.GenerativeModel(model_name)
-                    
-                    # Combine system prompt and user text
-                    full_prompt = f"{self.system_prompt}\n\n{user_text}"
-                    
-                    response = await loop.run_in_executor(
-                        None, lambda: model.generate_content(
-                            full_prompt,
-                            generation_config={
-                                "temperature": 0.3,
-                                "max_output_tokens": 8000,
-                            }
+                    if use_new_sdk:
+                        # New SDK: Use client.models.generate_content()
+                        # Combine system prompt and user text
+                        full_prompt = f"{self.system_prompt}\n\n{user_text}"
+                        
+                        response = await loop.run_in_executor(
+                            None, lambda: self._gemini_client.models.generate_content(
+                                model=model_name,
+                                contents=[
+                                    {
+                                        "role": "user",
+                                        "parts": [{"text": full_prompt}]
+                                    }
+                                ]
+                            )
                         )
-                    )
-                    return response.text.strip()
+                        return response.text.strip()
+                    else:
+                        # Old SDK: Use GenerativeModel
+                        model = self._gemini_client.GenerativeModel(model_name)
+                        
+                        # Combine system prompt and user text
+                        full_prompt = f"{self.system_prompt}\n\n{user_text}"
+                        
+                        response = await loop.run_in_executor(
+                            None, lambda: model.generate_content(
+                                full_prompt,
+                                generation_config={
+                                    "temperature": 0.3,
+                                    "max_output_tokens": 8000,
+                                }
+                            )
+                        )
+                        return response.text.strip()
                     
                 except Exception as e:
                     error_str = str(e)
@@ -641,7 +709,7 @@ class AIService:
             if not self._gemini_client:
                 raise RuntimeError(
                     "Google Gemini client not available. "
-                    "Ensure `google-generativeai` package is installed and "
+                    "Ensure `google-genai` package is installed (pip install google-genai) and "
                     "GOOGLE_GEMINI_API_KEY is set."
                 )
             # Use the same logic as the elif block - just copy it here as fallback
