@@ -155,36 +155,54 @@ async def review_document(
             # Provide helpful error message for AI service failures
             error_msg = str(ai_error)
             
-            # Check what provider is being used
+            # Detect which API actually failed from the error URL
+            actual_api = "Unknown"
+            if "api.x.ai" in error_msg:
+                actual_api = "Grok (x.ai)"
+            elif "generativelanguage.googleapis.com" in error_msg or "gemini" in error_msg.lower():
+                actual_api = "Gemini (Google)"
+            elif "api.openai.com" in error_msg:
+                actual_api = "OpenAI"
+            elif "api.anthropic.com" in error_msg:
+                actual_api = "Anthropic"
+            
+            # Check what provider is configured (may differ if server not restarted)
             from app.core.config import get_settings
+            get_settings.cache_clear()  # Clear cache to get fresh settings
             settings = get_settings()
-            provider = settings.AI_PROVIDER.lower().strip()
+            configured_provider = settings.AI_PROVIDER.lower().strip()
             
             # Build user-friendly error message
             if "403" in error_msg or "Forbidden" in error_msg:
-                if provider == "grok":
+                if "api.x.ai" in error_msg:
                     analysis = (
-                        "**AI Analysis Failed:**\n\n"
-                        "The document was successfully processed, but the AI analysis failed due to an authentication error with the Grok API (x.ai).\n\n"
-                        "**Error:** 403 Forbidden - This usually means:\n"
+                        "**AI Analysis Failed - Grok API Error:**\n\n"
+                        "The document was successfully processed, but the AI analysis failed because the server is still using the Grok API, which returned a 403 Forbidden error.\n\n"
+                        "**Error:** 403 Forbidden from https://api.x.ai/v1/chat/completions\n\n"
+                        "**This usually means:**\n"
                         "1. Your GROK_API_KEY in .env file is invalid or expired\n"
                         "2. The API key doesn't have the necessary permissions\n"
                         "3. Your API subscription/quota has been exceeded\n\n"
-                        "**To fix:**\n"
-                        "- Verify your GROK_API_KEY in the .env file is correct\n"
-                        "- Check your x.ai account for API status and quotas\n"
-                        "- Consider switching to a different AI provider (Gemini, OpenAI, Anthropic) by changing AI_PROVIDER in .env\n\n"
+                        "**IMPORTANT - Server Needs Restart:**\n"
+                        "The .env file has been updated to use Gemini, but the server must be restarted for changes to take effect.\n\n"
+                        "**To fix immediately:**\n"
+                        "1. Stop the server (Ctrl+C)\n"
+                        "2. Restart: python -m uvicorn app.main:app --host 0.0.0.0 --port 8888 --reload\n"
+                        "3. The server will then use Gemini API instead of Grok\n\n"
+                        f"**Current AI_PROVIDER in .env:** {configured_provider}\n\n"
                         f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
                     )
                 else:
                     analysis = (
-                        f"**AI Analysis Failed:**\n\n"
-                        f"The document was successfully processed, but the AI analysis failed due to an authentication error with the {provider.upper()} API.\n\n"
+                        f"**AI Analysis Failed - {actual_api} API Error:**\n\n"
+                        f"The document was successfully processed, but the AI analysis failed due to an authentication error.\n\n"
                         f"**Error:** {error_msg}\n\n"
                         f"**To fix:**\n"
                         f"- Verify your API key in the .env file is correct\n"
-                        f"- Check your API account for status and quotas\n"
+                        f"- Check your {actual_api} account for status and quotas\n"
+                        f"- If you recently changed AI_PROVIDER, make sure to restart the server\n"
                         f"- Consider switching to a different AI provider by changing AI_PROVIDER in .env\n\n"
+                        f"**Current AI_PROVIDER:** {configured_provider}\n\n"
                         f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
                     )
             elif "401" in error_msg or "Unauthorized" in error_msg:
