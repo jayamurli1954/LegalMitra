@@ -146,10 +146,71 @@ async def review_document(
             )
         
         # Get AI analysis
-        analysis = await ai_service.process_legal_query(
-            query=analysis_query,
-            query_type="research"
-        )
+        try:
+            analysis = await ai_service.process_legal_query(
+                query=analysis_query,
+                query_type="research"
+            )
+        except Exception as ai_error:
+            # Provide helpful error message for AI service failures
+            error_msg = str(ai_error)
+            
+            # Check what provider is being used
+            from app.core.config import get_settings
+            settings = get_settings()
+            provider = settings.AI_PROVIDER.lower().strip()
+            
+            # Build user-friendly error message
+            if "403" in error_msg or "Forbidden" in error_msg:
+                if provider == "grok":
+                    analysis = (
+                        "**AI Analysis Failed:**\n\n"
+                        "The document was successfully processed, but the AI analysis failed due to an authentication error with the Grok API (x.ai).\n\n"
+                        "**Error:** 403 Forbidden - This usually means:\n"
+                        "1. Your GROK_API_KEY in .env file is invalid or expired\n"
+                        "2. The API key doesn't have the necessary permissions\n"
+                        "3. Your API subscription/quota has been exceeded\n\n"
+                        "**To fix:**\n"
+                        "- Verify your GROK_API_KEY in the .env file is correct\n"
+                        "- Check your x.ai account for API status and quotas\n"
+                        "- Consider switching to a different AI provider (Gemini, OpenAI, Anthropic) by changing AI_PROVIDER in .env\n\n"
+                        f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
+                    )
+                else:
+                    analysis = (
+                        f"**AI Analysis Failed:**\n\n"
+                        f"The document was successfully processed, but the AI analysis failed due to an authentication error with the {provider.upper()} API.\n\n"
+                        f"**Error:** {error_msg}\n\n"
+                        f"**To fix:**\n"
+                        f"- Verify your API key in the .env file is correct\n"
+                        f"- Check your API account for status and quotas\n"
+                        f"- Consider switching to a different AI provider by changing AI_PROVIDER in .env\n\n"
+                        f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
+                    )
+            elif "401" in error_msg or "Unauthorized" in error_msg:
+                analysis = (
+                    "**AI Analysis Failed:**\n\n"
+                    "The document was successfully processed, but the AI analysis failed due to an authentication error.\n\n"
+                    f"**Error:** {error_msg}\n\n"
+                    "**To fix:**\n"
+                    "- Verify your API key in the .env file is correct and not expired\n"
+                    "- Check your API account dashboard for authentication status\n"
+                    f"- Current AI Provider: {provider.upper()}\n\n"
+                    f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
+                )
+            else:
+                analysis = (
+                    "**AI Analysis Failed:**\n\n"
+                    "The document was successfully processed and text extracted, but the AI analysis encountered an error.\n\n"
+                    f"**Error:** {error_msg}\n\n"
+                    f"**Current AI Provider:** {provider.upper()}\n\n"
+                    "**Possible solutions:**\n"
+                    "- Check your API key configuration in .env file\n"
+                    "- Verify your API account status and quotas\n"
+                    "- Try switching to a different AI provider (Gemini, OpenAI, Anthropic)\n"
+                    "- Check server logs for detailed error information\n\n"
+                    f"**Extracted Document Text (first 1000 chars):**\n{extracted_text[:1000] if extracted_text else 'No text extracted'}"
+                )
         
         return DocumentReviewResponse(
             analysis=analysis,
