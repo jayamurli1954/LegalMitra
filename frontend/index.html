@@ -2713,6 +2713,42 @@
             return html;
         }
 
+        // Refresh interval for cases and news (30 minutes = 1800000 milliseconds)
+        let casesNewsRefreshInterval = null;
+        const REFRESH_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
+
+        // Manual refresh function for cases and news
+        async function refreshCasesAndNews() {
+            // Disable refresh buttons temporarily
+            const refreshButtons = document.querySelectorAll('.refresh-btn');
+            refreshButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+                btn.textContent = '🔄 Refreshing...';
+            });
+
+            try {
+                // Reload both cases and news
+                await Promise.all([
+                    loadMajorCases(),
+                    loadLegalNews()
+                ]);
+            } catch (error) {
+                console.error('Error refreshing cases and news:', error);
+            } finally {
+                // Re-enable refresh buttons after a short delay
+                setTimeout(() => {
+                    refreshButtons.forEach(btn => {
+                        btn.disabled = false;
+                        btn.style.opacity = '1';
+                        btn.style.cursor = 'pointer';
+                        btn.textContent = '🔄 Refresh';
+                    });
+                }, 1000);
+            }
+        }
+
         // Initialize cases and news on page load
         function initCasesAndNews() {
             // Wait for DOM to be ready
@@ -2720,6 +2756,17 @@
                 loadMajorCases();
                 loadLegalNews();
             }, 200);
+
+            // Set up automatic refresh every 30 minutes
+            if (casesNewsRefreshInterval) {
+                clearInterval(casesNewsRefreshInterval);
+            }
+            casesNewsRefreshInterval = setInterval(() => {
+                console.log('Auto-refreshing cases and news (30-minute interval)...');
+                refreshCasesAndNews();
+            }, REFRESH_INTERVAL_MS);
+            
+            console.log('Auto-refresh enabled: Cases and news will refresh every 30 minutes');
         }
 
         // Load recent queries when page loads and when tab is switched
