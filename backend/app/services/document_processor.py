@@ -5,6 +5,7 @@ Handles extraction of text from various document formats
 
 import io
 import sys
+import os
 from typing import Optional
 
 # PDF processing
