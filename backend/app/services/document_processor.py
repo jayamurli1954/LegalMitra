@@ -40,22 +40,8 @@ except ImportError:
     TESSERACT_AVAILABLE = False
 
 # AI Vision APIs (for better image processing)
-# Note: We now use the new google.genai package (not google.generativeai)
-# The gemini_ocr utility handles the actual API calls
-GEMINI_VISION_AVAILABLE = False
-try:
-    # Check if new google.genai package is available
-    from google import genai
-    GEMINI_VISION_AVAILABLE = True
-    GEMINI_NEW_API = True
-except Exception:
-    # Old deprecated package check (should not be used)
-    try:
-        import google.generativeai as genai_old
-        GEMINI_VISION_AVAILABLE = True
-        GEMINI_NEW_API = False
-    except Exception:
-        GEMINI_NEW_API = False
+# Note: We now use the new google.genai package (not deprecated google.generativeai)
+# The gemini_ocr utility handles the actual API calls using the new SDK
 
 try:
     from openai import OpenAI
@@ -188,33 +174,8 @@ class DocumentProcessor:
             import traceback
             logger.error(f"Error trace: {traceback.format_exc()}")
         
-        # Fallback: Try direct Gemini Vision API (if utility failed)
-        if GEMINI_VISION_AVAILABLE and self.settings and self.settings.GOOGLE_GEMINI_API_KEY:
-            try:
-                logger.info("Attempting Gemini Vision API (fallback method)...")
-                if GEMINI_NEW_API:
-                    logger.warning("New Gemini API structure not yet implemented")
-                else:
-                    import google.generativeai as genai_old
-                    genai_old.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
-                    logger.info("Gemini API configured (fallback)")
-                    
-                    if PIL_AVAILABLE:
-                        image = Image.open(io.BytesIO(file_content))
-                        model = genai_old.GenerativeModel('gemini-1.5-flash')
-                        prompt = "Extract all readable text from this legal document image. Preserve structure and formatting."
-                        response = model.generate_content([prompt, image])
-                        
-                        if response and response.text:
-                            logger.info(f"Gemini Vision API (fallback) successful: {len(response.text)} characters")
-                            return response.text.strip()
-            except Exception as e:
-                if not gemini_error:  # Only overwrite if first method didn't fail
-                    gemini_error = str(e)
-                    last_error = f"Gemini Vision API error: {str(e)}"
-                logger.error(f"Gemini Vision API (fallback) failed: {str(e)}")
-        else:
-            logger.warning(f"Gemini Vision not available - GEMINI_VISION_AVAILABLE={GEMINI_VISION_AVAILABLE}, Has Settings={bool(self.settings)}, Has API Key={bool(self.settings and self.settings.GOOGLE_GEMINI_API_KEY)}")
+        # Note: No fallback to old deprecated SDK needed - gemini_ocr utility uses the new google.genai SDK
+        # If it fails, we'll proceed to OpenAI or Tesseract fallbacks
         
         # Try OpenAI Vision API (most accurate if available)
         if OPENAI_VISION_AVAILABLE and self.settings:
@@ -306,15 +267,19 @@ class DocumentProcessor:
                 error_msg += "2. Check Google Cloud Console for API usage and quotas\n"
                 error_msg += "3. Ensure Generative Language API is enabled in Google Cloud Console\n"
                 error_msg += "4. Check your internet connection\n\n"
-        elif GEMINI_VISION_AVAILABLE:
-            if not (self.settings and self.settings.GOOGLE_GEMINI_API_KEY):
-                error_msg += "Gemini package is installed but API key is not configured.\n"
-                error_msg += "Add GOOGLE_GEMINI_API_KEY to your .env file.\n\n"
-            else:
-                error_msg += "Gemini Vision API is available but was not attempted.\n"
-                error_msg += "Check server console logs for details.\n\n"
         else:
-            error_msg += "Gemini Vision API is not available (package not installed).\n\n"
+            # Check if google-genai package is installed
+            try:
+                from google import genai
+                if not (self.settings and self.settings.GOOGLE_GEMINI_API_KEY):
+                    error_msg += "google-genai package is installed but API key is not configured.\n"
+                    error_msg += "Add GOOGLE_GEMINI_API_KEY to your .env file.\n\n"
+                else:
+                    error_msg += "google-genai package is available but OCR failed.\n"
+                    error_msg += "Check server console logs for details.\n\n"
+            except ImportError:
+                error_msg += "google-genai package is not installed.\n"
+                error_msg += "Install with: pip install google-genai\n\n"
         
         # Mention other fallback options
         if not gemini_error or (gemini_error and "quota" not in gemini_error.lower()):
