@@ -40,16 +40,18 @@ except ImportError:
     TESSERACT_AVAILABLE = False
 
 # AI Vision APIs (for better image processing)
+# Note: We now use the new google.genai package (not google.generativeai)
+# The gemini_ocr utility handles the actual API calls
 GEMINI_VISION_AVAILABLE = False
 try:
-    # Try new google.genai package first
-    import google.genai as genai
+    # Check if new google.genai package is available
+    from google import genai
     GEMINI_VISION_AVAILABLE = True
     GEMINI_NEW_API = True
 except Exception:
+    # Old deprecated package check (should not be used)
     try:
-        # Fallback to deprecated package
-        import google.generativeai as genai
+        import google.generativeai as genai_old
         GEMINI_VISION_AVAILABLE = True
         GEMINI_NEW_API = False
     except Exception:
@@ -164,59 +166,53 @@ class DocumentProcessor:
     async def process_image(self, file_content: bytes, filename: str) -> str:
         """Extract text from image using OCR or AI vision"""
         logger = logging.getLogger(__name__)
+        gemini_error = None
+        openai_error = None
         last_error = None
-        gemini_error = None  # Track Gemini error separately
-        openai_error = None  # Track OpenAI error separately
         
-        # Try Gemini Vision API first (if available and configured)
-        logger.info(f"Image processing: GEMINI_VISION_AVAILABLE={GEMINI_VISION_AVAILABLE}, PIL_AVAILABLE={PIL_AVAILABLE}, Has API Key={bool(self.settings and self.settings.GOOGLE_GEMINI_API_KEY)}")
+        # Try Gemini OCR utility first (recommended approach)
+        try:
+            from app.utils.gemini_ocr import extract_text_from_image, get_mime_type_from_filename
+            
+            logger.info("Attempting Gemini OCR (using gemini_ocr utility)...")
+            mime_type = get_mime_type_from_filename(filename)
+            extracted_text = extract_text_from_image(file_content, mime_type)
+            logger.info(f"Gemini OCR successful: Extracted {len(extracted_text)} characters")
+            return extracted_text
+        except ImportError:
+            logger.warning("Gemini OCR utility not available, trying fallback method")
+        except Exception as e:
+            gemini_error = str(e)
+            last_error = f"Gemini OCR error: {str(e)}"
+            logger.error(f"Gemini OCR failed: {last_error}")
+            import traceback
+            logger.error(f"Error trace: {traceback.format_exc()}")
         
+        # Fallback: Try direct Gemini Vision API (if utility failed)
         if GEMINI_VISION_AVAILABLE and self.settings and self.settings.GOOGLE_GEMINI_API_KEY:
             try:
-                logger.info("Attempting Gemini Vision API...")
+                logger.info("Attempting Gemini Vision API (fallback method)...")
                 if GEMINI_NEW_API:
-                    # New google.genai package
-                    client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
-                    # Note: New API usage may differ - this is a placeholder
-                    # You may need to adjust based on actual new API structure
-                    logger.info("New Gemini API available but needs implementation")
+                    logger.warning("New Gemini API structure not yet implemented")
                 else:
-                    # Deprecated google.generativeai package (but it works)
                     import google.generativeai as genai_old
                     genai_old.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
-                    logger.info("Gemini API configured")
+                    logger.info("Gemini API configured (fallback)")
                     
-                    # Convert image to PIL Image for Gemini
                     if PIL_AVAILABLE:
                         image = Image.open(io.BytesIO(file_content))
-                        logger.info(f"Image loaded: {image.size}, format: {image.format}")
-                        
-                        # Use Gemini 1.5 Pro or similar vision model
-                        model = genai_old.GenerativeModel('gemini-1.5-pro')
-                        logger.info("Calling Gemini Vision API...")
-                        
-                        prompt = "Extract all text from this image. If this is a legal document, contract, or any text-based document, extract all text preserving the structure and formatting. If there are tables, preserve the table structure. Return only the extracted text."
-                        
+                        model = genai_old.GenerativeModel('gemini-1.5-flash')
+                        prompt = "Extract all readable text from this legal document image. Preserve structure and formatting."
                         response = model.generate_content([prompt, image])
-                        logger.info("Gemini API responded")
                         
                         if response and response.text:
-                            extracted = response.text.strip()
-                            logger.info(f"Extracted {len(extracted)} characters from image")
-                            return extracted
-                        else:
-                            logger.warning("Gemini API returned no text")
-                    else:
-                        logger.error("PIL not available for image processing")
-                        raise Exception("PIL (Pillow) is required for Gemini Vision but not available")
+                            logger.info(f"Gemini Vision API (fallback) successful: {len(response.text)} characters")
+                            return response.text.strip()
             except Exception as e:
-                gemini_error = str(e)  # Store Gemini error separately
-                last_error = f"Gemini Vision API error: {str(e)}"
-                import traceback
-                error_trace = traceback.format_exc()
-                logger.error(f"Gemini Vision failed: {last_error}")
-                logger.error(f"Error trace: {error_trace}")
-                # Keep the Gemini error for display
+                if not gemini_error:  # Only overwrite if first method didn't fail
+                    gemini_error = str(e)
+                    last_error = f"Gemini Vision API error: {str(e)}"
+                logger.error(f"Gemini Vision API (fallback) failed: {str(e)}")
         else:
             logger.warning(f"Gemini Vision not available - GEMINI_VISION_AVAILABLE={GEMINI_VISION_AVAILABLE}, Has Settings={bool(self.settings)}, Has API Key={bool(self.settings and self.settings.GOOGLE_GEMINI_API_KEY)}")
         
