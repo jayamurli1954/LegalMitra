@@ -134,6 +134,69 @@ class DocumentProcessor:
                 logger.info("No text extracted from PDF. Attempting OCR on image-based PDF...")
                 pdf_file.seek(0)
                 
+                # Check if Poppler is available (required for pdf2image on Windows)
+                try:
+                    import subprocess
+                    import shutil
+                    
+                    # First, try to find pdftoppm in PATH
+                    pdftoppm_path = shutil.which('pdftoppm')
+                    
+                    if not pdftoppm_path:
+                        # Try common Windows installation paths
+                        common_paths = [
+                            r"C:\Program Files\poppler\Library\bin\pdftoppm.exe",
+                            r"C:\poppler\Library\bin\pdftoppm.exe",
+                            r"C:\Program Files (x86)\poppler\Library\bin\pdftoppm.exe",
+                        ]
+                        
+                        for path in common_paths:
+                            if os.path.exists(path):
+                                pdftoppm_path = path
+                                # Temporarily add to PATH for this process
+                                bin_dir = os.path.dirname(path)
+                                os.environ['PATH'] = bin_dir + os.pathsep + os.environ.get('PATH', '')
+                                logger.info(f"Found Poppler at: {bin_dir}, added to PATH for this session")
+                                break
+                    
+                    if pdftoppm_path:
+                        # Test if it works
+                        result = subprocess.run(
+                            [pdftoppm_path, '-h'], 
+                            capture_output=True, 
+                            text=True, 
+                            timeout=2,
+                            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
+                        )
+                        if result.returncode != 0 and 'pdftoppm' not in result.stdout and 'pdftoppm' not in result.stderr:
+                            raise FileNotFoundError("pdftoppm command not working correctly")
+                    else:
+                        raise FileNotFoundError("pdftoppm command not found")
+                        
+                except (FileNotFoundError, subprocess.TimeoutExpired, OSError) as e:
+                    ocr_error_msg = f"Poppler is not installed or not in PATH. pdf2image requires Poppler to convert PDF pages to images. Error: {str(e)}"
+                    logger.error(ocr_error_msg)
+                    
+                    # Check if Poppler exists in common paths but not in PATH
+                    common_bin_paths = [
+                        r"C:\Program Files\poppler\Library\bin",
+                        r"C:\poppler\Library\bin",
+                    ]
+                    
+                    found_path = None
+                    for path in common_bin_paths:
+                        if os.path.exists(os.path.join(path, "pdftoppm.exe")):
+                            found_path = path
+                            break
+                    
+                    if found_path:
+                        ocr_error_msg += f"\n\n[SOLUTION] Poppler is installed at: {found_path}\n"
+                        ocr_error_msg += "But it's not in your system PATH. Restart your server after adding it to PATH:\n"
+                        ocr_error_msg += f"1. Add this to PATH: {found_path}\n"
+                        ocr_error_msg += "2. Restart your server/terminal for PATH changes to take effect."
+                    
+                    raise Exception(ocr_error_msg)
+                
                 # Convert PDF pages to images
                 images = convert_from_bytes(file_content, dpi=300)  # Higher DPI for better OCR quality
                 logger.info(f"Converted PDF to {len(images)} page images")
