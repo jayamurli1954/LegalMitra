@@ -57,26 +57,54 @@ def extract_text_from_image(image_bytes: bytes, mime_type: str = "image/png") ->
     )
     
     try:
-        # Use new API structure
-        response = client.models.generate_content(
-            model="gemini-1.5-flash",
-            contents=[
-                {
-                    "role": "user",
-                    "parts": [
-                        {
-                            "inline_data": {
-                                "mime_type": mime_type,
-                                "data": image_base64
+        # Use new API structure with available model (gemini-2.5-flash or gemini-2.0-flash)
+        # Try gemini-2.5-flash first (latest), fallback to gemini-2.0-flash
+        model_name = "gemini-2.5-flash"
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[
+                    {
+                        "role": "user",
+                        "parts": [
+                            {
+                                "inline_data": {
+                                    "mime_type": mime_type,
+                                    "data": image_base64
+                                }
+                            },
+                            {
+                                "text": prompt_text
                             }
-                        },
+                        ]
+                    }
+                ]
+            )
+        except Exception as e:
+            # Fallback to gemini-2.0-flash if 2.5 is not available
+            if "404" in str(e) or "not found" in str(e).lower():
+                model_name = "gemini-2.0-flash"
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=[
                         {
-                            "text": prompt_text
+                            "role": "user",
+                            "parts": [
+                                {
+                                    "inline_data": {
+                                        "mime_type": mime_type,
+                                        "data": image_base64
+                                    }
+                                },
+                                {
+                                    "text": prompt_text
+                                }
+                            ]
                         }
                     ]
-                }
-            ]
-        )
+                )
+            else:
+                raise
         
         if response and response.text:
             return response.text.strip()
