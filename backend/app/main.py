@@ -9,7 +9,7 @@ if sys.platform == "win32":
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import case_search, document_drafting, legal_research, statute_search, news_and_cases
+from app.api import case_search, document_drafting, legal_research, statute_search, news_and_cases, document_review
 from app.core.config import get_settings
 
 
@@ -44,6 +44,7 @@ app.include_router(
 app.include_router(case_search.router, prefix="/api/v1", tags=["case-search"])
 app.include_router(statute_search.router, prefix="/api/v1", tags=["statute-search"])
 app.include_router(news_and_cases.router, prefix="/api/v1", tags=["news-and-cases"])
+app.include_router(document_review.router, prefix="/api/v1", tags=["document-review"])
 
 
 def run() -> None:

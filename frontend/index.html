@@ -633,7 +633,12 @@
                         </div>
                         <div class="form-group">
                             <label for="research-query">Your Legal Question:</label>
-                            <textarea id="research-query" placeholder="Enter your legal question here..."></textarea>
+                            <div style="position: relative;">
+                                <textarea id="research-query" placeholder="Enter your legal question here..." style="padding-right: 100px;"></textarea>
+                                <input type="file" id="research-file-input" accept=".pdf,.doc,.docx,.png,.jpeg,.jpg,.txt" style="display: none;" onchange="handleFileSelect(event)">
+                                <button type="button" onclick="document.getElementById('research-file-input').click()" style="position: absolute; right: 10px; bottom: 10px; background: #667eea; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 14px; z-index: 10;" title="Upload Document/Image">📎 Upload</button>
+                            </div>
+                            <div id="file-preview-container" style="margin-top: 10px; display: none; padding: 10px; background: #f5f5f5; border-radius: 5px; border: 1px solid #ddd;"></div>
                         </div>
                         <div class="form-group">
                             <label for="query-type">Query Type:</label>
@@ -2329,8 +2334,11 @@
             
             const html = `
                 <div class="${className}">
-                    <h3>${isError ? '⚠️ Error' : '✅ Response'}</h3>
-                    <div class="response-content">${escapedContent}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">${isError ? '⚠️ Error' : '✅ Response'}</h3>
+                        ${!isError ? `<button onclick="downloadResponse('${elementId}')" style="background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 14px;" title="Download Response">📥 Download</button>` : ''}
+                    </div>
+                    <div class="response-content" data-original-content="${escapeHtml(content).replace(/"/g, '&quot;')}">${escapedContent}</div>
                 </div>
             `;
             
@@ -2725,6 +2733,118 @@
             });
         });
 
+        // File handling variables
+        let selectedFile = null;
+
+        // Handle File Select
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/png', 'image/jpeg', 'image/jpg', 'text/plain'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please select a PDF, DOC, DOCX, PNG, JPEG, or TXT file');
+                event.target.value = '';
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                alert('File size must be less than 10MB');
+                event.target.value = '';
+                return;
+            }
+
+            selectedFile = file;
+            showFilePreview(file);
+        }
+
+        // Show File Preview
+        function showFilePreview(file) {
+            const container = document.getElementById('file-preview-container');
+            if (!container) return;
+
+            const fileExtension = file.name.split('.').pop().toUpperCase();
+            const fileSize = formatFileSize(file.size);
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 24px;">📄</span>
+                        <div>
+                            <div style="font-weight: bold;">${escapeHtml(file.name)}</div>
+                            <div style="font-size: 0.9em; color: #666;">${fileExtension} • ${fileSize}</div>
+                        </div>
+                    </div>
+                    <button onclick="removeFile()" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">✕ Remove</button>
+                </div>
+            `;
+            container.style.display = 'block';
+        }
+
+        // Remove File
+        function removeFile() {
+            selectedFile = null;
+            const container = document.getElementById('file-preview-container');
+            const fileInput = document.getElementById('research-file-input');
+            if (container) container.style.display = 'none';
+            if (fileInput) fileInput.value = '';
+        }
+
+        // Format File Size
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        // Download Response
+        function downloadResponse(elementId) {
+            try {
+                const element = document.getElementById(elementId);
+                if (!element) {
+                    alert('Response not found');
+                    return;
+                }
+                
+                // Get the original content from data attribute or extract from DOM
+                const contentDiv = element.querySelector('.response-content');
+                let content = '';
+                
+                if (contentDiv && contentDiv.getAttribute('data-original-content')) {
+                    // Decode HTML entities from data attribute
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = contentDiv.getAttribute('data-original-content');
+                    content = textarea.value;
+                } else {
+                    // Fallback: extract text from DOM (will lose formatting)
+                    content = contentDiv ? contentDiv.textContent || contentDiv.innerText : '';
+                }
+                
+                if (!content) {
+                    alert('No content to download');
+                    return;
+                }
+
+                // Create a blob with the content
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                const url = window.URL.createObjectURL(blob);
+                
+                // Create download link
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `LegalMitra_Response_${new Date().toISOString().slice(0, 10)}_${Date.now()}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Cleanup
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading response:', error);
+                alert('Error downloading response. Please try copying the text manually.');
+            }
+        }
+
         async function performResearch() {
             const queryInput = document.getElementById('research-query');
             if (!queryInput) {
@@ -2732,8 +2852,14 @@
                 return;
             }
             
-            const query = queryInput.value;
+            let query = queryInput.value;
             const queryType = document.getElementById('query-type').value;
+
+            // If file is selected, use document review endpoint
+            if (selectedFile) {
+                await performDocumentReview(query);
+                return;
+            }
 
             if (!query || !query.trim()) {
                 alert('Please enter a legal question');
@@ -2791,6 +2917,8 @@
                 if (response.ok) {
                     if (data && data.response) {
                         showResponse('research-response', data.response);
+                        // Clear selected file after successful response
+                        removeFile();
                     } else {
                         const errorMsg = 'Received invalid response from server. Please try again.';
                         showResponse('research-response', errorMsg, true);
@@ -2816,6 +2944,92 @@
             }
             
             console.log('=== performResearch() COMPLETED ===');
+        }
+
+        // Perform Document Review with File Upload
+        async function performDocumentReview(query = '') {
+            if (!selectedFile) {
+                alert('No file selected');
+                return;
+            }
+
+            const responseDiv = document.getElementById('research-response');
+            if (!responseDiv) {
+                alert('Error: Response container not found. Please refresh the page.');
+                return;
+            }
+
+            // Save to recent queries
+            if (query) {
+                saveRecentQuery(query);
+            }
+
+            // Clear any previous response
+            responseDiv.innerHTML = '';
+            responseDiv.style.display = 'block';
+
+            showLoading('research-response');
+
+            try {
+                const apiUrl = `${API_BASE_URL}/review-document`;
+                
+                // Add timeout (180 seconds for document processing)
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                }, 180000);
+
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                if (query && query.trim()) {
+                    formData.append('query', query);
+                }
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+                
+                let data;
+                try {
+                    const text = await response.text();
+                    data = JSON.parse(text);
+                } catch (parseError) {
+                    throw new Error('Server returned invalid response. Please try again.');
+                }
+                
+                if (response.ok) {
+                    if (data && data.analysis) {
+                        showResponse('research-response', data.analysis);
+                        // Clear selected file after successful response
+                        removeFile();
+                    } else {
+                        const errorMsg = 'Received invalid response from server. Please try again.';
+                        showResponse('research-response', errorMsg, true);
+                    }
+                } else {
+                    const errorMsg = data.detail || data.error || data.message || `Server error (${response.status})`;
+                    showResponse('research-response', `Error ${response.status}: ${errorMsg}`, true);
+                }
+            } catch (error) {
+                console.error('Document review error:', error);
+                
+                if (error.name === 'AbortError') {
+                    showResponse('research-response', 'Request timed out after 3 minutes. Document processing can take time. Please try again.', true);
+                } else if (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    const errorMsg = `Connection error: Cannot connect to server.\n\nPlease check:\n1. Backend server is running on http://localhost:8888\n2. No firewall blocking the connection\n3. CORS is enabled\n\nError: ${error.message}`;
+                    alert(errorMsg);
+                    showResponse('research-response', errorMsg, true);
+                } else {
+                    const errorMsg = `Error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`;
+                    alert(errorMsg);
+                    showResponse('research-response', errorMsg, true);
+                }
+            }
         }
 
         async function draftDocument() {
