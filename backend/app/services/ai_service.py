@@ -586,16 +586,28 @@ class AIService:
                     if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
                         print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
                         try:
-                            # List available models and pick the first one that supports generateContent
-                            available_models = await loop.run_in_executor(
-                                None, lambda: list(self._gemini_client.list_models())
-                            )
-                            for model_info in available_models:
-                                if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                                    model_id = model_info.name.split('/')[-1]
-                                    model_name = model_id
-                                    print(f"✅ Switched to available model: {model_name}")
-                                    continue  # Retry with new model
+                            if use_new_sdk:
+                                # New SDK: Use client.models.list()
+                                available_models_list = await loop.run_in_executor(
+                                    None, lambda: list(self._gemini_client.models.list())
+                                )
+                                for model_info in available_models_list:
+                                    if hasattr(model_info, 'name'):
+                                        model_id = model_info.name.split('/')[-1]
+                                        model_name = model_id
+                                        print(f"✅ Switched to available model: {model_name}")
+                                        continue  # Retry with new model
+                            else:
+                                # Old SDK: Use list_models()
+                                available_models = await loop.run_in_executor(
+                                    None, lambda: list(self._gemini_client.list_models())
+                                )
+                                for model_info in available_models:
+                                    if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                                        model_id = model_info.name.split('/')[-1]
+                                        model_name = model_id
+                                        print(f"✅ Switched to available model: {model_name}")
+                                        continue  # Retry with new model
                             
                             # If we get here, no models were found
                             raise RuntimeError(
