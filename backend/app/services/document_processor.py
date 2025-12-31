@@ -124,6 +124,7 @@ class DocumentProcessor:
         
         # If no text was extracted, try OCR on image-based PDF
         # Convert PDF pages to images and use Gemini OCR
+        ocr_error_msg = None  # Store OCR error if it occurs
         if not text_parts and PDF2IMAGE_AVAILABLE and PIL_AVAILABLE:
             try:
                 logger.info("No text extracted from PDF. Attempting OCR on image-based PDF...")
@@ -157,6 +158,9 @@ class DocumentProcessor:
                             
                     except Exception as page_error:
                         logger.error(f"Error processing page {page_num} with OCR: {page_error}")
+                        # Store the first OCR error encountered
+                        if not ocr_error_msg:
+                            ocr_error_msg = f"OCR error on page {page_num}: {str(page_error)}"
                         continue
                 
                 if page_texts:
@@ -167,8 +171,11 @@ class DocumentProcessor:
                     logger.warning("OCR processing completed but no text was extracted from any page")
                     
             except Exception as ocr_error:
-                logger.error(f"OCR fallback failed: {ocr_error}")
-                # Continue to raise the original error
+                ocr_error_msg = str(ocr_error)
+                logger.error(f"OCR fallback failed: {ocr_error_msg}")
+                # Include full traceback in logs for debugging
+                import traceback
+                logger.error(f"OCR error traceback: {traceback.format_exc()}")
         
         # If OCR also failed or is not available, raise an informative error
         error_msg = "Could not extract text from PDF. "
@@ -181,7 +188,36 @@ class DocumentProcessor:
             error_msg += "Note: On Windows, you may also need to install poppler (https://github.com/oschwartz10612/poppler-windows/releases)."
         else:
             error_msg += "The PDF might be image-based (scanned) or encrypted, and OCR processing also failed. "
-            error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is configured for OCR processing."
+            
+            # Include detailed OCR error information
+            if ocr_error_msg:
+                error_msg += f"\n\n**OCR Error Details:** {ocr_error_msg}\n\n"
+                
+                # Provide specific guidance based on error type
+                if "api_key" in ocr_error_msg.lower() or "authentication" in ocr_error_msg.lower() or "GOOGLE_GEMINI_API_KEY" in ocr_error_msg:
+                    error_msg += "**This appears to be an API key configuration issue.**\n"
+                    error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is set correctly in your .env file.\n"
+                    error_msg += "You can get a Gemini API key from: https://makersuite.google.com/app/apikey\n\n"
+                elif "poppler" in ocr_error_msg.lower() or "pdfinfo" in ocr_error_msg.lower() or "pdftoppm" in ocr_error_msg.lower():
+                    error_msg += "**This appears to be a Poppler installation issue.**\n"
+                    error_msg += "On Windows, pdf2image requires Poppler to be installed.\n"
+                    error_msg += "Download from: https://github.com/oschwartz10612/poppler-windows/releases\n"
+                    error_msg += "Add the Poppler bin directory to your system PATH.\n\n"
+                elif "quota" in ocr_error_msg.lower() or "limit" in ocr_error_msg.lower():
+                    error_msg += "**This appears to be a Gemini API quota issue.**\n"
+                    error_msg += "Check your Google Cloud Console for API usage and quotas.\n\n"
+                elif "404" in ocr_error_msg or "not found" in ocr_error_msg.lower():
+                    error_msg += "**This appears to be a Gemini model availability issue.**\n"
+                    error_msg += "The Gemini model may not be available. Check Google's API status.\n\n"
+                else:
+                    error_msg += "**Possible solutions:**\n"
+                    error_msg += "1. Verify GOOGLE_GEMINI_API_KEY in .env file\n"
+                    error_msg += "2. Check if Poppler is installed (Windows only)\n"
+                    error_msg += "3. Check server console logs for more details\n"
+                    error_msg += "4. Verify Gemini API is enabled in Google Cloud Console\n"
+                    error_msg += "5. Restart the server after changing .env file\n\n"
+            else:
+                error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is configured for OCR processing."
         
         raise Exception(error_msg)
     
