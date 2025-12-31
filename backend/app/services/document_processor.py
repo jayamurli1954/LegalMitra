@@ -39,6 +39,13 @@ try:
 except ImportError:
     TESSERACT_AVAILABLE = False
 
+# PDF to image conversion (for image-based PDFs)
+try:
+    from pdf2image import convert_from_bytes
+    PDF2IMAGE_AVAILABLE = True
+except ImportError:
+    PDF2IMAGE_AVAILABLE = False
+
 # AI Vision APIs (for better image processing)
 # Note: We now use the new google.genai package (not deprecated google.generativeai)
 # The gemini_ocr utility handles the actual API calls using the new SDK
@@ -115,12 +122,67 @@ class DocumentProcessor:
                 last_error = f"PyPDF2 error: {str(e)}"
                 logger.warning(f"PyPDF2 failed: {last_error}")
         
-        # If no text was extracted, raise an informative error
+        # If no text was extracted, try OCR on image-based PDF
+        # Convert PDF pages to images and use Gemini OCR
+        if not text_parts and PDF2IMAGE_AVAILABLE and PIL_AVAILABLE:
+            try:
+                logger.info("No text extracted from PDF. Attempting OCR on image-based PDF...")
+                pdf_file.seek(0)
+                
+                # Convert PDF pages to images
+                images = convert_from_bytes(file_content, dpi=300)  # Higher DPI for better OCR quality
+                logger.info(f"Converted PDF to {len(images)} page images")
+                
+                # Extract text from each page image using Gemini OCR
+                from app.utils.gemini_ocr import extract_text_from_image
+                
+                page_texts = []
+                for page_num, image in enumerate(images, 1):
+                    try:
+                        logger.info(f"Processing page {page_num}/{len(images)} with Gemini OCR...")
+                        
+                        # Convert PIL Image to bytes
+                        img_byte_arr = io.BytesIO()
+                        image.save(img_byte_arr, format='PNG')
+                        img_bytes = img_byte_arr.getvalue()
+                        
+                        # Extract text using Gemini OCR
+                        page_text = extract_text_from_image(img_bytes, mime_type="image/png")
+                        
+                        if page_text and page_text.strip():
+                            page_texts.append(f"--- Page {page_num} ---\n{page_text}")
+                            logger.info(f"Extracted {len(page_text)} characters from page {page_num}")
+                        else:
+                            logger.warning(f"No text extracted from page {page_num}")
+                            
+                    except Exception as page_error:
+                        logger.error(f"Error processing page {page_num} with OCR: {page_error}")
+                        continue
+                
+                if page_texts:
+                    extracted_text = "\n\n".join(page_texts)
+                    logger.info(f"Successfully extracted text from {len(page_texts)} pages using OCR")
+                    return extracted_text
+                else:
+                    logger.warning("OCR processing completed but no text was extracted from any page")
+                    
+            except Exception as ocr_error:
+                logger.error(f"OCR fallback failed: {ocr_error}")
+                # Continue to raise the original error
+        
+        # If OCR also failed or is not available, raise an informative error
         error_msg = "Could not extract text from PDF. "
         if last_error:
             error_msg += f"Last error: {last_error}. "
-        error_msg += "The PDF might be image-based (scanned) or encrypted. "
-        error_msg += "For image-based PDFs, consider converting pages to images and using OCR."
+        
+        if not PDF2IMAGE_AVAILABLE:
+            error_msg += "The PDF appears to be image-based (scanned). "
+            error_msg += "Install pdf2image package (pip install pdf2image) to enable OCR processing of scanned PDFs. "
+            error_msg += "Note: On Windows, you may also need to install poppler (https://github.com/oschwartz10612/poppler-windows/releases)."
+        else:
+            error_msg += "The PDF might be image-based (scanned) or encrypted, and OCR processing also failed. "
+            error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is configured for OCR processing."
+        
         raise Exception(error_msg)
     
     async def process_word(self, file_content: bytes, file_extension: str) -> str:
