@@ -12,7 +12,7 @@ REM Get the script directory
 cd /d "%~dp0"
 
 REM Change to backend directory
-cd backend
+cd ..\backend
 
 REM Check if virtual environment exists, if not create it
 if not exist "venv\Scripts\activate.bat" (
@@ -110,10 +110,10 @@ echo Opening frontend in browser in 3 seconds...
 timeout /t 3 /nobreak >nul
 REM Get the script directory (project root) and construct absolute path
 set "SCRIPT_DIR=%~dp0"
-set "FRONTEND_PATH=%SCRIPT_DIR%frontend\index.html"
+set "FRONTEND_PATH=%SCRIPT_DIR%..\frontend\index.html"
 REM Check if index.html exists, if not try index_new.html
 if not exist "%FRONTEND_PATH%" (
-    set "FRONTEND_PATH=%SCRIPT_DIR%frontend\index_new.html"
+    set "FRONTEND_PATH=%SCRIPT_DIR%..\frontend\index_new.html"
 )
 if exist "%FRONTEND_PATH%" (
     REM Use default browser instead of system default handler

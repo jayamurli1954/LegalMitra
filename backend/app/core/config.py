@@ -2,11 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
-try:
-    from pydantic_settings import BaseSettings
-except ImportError:
-    # Fallback for older pydantic versions
-    from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -32,11 +28,12 @@ class Settings(BaseSettings):
     # Paths
     SYSTEM_PROMPT_PATH: Path = Path("app/prompts/legal_system_prompt.txt")
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
-        extra = "ignore"  # Ignore extra fields in .env file
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
 
 
 @lru_cache

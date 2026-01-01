@@ -5,8 +5,8 @@
 
 🚀 ONE-CLICK STARTUP (EASIEST WAY)
 
-1. Double-click: START_LEGALMITRA.vbs
-   (or START_LEGALMITRA.bat if .vbs doesn't work)
+1. Double-click: START.bat
+   (This will launch the setup script from the scripts folder)
 
    That's it! The script will:
    ✓ Check Python installation
@@ -67,7 +67,7 @@
 
 ═══════════════════════════════════════════════════════════════════════════
 
-Ready to start? Double-click START_LEGALMITRA.vbs now! ⚖️🤖
+Ready to start? Double-click START.bat now! ⚖️🤖
 (If it asks which program to open, see FIX_FILE_ASSOCIATION.md)
 
 ═══════════════════════════════════════════════════════════════════════════

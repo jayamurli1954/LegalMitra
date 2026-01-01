@@ -96,8 +96,13 @@ class DocumentProcessor:
                 
                 if text_parts:
                     extracted_text = "\n\n".join(text_parts)
-                    if extracted_text.strip():
+                    # Check if extracted text is meaningful (not just metadata/whitespace)
+                    # If text is too short (< 50 chars), it might be just metadata, try OCR
+                    if extracted_text.strip() and len(extracted_text.strip()) >= 50:
                         return extracted_text
+                    else:
+                        logger.info(f"Extracted text too short ({len(extracted_text.strip())} chars), likely metadata. Will try OCR.")
+                        text_parts = []  # Clear to trigger OCR
             except Exception as e:
                 last_error = f"pdfplumber error: {str(e)}"
                 logger.warning(f"pdfplumber failed: {last_error}")
@@ -118,8 +123,13 @@ class DocumentProcessor:
                 
                 if text_parts:
                     extracted_text = "\n\n".join(text_parts)
-                    if extracted_text.strip():
+                    # Check if extracted text is meaningful (not just metadata/whitespace)
+                    # If text is too short (< 50 chars), it might be just metadata, try OCR
+                    if extracted_text.strip() and len(extracted_text.strip()) >= 50:
                         return extracted_text
+                    else:
+                        logger.info(f"Extracted text too short ({len(extracted_text.strip())} chars), likely metadata. Will try OCR.")
+                        text_parts = []  # Clear to trigger OCR
             except Exception as e:
                 last_error = f"PyPDF2 error: {str(e)}"
                 logger.warning(f"PyPDF2 failed: {last_error}")
@@ -201,31 +211,94 @@ class DocumentProcessor:
                 images = convert_from_bytes(file_content, dpi=300)  # Higher DPI for better OCR quality
                 logger.info(f"Converted PDF to {len(images)} page images")
                 
-                # Extract text from each page image using Gemini OCR
-                from app.utils.gemini_ocr import extract_text_from_image
-                
+                # Extract text from each page image
+                # Try Gemini OCR first, fallback to OpenAI Vision if available
                 page_texts = []
+                use_openai_fallback = False
+                
+                # Try Gemini OCR first
+                try:
+                    from app.utils.gemini_ocr import extract_text_from_image
+                    gemini_available = True
+                except ImportError:
+                    gemini_available = False
+                    logger.warning("Gemini OCR not available, will try OpenAI Vision if configured")
+                
                 for page_num, image in enumerate(images, 1):
                     try:
-                        logger.info(f"Processing page {page_num}/{len(images)} with Gemini OCR...")
-                        
                         # Convert PIL Image to bytes
                         img_byte_arr = io.BytesIO()
                         image.save(img_byte_arr, format='PNG')
                         img_bytes = img_byte_arr.getvalue()
                         
-                        # Extract text using Gemini OCR
-                        page_text = extract_text_from_image(img_bytes, mime_type="image/png")
+                        page_text = None
                         
-                        if page_text and page_text.strip():
-                            page_texts.append(f"--- Page {page_num} ---\n{page_text}")
-                            logger.info(f"Extracted {len(page_text)} characters from page {page_num}")
-                        else:
+                        # Try Gemini OCR first (if available and not already failed)
+                        if gemini_available and not use_openai_fallback:
+                            try:
+                                logger.info(f"Processing page {page_num}/{len(images)} with Gemini OCR...")
+                                page_text = extract_text_from_image(img_bytes, mime_type="image/png")
+                                if page_text and page_text.strip():
+                                    page_texts.append(f"--- Page {page_num} ---\n{page_text}")
+                                    logger.info(f"Extracted {len(page_text)} characters from page {page_num} using Gemini")
+                                    continue
+                            except Exception as gemini_error:
+                                error_str = str(gemini_error).lower()
+                                # If Gemini fails due to API key issues, try OpenAI fallback
+                                if "leaked" in error_str or "permission_denied" in error_str or "403" in str(gemini_error) or "authentication" in error_str:
+                                    logger.warning(f"Gemini OCR failed on page {page_num}, trying OpenAI Vision fallback...")
+                                    use_openai_fallback = True
+                                    # Store error but continue to OpenAI fallback
+                                    if not ocr_error_msg:
+                                        ocr_error_msg = f"Gemini OCR failed: {str(gemini_error)}. Trying OpenAI Vision as fallback."
+                                else:
+                                    # Other Gemini errors - store and continue
+                                    if not ocr_error_msg:
+                                        ocr_error_msg = f"OCR error on page {page_num}: {str(gemini_error)}"
+                        
+                        # Fallback to OpenAI Vision if Gemini failed or not available
+                        if (use_openai_fallback or not gemini_available) and OPENAI_VISION_AVAILABLE and self.settings and self.settings.OPENAI_API_KEY:
+                            try:
+                                logger.info(f"Processing page {page_num}/{len(images)} with OpenAI Vision...")
+                                client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
+                                image_base64 = base64.b64encode(img_bytes).decode('utf-8')
+                                
+                                response = client.chat.completions.create(
+                                    model="gpt-4o",
+                                    messages=[
+                                        {
+                                            "role": "user",
+                                            "content": [
+                                                {"type": "text", "text": "Extract all text from this legal document image. Preserve formatting and structure."},
+                                                {
+                                                    "type": "image_url",
+                                                    "image_url": {
+                                                        "url": f"data:image/png;base64,{image_base64}"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    max_tokens=4000
+                                )
+                                
+                                if response and response.choices and response.choices[0].message.content:
+                                    page_text = response.choices[0].message.content
+                                    if page_text and page_text.strip():
+                                        page_texts.append(f"--- Page {page_num} ---\n{page_text}")
+                                        logger.info(f"Extracted {len(page_text)} characters from page {page_num} using OpenAI Vision")
+                                        continue
+                            except Exception as openai_error:
+                                logger.error(f"OpenAI Vision also failed on page {page_num}: {openai_error}")
+                                if not ocr_error_msg or "Gemini" not in ocr_error_msg:
+                                    ocr_error_msg = f"Both Gemini and OpenAI Vision failed. Last error: {str(openai_error)}"
+                        
+                        # If no text extracted from this page
+                        if not page_text or not page_text.strip():
                             logger.warning(f"No text extracted from page {page_num}")
                             
                     except Exception as page_error:
                         logger.error(f"Error processing page {page_num} with OCR: {page_error}")
-                        # Store the first OCR error encountered
                         if not ocr_error_msg:
                             ocr_error_msg = f"OCR error on page {page_num}: {str(page_error)}"
                         continue
@@ -269,10 +342,21 @@ class DocumentProcessor:
                 error_msg += f"\n\n**OCR Error Details:** {ocr_error_msg}\n\n"
                 
                 # Provide specific guidance based on error type
-                if "api_key" in ocr_error_msg.lower() or "authentication" in ocr_error_msg.lower() or "GOOGLE_GEMINI_API_KEY" in ocr_error_msg:
+                if "leaked" in ocr_error_msg.lower():
+                    error_msg += "**⚠️ SECURITY ALERT: Your Gemini API key has been reported as leaked.**\n\n"
+                    error_msg += "**IMMEDIATE ACTION REQUIRED:**\n"
+                    error_msg += "1. **Revoke the current API key** in Google AI Studio: https://makersuite.google.com/app/apikey\n"
+                    error_msg += "2. **Generate a new API key** from the same page\n"
+                    error_msg += "3. **Update your .env file** with the new key: GOOGLE_GEMINI_API_KEY=your_new_key\n"
+                    error_msg += "4. **Restart your server** for changes to take effect\n\n"
+                    error_msg += "**Alternative OCR Options:**\n"
+                    error_msg += "- If you have OPENAI_API_KEY configured, the system will automatically use OpenAI Vision API\n"
+                    error_msg += "- You can also install Tesseract OCR for local OCR processing\n\n"
+                elif "api_key" in ocr_error_msg.lower() or "authentication" in ocr_error_msg.lower() or "GOOGLE_GEMINI_API_KEY" in ocr_error_msg or "permission_denied" in ocr_error_msg.lower():
                     error_msg += "**This appears to be an API key configuration issue.**\n"
                     error_msg += "Please ensure GOOGLE_GEMINI_API_KEY is set correctly in your .env file.\n"
-                    error_msg += "You can get a Gemini API key from: https://makersuite.google.com/app/apikey\n\n"
+                    error_msg += "You can get a Gemini API key from: https://makersuite.google.com/app/apikey\n"
+                    error_msg += "**Alternative:** Configure OPENAI_API_KEY to use OpenAI Vision API for OCR instead.\n\n"
                 elif "poppler" in ocr_error_msg.lower() or "pdfinfo" in ocr_error_msg.lower() or "pdftoppm" in ocr_error_msg.lower():
                     error_msg += "**This appears to be a Poppler installation issue.**\n"
                     error_msg += "On Windows, pdf2image requires Poppler to be installed.\n"

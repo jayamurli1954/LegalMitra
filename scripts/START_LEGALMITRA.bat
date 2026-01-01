@@ -43,7 +43,7 @@ echo [OK] pip found
 
 REM Create virtual environment if it doesn't exist
 echo [3/6] Setting up virtual environment...
-set "VENV_PATH=%SCRIPT_DIR%backend\venv"
+set "VENV_PATH=%SCRIPT_DIR%..\backend\venv"
 if not exist "%VENV_PATH%" (
     echo Creating virtual environment...
     python -m venv "%VENV_PATH%"
@@ -69,7 +69,7 @@ echo [OK] Virtual environment activated
 
 REM Install/upgrade dependencies
 echo [4/6] Installing dependencies...
-set "REQUIREMENTS_PATH=%SCRIPT_DIR%backend\requirements.txt"
+set "REQUIREMENTS_PATH=%SCRIPT_DIR%..\backend\requirements.txt"
 if exist "%REQUIREMENTS_PATH%" (
     echo Installing packages (this may take a few minutes)...
     python -m pip install --upgrade pip -q
@@ -87,8 +87,8 @@ if exist "%REQUIREMENTS_PATH%" (
 
 REM Check .env file
 echo [5/6] Checking configuration...
-set "ENV_PATH=%SCRIPT_DIR%backend\.env"
-set "ENV_EXAMPLE_PATH=%SCRIPT_DIR%backend\.env.example"
+set "ENV_PATH=%SCRIPT_DIR%..\backend\.env"
+set "ENV_EXAMPLE_PATH=%SCRIPT_DIR%..\backend\.env.example"
 if not exist "%ENV_PATH%" (
     if exist "%ENV_EXAMPLE_PATH%" (
         echo Creating .env file from template...
@@ -134,7 +134,7 @@ echo Press Ctrl+C to stop the server
 echo.
 
 REM Change to backend directory
-cd /d "%SCRIPT_DIR%backend"
+cd /d "%SCRIPT_DIR%..\backend"
 
 REM Start the server
 python -m app.main

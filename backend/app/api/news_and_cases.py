@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from typing import List, Dict, Optional
 from app.services.ai_service import ai_service
 from app.services.web_search_service import web_search_service
+from app.services.document_storage import document_storage
 from datetime import datetime
 import re
 import logging
@@ -46,22 +47,58 @@ class NewsResponse(BaseModel):
 
 
 @router.get("/major-cases", response_model=CasesResponse)
-async def get_major_cases():
+async def get_major_cases(force_web: bool = False):
     """
     Get recent major judgments from Supreme Court and High Courts
     Preloaded when the page opens
     Uses Google Custom Search to fetch latest information
+    
+    Args:
+        force_web: If True, skip uploaded documents and force web search
     """
     try:
+        current_year = datetime.now().year
+        
+        # FIRST: Check for uploaded documents (cases) from users (unless force_web is True)
+        if not force_web:
+            try:
+                uploaded_cases = await document_storage.get_recent_cases(limit=5)
+                if uploaded_cases:
+                    logger.info(f"Found {len(uploaded_cases)} uploaded cases, using them instead of defaults")
+                    # Convert to CaseItem format
+                    case_items = [
+                        CaseItem(
+                            title=case.get("title", "Uploaded Case"),
+                            court=case.get("court", "Uploaded Document"),
+                            year=case.get("year", current_year),
+                            citation=case.get("citation"),
+                            summary=case.get("summary", "Case document uploaded by user."),
+                            query=case.get("query", f"Tell me about: {case.get('title')}")
+                        )
+                        for case in uploaded_cases
+                    ]
+                    return CasesResponse(cases=case_items)
+            except Exception as storage_error:
+                logger.warning(f"Error retrieving uploaded cases: {storage_error}")
+                # Continue to web search fallback
+        
+        # SECOND: Try web search if no uploaded documents
         # Clear settings cache to ensure fresh API key is loaded
-        from app.core.config import get_settings
-        get_settings.cache_clear()
+        try:
+            from app.core.config import get_settings
+            get_settings.cache_clear()
+        except Exception as cache_error:
+            logger.warning(f"Could not clear settings cache: {cache_error}")
         
         # Reload web search service to get fresh settings
-        from app.services.web_search_service import WebSearchService
-        fresh_web_search = WebSearchService()
-        
-        current_year = datetime.now().year
+        try:
+            from app.services.web_search_service import WebSearchService
+            fresh_web_search = WebSearchService()
+        except Exception as ws_error:
+            logger.error(f"Could not initialize web search service: {ws_error}")
+            # Fall through to defaults
+            cases = _get_default_cases(current_year)
+            return CasesResponse(cases=cases)
         
         # Use Google Custom Search to get latest major cases
         # Log search availability
@@ -210,13 +247,41 @@ async def get_major_cases():
 
 
 @router.get("/legal-news", response_model=NewsResponse)
-async def get_legal_news():
+async def get_legal_news(force_web: bool = False):
     """
     Get latest legal news and updates
     Preloaded when the page opens
     Uses Google Custom Search to fetch latest information
+    
+    Args:
+        force_web: If True, skip uploaded documents and force web search
     """
     try:
+        current_year = datetime.now().year
+        
+        # FIRST: Check for uploaded documents (news) from users (unless force_web is True)
+        if not force_web:
+            try:
+                uploaded_news = await document_storage.get_recent_news(limit=5)
+                if uploaded_news:
+                    logger.info(f"Found {len(uploaded_news)} uploaded news items, using them instead of defaults")
+                    # Convert to NewsItem format
+                    news_items = [
+                        NewsItem(
+                            title=news.get("title", "Uploaded Document"),
+                            source=news.get("source", "Uploaded Document"),
+                            date=news.get("date", str(current_year)),
+                            summary=news.get("summary", "Legal document uploaded by user."),
+                            query=news.get("query", f"Tell me more about: {news.get('title')}")
+                        )
+                        for news in uploaded_news
+                    ]
+                    return NewsResponse(news=news_items)
+            except Exception as storage_error:
+                logger.warning(f"Error retrieving uploaded news: {storage_error}")
+                # Continue to web search fallback
+        
+        # SECOND: Try web search if no uploaded documents
         # Clear settings cache to ensure fresh API key is loaded
         from app.core.config import get_settings
         get_settings.cache_clear()
@@ -224,8 +289,6 @@ async def get_legal_news():
         # Reload web search service to get fresh settings
         from app.services.web_search_service import WebSearchService
         fresh_web_search = WebSearchService()
-        
-        current_year = datetime.now().year
         
         # Use Google Custom Search to get latest legal news
         logger.info(f"Web search service available (news): {fresh_web_search.is_available()}")

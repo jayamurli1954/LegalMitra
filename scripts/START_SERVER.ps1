@@ -5,7 +5,7 @@ Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 
 # Change to backend directory
-Set-Location -Path "$PSScriptRoot\backend"
+Set-Location -Path "$PSScriptRoot\..\backend"
 
 # Check if virtual environment exists
 if (-not (Test-Path "venv\Scripts\activate.ps1")) {

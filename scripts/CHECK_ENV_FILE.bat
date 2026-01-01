@@ -8,7 +8,7 @@ echo    Checking .env File for Issues
 echo ========================================
 echo.
 
-cd /d "%~dp0\backend"
+cd /d "%~dp0..\backend"
 
 if not exist ".env" (
     echo ERROR: .env file not found!

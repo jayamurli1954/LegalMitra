@@ -114,10 +114,28 @@ def extract_text_from_image(image_bytes: bytes, mime_type: str = "image/png") ->
     except Exception as e:
         # Provide helpful error message
         error_msg = str(e)
-        if "authentication" in error_msg.lower() or "invalid" in error_msg.lower() or "api_key" in error_msg.lower():
-            raise Exception(f"Gemini API authentication failed. Please verify GOOGLE_GEMINI_API_KEY is correct. Error: {error_msg}")
-        elif "quota" in error_msg.lower() or "limit" in error_msg.lower():
-            raise Exception(f"Gemini API quota exceeded. Check Google Cloud Console. Error: {error_msg}")
+        error_str_lower = error_msg.lower()
+        
+        # Check for leaked API key error (most critical)
+        if "leaked" in error_str_lower or "permission_denied" in error_str_lower or "403" in error_msg:
+            if "leaked" in error_str_lower:
+                raise Exception(
+                    "⚠️ **SECURITY ALERT: Your Gemini API key has been reported as leaked.**\n\n"
+                    "**This means your API key was exposed (possibly in a public repository, screenshot, or shared file).**\n\n"
+                    "**IMMEDIATE ACTION REQUIRED:**\n"
+                    "1. **Revoke the current API key** in Google AI Studio: https://makersuite.google.com/app/apikey\n"
+                    "2. **Generate a new API key** from the same page\n"
+                    "3. **Update your .env file** with the new key: GOOGLE_GEMINI_API_KEY=your_new_key\n"
+                    "4. **Restart your server** for changes to take effect\n\n"
+                    "**Alternative:** If you have OPENAI_API_KEY configured, the system will automatically use OpenAI Vision API as a fallback for OCR.\n\n"
+                    f"**Original Error:** {error_msg}"
+                )
+            else:
+                raise Exception(f"Gemini API permission denied (403). Please verify GOOGLE_GEMINI_API_KEY is correct and has proper permissions. Error: {error_msg}")
+        elif "authentication" in error_str_lower or "invalid" in error_str_lower or "api_key" in error_str_lower or "unauthorized" in error_str_lower:
+            raise Exception(f"Gemini API authentication failed. Please verify GOOGLE_GEMINI_API_KEY is correct in your .env file. Error: {error_msg}")
+        elif "quota" in error_str_lower or "limit" in error_str_lower:
+            raise Exception(f"Gemini API quota exceeded. Check Google Cloud Console for usage limits. Error: {error_msg}")
         else:
             raise Exception(f"Gemini API error: {error_msg}")
 

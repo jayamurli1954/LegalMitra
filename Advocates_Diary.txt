@@ -1,0 +1,408 @@
+Advocates Diary
+
+Excellent choice.
+These **two features together** will turn LegalMitra from a chatbot into a **full-fledged digital law office system**.
+
+Below is a **production-ready blueprint** that you can directly give to your developers (or Cursor AI).
+
+---
+
+# ⚖️ PART 1 — Advocate Diary Database Design (Enterprise Grade)
+
+This is how **real law firms** structure their systems.
+
+---
+
+## 🧑‍💼 1️⃣ `advocates`
+
+```sql
+advocates
+---------
+id (PK)
+name
+enrollment_no
+bar_council
+mobile
+email
+office_address
+created_at
+```
+
+---
+
+## 👥 2️⃣ `clients`
+
+```sql
+clients
+-------
+id (PK)
+full_name
+mobile
+email
+address
+aadhaar_optional
+pan_optional
+created_at
+```
+
+---
+
+## 📂 3️⃣ `cases`
+
+```sql
+cases
+-----
+id (PK)
+case_number
+court_name
+judge_name
+case_type  -- Civil, Criminal, Family, Labour
+stage      -- Trial, Evidence, Argument, Appeal
+client_id (FK)
+advocate_id (FK)
+opponent_name
+opponent_advocate
+filing_date
+next_hearing
+status -- Active, Disposed, Stayed
+```
+
+---
+
+## 📅 4️⃣ `hearings` (THIS IS THE DIARY)
+
+```sql
+hearings
+--------
+id (PK)
+case_id (FK)
+hearing_date
+court_hall
+purpose   -- Evidence, Arguments, Orders
+order_passed
+next_date
+remarks
+created_at
+```
+
+Every row = one diary entry.
+
+---
+
+## 📑 5️⃣ `documents`
+
+```sql
+documents
+---------
+id (PK)
+case_id (FK)
+title
+file_path
+uploaded_by
+uploaded_on
+ai_summary
+```
+
+---
+
+## 💰 6️⃣ `fees`
+
+```sql
+fees
+----
+id (PK)
+case_id (FK)
+client_id
+description
+amount
+paid_amount
+balance
+date
+```
+
+---
+
+## ⏰ 7️⃣ `tasks`
+
+```sql
+tasks
+-----
+id (PK)
+case_id
+title
+due_date
+status
+priority
+```
+
+---
+
+# 🖥️ PART 2 — Advocate Diary UI Design
+
+This is what makes LegalMitra **10× better than paper diaries**.
+
+---
+
+## 🏠 Dashboard
+
+Shows:
+
+| Widget           |
+| ---------------- |
+| Today’s hearings |
+| Pending cases    |
+| Tasks due today  |
+| Fees outstanding |
+| Alerts           |
+
+---
+
+## 📂 Case List Screen
+
+Columns:
+
+```
+Case No | Client | Court | Stage | Next Hearing | Status | View
+```
+
+---
+
+## 📘 Case Detail Page
+
+Tabs:
+
+### 🟦 1. Case Info
+
+Client, Court, Parties, Status
+
+---
+
+### 🟦 2. Advocate Diary (Most important)
+
+Table:
+
+| Date | What Happened | Next Date | Notes |
+
+Every time a hearing happens → auto add here.
+
+---
+
+### 🟦 3. Documents
+
+Upload:
+
+* Orders
+* FIR
+* Notices
+* Pleadings
+
+AI auto-summarises.
+
+---
+
+### 🟦 4. Tasks
+
+* Draft reply
+* File affidavit
+* Summon witness
+
+Auto reminder.
+
+---
+
+### 🟦 5. Fees
+
+Ledger:
+
+* Total
+* Paid
+* Balance
+
+---
+
+# 🤖 How AI integrates
+
+After every hearing:
+
+```
+"Update diary and suggest next legal steps"
+```
+
+AI reads last order and suggests:
+
+* File reply
+* Move application
+* Prepare witness
+
+This is where LegalMitra becomes a **junior lawyer**.
+
+---
+
+# 🏆 Why this makes LegalMitra unbeatable
+
+You will have:
+
+| Software        | Missing             |
+| --------------- | ------------------- |
+| SCC / Manupatra | No case management  |
+| PracticeLeague  | No AI               |
+| Lawrato         | No diary            |
+| LegalMitra      | **Everything + AI** |
+
+---
+
+# 💼 This is sellable to:
+
+* Advocates
+* Law firms
+* Legal departments
+* Legal clinics
+
+---
+
+
+This is an **important strategic question** — because the answer is very good news for you.
+
+Your **current LegalMitra UI will NOT be broken** by adding Advocate Diary.
+In fact, it becomes **far more powerful**.
+
+Let me explain clearly.
+
+---
+
+# 🧩 Your Current UI Role
+
+Right now your UI is designed as:
+
+> **Legal Research & AI Workspace**
+
+It is perfect for:
+
+* Searching laws
+* Uploading notices
+* Drafting documents
+* Getting legal advice
+
+This is the **“thinking layer”** of a lawyer.
+
+---
+
+# 🧩 Advocate Diary Role
+
+The Advocate Diary is:
+
+> **Legal Office & Case Management System**
+
+It handles:
+
+* Clients
+* Cases
+* Dates
+* Fees
+* Deadlines
+
+This is the **“working layer”** of a lawyer.
+
+---
+
+# 🧠 How They Fit Together
+
+Think like this:
+
+| Your Current UI  | Advocate Diary          |
+| ---------------- | ----------------------- |
+| Brain (thinking) | Memory (record keeping) |
+| Research         | Case tracking           |
+| Drafting         | Court dates             |
+| Laws             | Clients                 |
+| Advice           | Fees                    |
+
+They are **complementary**, not conflicting.
+
+---
+
+# 🧭 Where Advocate Diary appears in your UI
+
+You do **NOT** touch:
+
+* Legal Research
+* Case Search
+* Statute
+* Document Drafting
+
+You simply add **one new tab**:
+
+```
+[ Legal Research ] [ Case Search ] [ Drafting ] [ Statutes ] [ Advocate Diary ]
+```
+
+---
+
+# 🖥️ What happens when user clicks “Advocate Diary”
+
+A new workspace opens:
+
+* Case list
+* Today’s hearings
+* Tasks
+* Clients
+* Fees
+
+Your current UI remains intact.
+
+---
+
+# 🧠 Smart AI Integration
+
+Example:
+User uploads a court order in **Legal Research**
+
+LegalMitra says:
+
+> “Do you want to add this to Case No 124/2024?”
+
+Click YES → it is saved into **Advocate Diary**
+
+This is how professionals will love it.
+
+---
+
+# 🎯 Why this is a killer combination
+
+Most competitors do:
+
+* Research only
+* Or diary only
+
+You do:
+
+> Research + AI + Case Management
+
+This is exactly what Indian advocates need.
+
+---
+
+# 💰 Business impact
+
+With Diary:
+
+* Law firms will pay ₹1,500–₹5,000 per month
+  Without Diary:
+* You compete with free Google
+
+This single feature moves you from **tool** → **platform**.
+
+---
+
+# 🚀 Summary
+
+Your existing UI becomes the **AI brain**
+Advocate Diary becomes the **law office**
+
+Together they become:
+
+> **India’s first AI-powered legal operating system**
+
+---
+
+

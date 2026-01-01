@@ -145,6 +145,9 @@ async def review_document(
                 extracted_text=None
             )
         
+        # Note: Documents are processed temporarily and not saved to storage
+        # This ensures privacy and prevents storage buildup
+        
         # Get AI analysis
         try:
             analysis = await ai_service.process_legal_query(
