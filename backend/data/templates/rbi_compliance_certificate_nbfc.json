@@ -1,0 +1,81 @@
+{
+  "template_id": "rbi_compliance_certificate_nbfc",
+  "name": "RBI Compliance Certificate - NBFC",
+  "category": "corporate",
+  "description": "Compliance certificate for Non-Banking Financial Companies (NBFC) as required by RBI",
+  "act": [
+    "RBI_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "RBI",
+    "NBFC",
+    "Compliance",
+    "Certificate",
+    "Regulatory"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "NBFC Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "rbi_registration_no",
+      "label": "RBI Registration Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    },
+    {
+      "id": "auditor_name",
+      "label": "Auditor Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "auditor_firm",
+      "label": "Auditor Firm",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "CERTIFICATE OF COMPLIANCE\n[RBI MASTER DIRECTIONS - NON-BANKING FINANCIAL COMPANY (NBFC)]",
+    "To,\nThe Regional Director\nReserve Bank of India\n[Regional Office]",
+    "Date: [DATE]",
+    "Subject: Annual Compliance Certificate for Financial Year {{financial_year}}",
+    "NBFC Name: {{company_name}}\nRBI Registration No.: {{rbi_registration_no}}",
+    "We, {{auditor_firm}}, Chartered Accountants, have examined the books of accounts, records, and documents of {{company_name}} (RBI Registration No. {{rbi_registration_no}}) for the financial year ended March 31, [Year].",
+    "Based on our examination and to the best of our knowledge and information, and according to the explanations given to us, we certify that:",
+    "1. REGISTRATION AND AUTHORIZATION:\n   - The Company holds valid Certificate of Registration (CoR) from RBI\n   - All activities are within the scope of authorization\n   - No unauthorized activities have been undertaken",
+    "2. PRUDENTIAL NORMS COMPLIANCE:\n   - Capital Adequacy Ratio maintained as per RBI norms\n   - Asset Classification norms complied with\n   - Provisioning requirements met",
+    "3. REPORTING COMPLIANCE:\n   - All periodic returns filed with RBI within prescribed timelines\n   - Statistical returns submitted on time\n   - Annual Financial Statements filed",
+    "4. INVESTMENT AND LENDING:\n   - Investment in subsidiary/associate companies within limits\n   - Lending to directors/relatives within prescribed norms\n   - Single/Group exposure limits complied with",
+    "5. REGULATORY COMPLIANCE:\n   - Fair Practices Code implemented\n   - KYC/AML norms complied with\n   - Customer grievance redressal mechanism operational",
+    "6. CORPORATE GOVERNANCE:\n   - Board composition as per RBI guidelines\n   - Audit Committee and other committees constituted\n   - Fit and Proper criteria for directors complied",
+    "[AI will expand with detailed compliance checks as per RBI NBFC Directions]",
+    "For {{auditor_firm}}\nChartered Accountants",
+    "{{auditor_name}}\nPartner\nMembership No: [Number]\nUDIN: [To be generated]",
+    "Date:\nPlace:",
+    "Note: This certificate is based on the information and explanations provided by the management."
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

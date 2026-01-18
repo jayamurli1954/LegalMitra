@@ -1,0 +1,108 @@
+{
+  "template_id": "board_resolution_bank_account",
+  "name": "Board Resolution - Opening Bank Account",
+  "category": "corporate",
+  "description": "Resolution for opening company bank account with authorized signatories",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "179"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Corporate",
+    "Board Resolution",
+    "Banking",
+    "Authorization"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true,
+      "placeholder": "U12345KA2020PTC123456"
+    },
+    {
+      "id": "meeting_date",
+      "label": "Board Meeting Date",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "bank_name",
+      "label": "Bank Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "branch_address",
+      "label": "Branch Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "account_type",
+      "label": "Account Type",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Current Account",
+        "Savings Account",
+        "CC/OD Account"
+      ]
+    },
+    {
+      "id": "authorized_signatories",
+      "label": "Authorized Signatories",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "1. Name - Designation - DIN\\n2. Name - Designation - DIN"
+    },
+    {
+      "id": "signing_mode",
+      "label": "Mode of Operation",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Singly",
+        "Jointly",
+        "Either or Survivor",
+        "Any Two Jointly"
+      ]
+    }
+  ],
+  "body": [
+    "BOARD RESOLUTION\nFOR OPENING OF BANK ACCOUNT",
+    "{{company_name}}\n(CIN: {{cin}})",
+    "Extract of Resolution passed at the Board Meeting held on {{meeting_date}}",
+    "RESOLVED THAT pursuant to the provisions of Section 179 of the Companies Act, 2013, and the Articles of Association of the Company, the Board of Directors hereby resolves to open a {{account_type}} with:",
+    "Bank Name: {{bank_name}}\nBranch Address: {{branch_address}}",
+    "RESOLVED FURTHER THAT the following persons be and are hereby authorized as signatories for operating the said bank account:",
+    "{{authorized_signatories}}",
+    "RESOLVED FURTHER THAT the mode of operation of the said bank account shall be: {{signing_mode}}",
+    "RESOLVED FURTHER THAT the authorized signatories are hereby empowered to:\n1. Execute all necessary account opening forms and documents\n2. Operate the account as per the mode specified above\n3. Sign cheques, demand drafts, and payment instructions\n4. Give standing instructions and mandates\n5. Complete all formalities required by the bank",
+    "RESOLVED FURTHER THAT a certified copy of this resolution be submitted to {{bank_name}} and the same shall be treated as sufficient authority for opening and operating the bank account.",
+    "For {{company_name}}",
+    "_____________________          _____________________\nDirector                       Director\nDIN:                          DIN:",
+    "Date:\nPlace:",
+    "Note: This is a true extract from the minutes of the Board Meeting"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

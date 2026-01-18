@@ -1,0 +1,95 @@
+{
+  "template_id": "nda_mutual",
+  "name": "Mutual Non-Disclosure Agreement (NDA)",
+  "category": "corporate",
+  "description": "Bilateral NDA for protecting confidential information",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "NDA",
+    "Confidentiality",
+    "Contract",
+    "Agreement"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "party1_name",
+      "label": "Party 1 Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "party1_address",
+      "label": "Party 1 Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "party2_name",
+      "label": "Party 2 Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "party2_address",
+      "label": "Party 2 Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "purpose",
+      "label": "Purpose of Disclosure",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "e.g., Exploring potential business collaboration"
+    },
+    {
+      "id": "duration_years",
+      "label": "Confidentiality Period (Years)",
+      "type": "number",
+      "required": true,
+      "placeholder": "3"
+    },
+    {
+      "id": "jurisdiction",
+      "label": "Governing Law Jurisdiction",
+      "type": "text",
+      "required": true,
+      "placeholder": "Bangalore"
+    }
+  ],
+  "body": [
+    "MUTUAL NON-DISCLOSURE AGREEMENT",
+    "This Agreement is entered into on this [DATE] between:",
+    "PARTY 1:\n{{party1_name}}\nAddress: {{party1_address}}\n(hereinafter referred to as \"Party 1\")",
+    "AND",
+    "PARTY 2:\n{{party2_name}}\nAddress: {{party2_address}}\n(hereinafter referred to as \"Party 2\")",
+    "(Party 1 and Party 2 shall collectively be referred to as \"Parties\" and individually as \"Party\")",
+    "WHEREAS the Parties wish to explore {{purpose}} and in connection therewith, may disclose to each other certain confidential and proprietary information;",
+    "NOW THEREFORE, in consideration of the mutual covenants and agreements contained herein, the Parties agree as follows:",
+    "1. DEFINITION OF CONFIDENTIAL INFORMATION\n   \"Confidential Information\" means all information disclosed by either Party to the other Party, whether orally, in writing, or in any other form, including but not limited to:\n   - Business plans, strategies, and financial information\n   - Technical data, trade secrets, and know-how\n   - Customer lists, supplier information, and marketing strategies\n   - Any other information marked as \"Confidential\"",
+    "2. OBLIGATIONS OF RECEIVING PARTY\n   Each Party agrees to:\n   a) Hold all Confidential Information in strict confidence\n   b) Not disclose Confidential Information to any third party without prior written consent\n   c) Use Confidential Information solely for the purpose stated above\n   d) Protect Confidential Information with the same degree of care as its own confidential information\n   e) Not reverse engineer, disassemble, or decompile any prototypes or samples provided",
+    "3. EXCLUSIONS\n   This Agreement does not apply to information that:\n   a) Was publicly known prior to disclosure\n   b) Becomes publicly known through no breach of this Agreement\n   c) Was rightfully possessed prior to disclosure\n   d) Is independently developed without use of Confidential Information\n   e) Is disclosed pursuant to legal requirement or court order",
+    "4. TERM AND TERMINATION\n   This Agreement shall remain in effect for {{duration_years}} years from the date of execution. The obligations of confidentiality shall survive termination of this Agreement.",
+    "5. RETURN OF MATERIALS\n   Upon termination or upon written request, each Party shall return or destroy all Confidential Information and certify such destruction in writing.",
+    "6. NO LICENSE\n   Nothing in this Agreement grants any license, expressly or impliedly, to either Party's intellectual property rights.",
+    "7. GOVERNING LAW AND JURISDICTION\n   This Agreement shall be governed by the laws of India. The courts at {{jurisdiction}} shall have exclusive jurisdiction.",
+    "8. MISCELLANEOUS\n   - This Agreement constitutes the entire agreement between the Parties\n   - No amendment shall be valid unless in writing and signed by both Parties\n   - This Agreement may be executed in counterparts",
+    "IN WITNESS WHEREOF, the Parties have executed this Agreement on the date first above written.",
+    "For {{party1_name}}                  For {{party2_name}}",
+    "_____________________              _____________________\nAuthorized Signatory               Authorized Signatory\nName:                              Name:\nDesignation:                       Designation:\nDate:                              Date:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

@@ -1,0 +1,54 @@
+{
+  "template_id": "IT_NOTICE_REPLY_V1",
+  "name": "Reply to Income Tax Notice (143(1)/142(1))",
+  "category": "tax_compliance",
+  "description": "Reply to income tax notice or intimation",
+  "act": ["IT_ACT"],
+  "section": ["143", "142"],
+  "court": [],
+  "language": "en",
+  "tags": ["income tax", "notice", "reply", "assessment", "compliance"],
+  "is_premium": false,
+  "fields": [
+    {"id": "assessee_name", "label": "Assessee Name", "type": "text", "required": true},
+    {"id": "pan", "label": "PAN", "type": "text", "required": true},
+    {"id": "assessee_address", "label": "Address", "type": "text", "required": true},
+    {"id": "notice_type", "label": "Notice Type", "type": "text", "required": true, "placeholder": "143(1) / 142(1) / 148 / etc."},
+    {"id": "notice_reference", "label": "Notice Reference/DIN", "type": "text", "required": true},
+    {"id": "notice_date", "label": "Notice Date", "type": "date", "required": true},
+    {"id": "assessment_year", "label": "Assessment Year", "type": "text", "required": true, "placeholder": "2024-25"},
+    {"id": "issue_raised", "label": "Issue Raised in Notice", "type": "text", "required": true},
+    {"id": "explanation", "label": "Explanation/Submission", "type": "text", "required": true},
+    {"id": "documents_enclosed", "label": "Documents Enclosed", "type": "text", "required": false},
+    {"id": "date", "label": "Reply Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "REPLY TO INCOME TAX NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\nThe Assessing Officer\nIncome Tax Department\n",
+    "Subject: Reply to Notice under Section {{notice_type}} of the Income Tax Act, 1961\n",
+    "Reference: PAN: {{pan}}\nNotice Ref/DIN: {{notice_reference}}\nAssessment Year: {{assessment_year}}\n",
+    "Respected Sir/Madam,\n",
+    "This has reference to your notice dated {{notice_date}} bearing Reference/DIN {{notice_reference}} issued under Section {{notice_type}} of the Income Tax Act, 1961 for Assessment Year {{assessment_year}}.\n",
+    "2. {{assessee_name}}, PAN {{pan}}, having address at {{assessee_address}}, hereby submits the following reply:\n",
+    "3. ACKNOWLEDGMENT:\n\nThe assessee acknowledges receipt of the notice and submits this reply within the time prescribed.\n\n",
+    "4. ISSUE RAISED:\n\nThe notice raises the following issue(s):\n\n{{issue_raised}}\n\n",
+    "5. EXPLANATION AND SUBMISSION:\n\n{{explanation}}\n\n",
+    "6. COMPLIANCE:\n\n6.1 The assessee has filed the return of income for AY {{assessment_year}} on time and in accordance with law.\n\n6.2 All income has been correctly disclosed and all deductions/exemptions claimed are as per law.\n\n6.3 There is no concealment or furnishing of inaccurate particulars.\n\n6.4 The assessee has acted in good faith and in accordance with the provisions of the Income Tax Act.\n\n",
+    {
+      "condition": "documents_enclosed exists",
+      "text": "7. DOCUMENTARY EVIDENCE:\n\nThe following documents are enclosed in support:\n\n{{documents_enclosed}}\n\n"
+    },
+    "8. PRAYER:\n\nIn view of the above submissions, it is humbly prayed that:\n\n(a) The explanation submitted be accepted;\n\n(b) No additions/disallowances be made;\n\n(c) No penalty proceedings be initiated;\n\n(d) Personal hearing be granted, if required.\n\n",
+    "9. The assessee reserves the right to file further submissions or documents as may be necessary.\n\n\n",
+    "Thanking you,\n\nYours faithfully,\n\nFor {{assessee_name}}\n\nSignature: _______________\nName:\nDesignation:\nPAN: {{pan}}\nDate: {{date}}\n\n",
+    "Enclosures:\n1. Supporting documents as listed\n2. Computation of income\n3. Bank statements (if applicable)\n4. Any other relevant documents"
+  ],
+  "disclaimer": true,
+  "statutory_references": [
+    {"act": "IT_ACT", "section": "142", "title": "Inquiry before assessment"},
+    {"act": "IT_ACT", "section": "143", "title": "Assessment"}
+  ],
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

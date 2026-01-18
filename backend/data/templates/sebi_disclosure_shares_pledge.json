@@ -1,0 +1,102 @@
+{
+  "template_id": "sebi_disclosure_shares_pledge",
+  "name": "SEBI Disclosure - Pledge/Release of Shares",
+  "category": "corporate",
+  "description": "Disclosure of creation/release of pledge on shares under SEBI Listing Regulations",
+  "act": [
+    "SEBI_ACT"
+  ],
+  "section": [
+    "31"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Pledge",
+    "Shareholding",
+    "Regulation 31",
+    "Disclosure"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "promoter_name",
+      "label": "Promoter Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan",
+      "label": "PAN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "action_type",
+      "label": "Action Type",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Creation of Pledge",
+        "Release of Pledge",
+        "Invocation of Pledge"
+      ]
+    },
+    {
+      "id": "pledged_shares",
+      "label": "Number of Shares Pledged",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "total_shareholding",
+      "label": "Total Shareholding",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "pledge_date",
+      "label": "Date of Pledge/Release",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "beneficiary",
+      "label": "Beneficiary Name (if pledge created)",
+      "type": "text",
+      "required": false
+    }
+  ],
+  "body": [
+    "DISCLOSURE UNDER REGULATION 31(2) OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015",
+    "DISCLOSURE OF {{action_type.upper()}} ON SHARES",
+    "{{company_name}}\nCIN: [CIN]",
+    "Date: [DATE]",
+    "To,\nThe Secretary\nThe Stock Exchanges\n[BSE/NSE]",
+    "Subject: Disclosure of {{action_type}} on Shares",
+    "Dear Sir/Madam,",
+    "Pursuant to Regulation 31(2) of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, we hereby disclose the following information:",
+    "DISCLOSURE DETAILS:",
+    "1. Name of Company: {{company_name}}\n2. Name of Promoter/Person: {{promoter_name}}\n3. PAN: {{pan}}\n4. Action: {{action_type}}\n5. Date of Action: {{pledge_date}}\n6. Number of Shares: {{pledged_shares}}\n7. Percentage to Paid-up Capital: [{{pledged_shares * 100 / total_shareholding}}%]\n8. Total Shareholding: {{total_shareholding}}\n9. Total Pledged Shares (After this action): [Number]\n10. Percentage of Shareholding Pledged: [Percentage]\n{{f'11. Beneficiary: {beneficiary}}' if action_type == 'Creation of Pledge' else ''}",
+    "[AI will expand with:\n- Details of pledge agreement\n- Purpose of pledge\n- Impact on shareholding pattern\n- Total encumbered shares]",
+    "The Company confirms that all applicable disclosures have been made as per SEBI Regulations.",
+    "For {{company_name}}\nCIN: [CIN]",
+    "_____________________\nCompany Secretary",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

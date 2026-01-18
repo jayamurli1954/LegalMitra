@@ -1,0 +1,41 @@
+PS D:\LegalMitra\backend> # Run this monthly check script (Copy and paste from below)
+
+PS D:\LegalMitra\backend> Write-Host "`n🔍 MONTHLY SECURITY CHECK - LegalMitra" -ForegroundColor Cyan
+
+🔍 MONTHLY SECURITY CHECK - LegalMitra
+PS D:\LegalMitra\backend> Write-Host "=" * 50 -ForegroundColor Cyan
+= * 50
+PS D:\LegalMitra\backend>
+PS D:\LegalMitra\backend> # 1. Check if .env still protected
+PS D:\LegalMitra\backend> if (Select-String -Path "D:\LegalMitra\.gitignore" -Pattern "^\.env$" -Quiet) {
+>>     Write-Host "✅ .env is in .gitignore" -ForegroundColor Green
+>> } else {
+>>     Write-Host "⚠️ WARNING: .env NOT in .gitignore!" -ForegroundColor Red
+>> }
+✅ .env is in .gitignore
+PS D:\LegalMitra\backend>
+PS D:\LegalMitra\backend> # 2. Check if secrets_backup accidentally recreated in project
+PS D:\LegalMitra\backend> if (Test-Path "D:\LegalMitra\secrets_backup") {
+>>     Write-Host "⚠️ WARNING: secrets_backup exists in project!" -ForegroundColor Yellow
+>> } else {
+>>     Write-Host "✅ secrets_backup not in project" -ForegroundColor Green
+>> }
+✅ secrets_backup not in project
+PS D:\LegalMitra\backend>
+PS D:\LegalMitra\backend> # 3. Remind to check API usage
+PS D:\LegalMitra\backend> Write-Host "`n📊 MANUAL CHECKS NEEDED:" -ForegroundColor Yellow
+
+📊 MANUAL CHECKS NEEDED:
+PS D:\LegalMitra\backend> Write-Host "  [ ] Check Anthropic usage: https://console.anthropic.com/settings/usage" -ForegroundColor White
+  [ ] Check Anthropic usage: https://console.anthropic.com/settings/usage
+PS D:\LegalMitra\backend> Write-Host "  [ ] Check Google Gemini usage: https://aistudio.google.com/app/apikey" -ForegroundColor White
+
+  [ ] Check Google Gemini usage: https://aistudio.google.com/app/apikey
+PS D:\LegalMitra\backend> Write-Host "  [ ] Check Gmail activity: https://myaccount.google.com/device-activity" -ForegroundColor White
+  [ ] Check Gmail activity: https://myaccount.google.com/device-activity
+PS D:\LegalMitra\backend>
+PS D:\LegalMitra\backend> Write-Host "`n✅ Monthly check complete!`n" -ForegroundColor Green
+
+✅ Monthly check complete!
+
+PS D:\LegalMitra\backend>

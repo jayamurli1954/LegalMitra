@@ -1,0 +1,77 @@
+{
+  "template_id": "arbitration_notice",
+  "name": "Arbitration Notice under Section 21",
+  "category": "legal_notice",
+  "description": "Notice invoking arbitration clause under Arbitration and Conciliation Act, 1996",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [
+    "21"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Arbitration",
+    "Section 21",
+    "Legal Notice",
+    "Dispute Resolution"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "claimant_name",
+      "label": "Claimant Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "respondent_name",
+      "label": "Respondent Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "agreement_date",
+      "label": "Agreement Date",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "dispute_details",
+      "label": "Details of Dispute",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "arbitrator_name",
+      "label": "Proposed Arbitrator Name (if any)",
+      "type": "text",
+      "required": false
+    }
+  ],
+  "body": [
+    "ARBITRATION NOTICE\nUNDER SECTION 21 OF THE ARBITRATION AND CONCILIATION ACT, 1996",
+    "To,\n{{respondent_name}}\n[Address]",
+    "Date: [DATE]",
+    "FROM: {{claimant_name}}",
+    "Dear Sir/Madam,",
+    "NOTICE OF INVOCATION OF ARBITRATION",
+    "We refer to the [Agreement/Contract] dated {{agreement_date}} entered into between us.",
+    "Pursuant to Clause [X] of the said agreement which contains an arbitration clause, we hereby invoke arbitration for resolution of the following dispute:",
+    "DISPUTE:\n{{dispute_details}}",
+    "We hereby call upon you to:\n1. Appoint an arbitrator within 30 days as per the agreement\n2. Or agree to our proposed arbitrator: {{arbitrator_name}}",
+    "If you fail to appoint an arbitrator within the stipulated period, we shall proceed to appoint an arbitrator in accordance with the provisions of the Arbitration and Conciliation Act, 1996.",
+    "All our rights are reserved.",
+    "For {{claimant_name}}",
+    "Authorized Signatory\nDate:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

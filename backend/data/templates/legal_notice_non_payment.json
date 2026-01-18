@@ -1,0 +1,50 @@
+{
+  "template_id": "LEGAL_NOTICE_NON_PAYMENT_V1",
+  "name": "Legal Notice - Non-payment of Dues",
+  "category": "legal_notice",
+  "description": "Legal notice for recovery of outstanding dues and payments",
+  "act": ["CPC", "CONTRACT_ACT"],
+  "section": [],
+  "court": ["District", "Civil Court"],
+  "language": "en",
+  "tags": ["payment", "dues", "recovery", "debt"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "advocate_address", "label": "Advocate Address", "type": "text", "required": false},
+    {"id": "client_name", "label": "Client Name (Creditor)", "type": "text", "required": true},
+    {"id": "client_address", "label": "Client Address", "type": "text", "required": false},
+    {"id": "debtor_name", "label": "Debtor Name", "type": "text", "required": true},
+    {"id": "debtor_address", "label": "Debtor Address", "type": "text", "required": true},
+    {"id": "amount_due", "label": "Amount Due (₹)", "type": "number", "required": true},
+    {"id": "transaction_date", "label": "Transaction/Agreement Date", "type": "date", "required": true},
+    {"id": "payment_due_date", "label": "Payment Due Date", "type": "date", "required": false},
+    {"id": "nature_of_transaction", "label": "Nature of Transaction", "type": "text", "required": true, "placeholder": "Sale of goods / Services rendered / Loan / etc."},
+    {"id": "payment_demands_made", "label": "Number of Payment Demands Made", "type": "text", "required": false, "placeholder": "Multiple verbal and written"},
+    {"id": "date", "label": "Notice Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "LEGAL NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{debtor_name}}\n{{debtor_address}}\n",
+    "Subject: Legal Notice for Recovery of Outstanding Dues\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I hereby serve upon you the following legal notice:\n",
+    "1. That on or about {{transaction_date}}, you entered into a transaction with my client for {{nature_of_transaction}}.\n",
+    "2. That pursuant to the said transaction, a sum of ₹{{amount_due}} (Rupees {{amount_due}} only) became due and payable by you to my client.\n",
+    {
+      "condition": "payment_due_date exists",
+      "text": "3. That the said amount was due and payable on or before {{payment_due_date}}, but you have failed and neglected to make payment despite the due date having expired."
+    },
+    "4. That my client has made several demands for payment of the outstanding dues, both verbally and in writing, but you have failed and neglected to honor your obligation.\n",
+    "5. That your failure to pay the outstanding amount has caused financial loss and hardship to my client.\n",
+    "6. That your act of non-payment constitutes breach of contract and/or unjust enrichment at the cost of my client.\n",
+    "THEREFORE, you are hereby called upon to pay the outstanding sum of ₹{{amount_due}} (Rupees {{amount_due}} only) along with interest at the rate of 18% per annum from the date of default, within 15 (fifteen) days from the receipt of this notice.\n",
+    "TAKE NOTICE that if you fail to make payment of the said amount within the stipulated period, my client shall be constrained to initiate appropriate legal proceedings for recovery of the amount, along with interest and costs, at your sole risk as to costs and consequences, without any further reference to you.\n",
+    "This notice is issued without prejudice to all other rights and remedies available to my client under law.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate\n{{advocate_address}}"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

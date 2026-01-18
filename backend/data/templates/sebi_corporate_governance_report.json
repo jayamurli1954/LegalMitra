@@ -1,0 +1,101 @@
+{
+  "template_id": "sebi_corporate_governance_report",
+  "name": "SEBI Corporate Governance Report",
+  "category": "corporate",
+  "description": "Corporate governance compliance report for listed companies under SEBI Listing Regulations",
+  "act": [
+    "SEBI_ACT",
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "27"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Corporate Governance",
+    "Regulation 27",
+    "Compliance Report",
+    "Listing Obligations"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    },
+    {
+      "id": "board_meetings_held",
+      "label": "Number of Board Meetings Held",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "independent_directors",
+      "label": "Number of Independent Directors",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "women_directors",
+      "label": "Number of Women Directors",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "CORPORATE GOVERNANCE REPORT\nUNDER REGULATION 27(2) OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015",
+    "{{company_name}}\nCIN: {{cin}}\nFinancial Year: {{financial_year}}",
+    "CORPORATE GOVERNANCE COMPLIANCE REPORT",
+    "1. COMPANY'S PHILOSOPHY ON CORPORATE GOVERNANCE",
+    "[AI will add company's philosophy statement on corporate governance]",
+    "2. BOARD OF DIRECTORS",
+    "2.1 Composition of Board:\n- Total Directors: [Number]\n- Executive Directors: [Number]\n- Non-Executive Directors: [Number]\n- Independent Directors: {{independent_directors}}\n- Women Directors: {{women_directors}}",
+    "2.2 Board Meetings:\n- Number of meetings held during the year: {{board_meetings_held}}\n- Attendance details: [AI will add attendance statistics]",
+    "2.3 Board Committees:\n- Audit Committee\n- Nomination and Remuneration Committee\n- Stakeholders Relationship Committee\n- Risk Management Committee",
+    "3. AUDIT COMMITTEE",
+    "[AI will expand with committee composition, meetings, and functions]",
+    "4. NOMINATION AND REMUNERATION COMMITTEE",
+    "[AI will expand with committee details and policies]",
+    "5. RELATED PARTY TRANSACTIONS",
+    "[AI will add details of related party transactions and compliance]",
+    "6. RISK MANAGEMENT",
+    "[AI will add risk management framework and procedures]",
+    "7. DISCLOSURES AND COMPLIANCE",
+    "[AI will add details of:\n- Shareholder disclosures\n- Code of conduct compliance\n- Whistleblower mechanism\n- Other regulatory compliances]",
+    "8. MEANS OF COMMUNICATION",
+    "- Financial results published in: [Newspapers]\n- Website: [Company website]\n- Email: [Investor email]",
+    "9. GENERAL SHAREHOLDER INFORMATION",
+    "[AI will add AGM details, dividend information, etc.]",
+    "10. CERTIFICATION",
+    "We confirm that the Company has complied with all applicable provisions of SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015 during the financial year {{financial_year}}.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "_____________________\nManaging Director",
+    "_____________________\nCompany Secretary\nSEBI Regn. No.: [Number]",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

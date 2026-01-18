@@ -1,0 +1,141 @@
+{
+  "template_id": "NI138_LEGAL_NOTICE_V1",
+  "name": "Legal Notice - Cheque Bounce (Section 138 NI Act)",
+  "category": "legal_notice",
+  "description": "Legal notice for dishonoured cheque under Section 138 of the Negotiable Instruments Act, 1881",
+  "act": ["NI_ACT"],
+  "section": ["138"],
+  "court": ["District", "Magistrate"],
+  "language": "en",
+  "tags": ["cheque bounce", "section 138", "ni act", "payment notice"],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "advocate_name",
+      "label": "Advocate Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Adv. John Doe"
+    },
+    {
+      "id": "advocate_address",
+      "label": "Advocate Address",
+      "type": "text",
+      "required": false,
+      "placeholder": "123, Law Chambers, City"
+    },
+    {
+      "id": "client_name",
+      "label": "Client Name (Payee)",
+      "type": "text",
+      "required": true,
+      "placeholder": "Name of the person who received the cheque"
+    },
+    {
+      "id": "drawer_name",
+      "label": "Drawer Name (Person who issued cheque)",
+      "type": "text",
+      "required": true,
+      "placeholder": "Name of the person who issued the cheque"
+    },
+    {
+      "id": "drawer_address",
+      "label": "Drawer Address",
+      "type": "text",
+      "required": true,
+      "placeholder": "Full postal address of drawer"
+    },
+    {
+      "id": "cheque_number",
+      "label": "Cheque Number",
+      "type": "text",
+      "required": true,
+      "placeholder": "123456"
+    },
+    {
+      "id": "cheque_date",
+      "label": "Cheque Date",
+      "type": "date",
+      "required": true,
+      "placeholder": "DD-MM-YYYY"
+    },
+    {
+      "id": "cheque_amount",
+      "label": "Cheque Amount (₹)",
+      "type": "number",
+      "required": true,
+      "placeholder": "50000"
+    },
+    {
+      "id": "bank_name",
+      "label": "Bank Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "State Bank of India, Branch Name"
+    },
+    {
+      "id": "return_reason",
+      "label": "Reason for Return",
+      "type": "text",
+      "required": true,
+      "placeholder": "Insufficient Funds / Funds Exceeded / Account Closed"
+    },
+    {
+      "id": "return_date",
+      "label": "Date of Return Memo",
+      "type": "date",
+      "required": true,
+      "placeholder": "DD-MM-YYYY"
+    },
+    {
+      "id": "debt_nature",
+      "label": "Nature of Debt/Transaction",
+      "type": "text",
+      "required": false,
+      "placeholder": "Loan / Business Transaction / Service Payment"
+    },
+    {
+      "id": "date",
+      "label": "Notice Date",
+      "type": "date",
+      "required": false,
+      "placeholder": "DD-MM-YYYY (defaults to today)"
+    }
+  ],
+  "body": [
+    "LEGAL NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{drawer_name}}\n{{drawer_address}}\n",
+    "Subject: Legal Notice under Section 138 of the Negotiable Instruments Act, 1881\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I hereby serve upon you the following legal notice:\n",
+    "1. That you issued Cheque bearing No. {{cheque_number}} dated {{cheque_date}} for a sum of ₹{{cheque_amount}} (Rupees {{cheque_amount}} only) drawn on {{bank_name}}, towards discharge of a legally enforceable debt and liability.\n",
+    {
+      "condition": "debt_nature exists",
+      "text": "2. That the said cheque was issued towards {{debt_nature}}."
+    },
+    "3. That the said cheque, when presented for encashment through the proper banking channel, was returned unpaid by the bank with the remarks \"{{return_reason}}\" vide bank memo dated {{return_date}}.\n",
+    "4. That despite the dishonour of the said cheque, you have failed and neglected to make payment of the said cheque amount to my client.\n",
+    "5. That the dishonour of the said cheque for the reason \"{{return_reason}}\" attracts the penal provisions of Section 138 of the Negotiable Instruments Act, 1881.\n",
+    "THEREFORE, you are hereby called upon to make payment of ₹{{cheque_amount}} (Rupees {{cheque_amount}} only) in cash or by way of demand draft in favour of my client within 15 (fifteen) days from the date of receipt of this notice, failing which my client shall be constrained to initiate appropriate criminal proceedings against you under Section 138 of the Negotiable Instruments Act, 1881, at your sole risk as to costs and consequences.\n",
+    "This notice is issued without prejudice to all other rights and remedies available to my client under law.\n",
+    "Kindly treat this as most urgent and govern yourself accordingly.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate\n{{advocate_address}}"
+  ],
+  "disclaimer": true,
+  "statutory_references": [
+    {
+      "act": "NI_ACT",
+      "section": "138",
+      "title": "Dishonour of cheque for insufficiency of funds"
+    },
+    {
+      "act": "NI_ACT",
+      "section": "139",
+      "title": "Presumption in favour of holder"
+    }
+  ],
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

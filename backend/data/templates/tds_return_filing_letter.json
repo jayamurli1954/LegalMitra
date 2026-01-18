@@ -1,0 +1,94 @@
+{
+  "template_id": "tds_return_filing_letter",
+  "name": "TDS Return Filing Letter",
+  "category": "tax_compliance",
+  "description": "Covering letter for TDS return filing (Form 24Q, 26Q, 27Q)",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "TDS",
+    "Income Tax",
+    "Return",
+    "Form 24Q",
+    "Form 26Q"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company/Deductor Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "tan",
+      "label": "TAN",
+      "type": "text",
+      "required": true,
+      "placeholder": "ABCD12345E"
+    },
+    {
+      "id": "form_type",
+      "label": "TDS Return Form",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Form 24Q (Salary TDS)",
+        "Form 26Q (Non-Salary TDS)",
+        "Form 27Q (TDS on NRI)",
+        "Form 27EQ (TCS Return)"
+      ]
+    },
+    {
+      "id": "quarter",
+      "label": "Quarter",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Q1 (Apr-Jun)",
+        "Q2 (Jul-Sep)",
+        "Q3 (Oct-Dec)",
+        "Q4 (Jan-Mar)"
+      ]
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    },
+    {
+      "id": "total_tax_deducted",
+      "label": "Total Tax Deducted (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Assessing Officer\nIncome Tax Department\n[Ward/Circle]",
+    "Date: [DATE]",
+    "Subject: Filing of {{form_type}} for {{quarter}} of FY {{financial_year}}\nTAN: {{tan}}",
+    "Respected Sir/Madam,",
+    "We, {{company_name}} (TAN: {{tan}}), hereby submit the {{form_type}} for {{quarter}} of Financial Year {{financial_year}}.",
+    "DETAILS:\n- Form Type: {{form_type}}\n- Quarter: {{quarter}}\n- Financial Year: {{financial_year}}\n- Total Tax Deducted: Rs. {{total_tax_deducted}}\n- Filing Date: [DATE]",
+    "The return has been filed electronically. Acknowledgment is enclosed.",
+    "All taxes have been deposited within prescribed time and TDS certificates have been issued to all deductees.",
+    "Kindly process the return and update TDS credit in Form 26AS.",
+    "For {{company_name}}\nTAN: {{tan}}",
+    "Authorized Signatory",
+    "Enclosures:\n1. Return Acknowledgment\n2. Challan Copies\n3. Form 27A"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

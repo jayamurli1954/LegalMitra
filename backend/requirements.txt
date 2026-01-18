@@ -1,0 +1,50 @@
+# LegalMitra Backend Requirements
+# For stable installation, use requirements-frozen.txt instead
+
+# Core web framework (minimum versions)
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+pydantic-settings>=2.0.0
+python-dotenv>=1.0.0
+python-multipart>=0.0.6  # Required for file uploads (Form data)
+
+# Database
+sqlalchemy>=2.0.0
+aiosqlite>=0.19.0
+
+# HTTP client
+httpx>=0.25.2
+
+# Web search for latest legal information
+google-api-python-client>=2.100.0
+beautifulsoup4>=4.12.0
+
+# AI Providers (install only the ones you need)
+# For Anthropic Claude:
+anthropic>=0.7.0
+
+# For OpenAI GPT:
+openai>=1.3.0
+
+# For Google Gemini (NEW 2025 SDK - REQUIRED):
+google-genai>=0.2.0
+# OLD (deprecated): google-generativeai  # DO NOT USE - deprecated by Google, causes warnings
+
+# Document processing
+PyPDF2>=3.0.0  # PDF text extraction
+pdfplumber>=0.9.0  # Better PDF extraction (alternative to PyPDF2)
+pdf2image>=1.16.3  # Convert PDF pages to images for OCR
+python-docx>=1.1.0  # Word document processing
+Pillow>=10.0.0  # Image processing
+# pytesseract>=0.3.10  # OCR for images (DEPRECATED - Use Gemini Vision API instead via GOOGLE_GEMINI_API_KEY)
+
+# Note: To freeze versions and prevent breaking changes:
+# 1. Install packages: pip install -r requirements.txt
+# 2. Freeze versions: pip freeze > requirements-frozen.txt
+# 3. Use frozen file for future installs: pip install -r requirements-frozen.txt
+
+# Note: For OCR (pytesseract), you also need to install Tesseract OCR:
+# Windows: Download from https://github.com/UB-Mannheim/tesseract/wiki
+# Mac: brew install tesseract
+# Linux: sudo apt-get install tesseract-ocr

@@ -1,0 +1,92 @@
+{
+  "template_id": "sebi_whistleblower_policy",
+  "name": "SEBI Whistleblower/Vigil Mechanism Policy",
+  "category": "corporate",
+  "description": "Whistleblower policy document as required under SEBI Listing Regulations",
+  "act": [
+    "SEBI_ACT",
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "22",
+    "177"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Whistleblower",
+    "Vigil Mechanism",
+    "Regulation 22",
+    "Corporate Governance"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "vigilance_officer_name",
+      "label": "Vigilance Officer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "vigilance_officer_email",
+      "label": "Vigilance Officer Email",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "audit_committee_chairman",
+      "label": "Audit Committee Chairman",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "WHISTLEBLOWER / VIGIL MECHANISM POLICY",
+    "{{company_name}}\nCIN: {{cin}}",
+    "[Pursuant to Regulation 22 of SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015 and Section 177 of Companies Act, 2013]",
+    "1. PREAMBLE",
+    "This Whistleblower Policy (\"Policy\") is formulated to provide a mechanism for employees, directors, and stakeholders of {{company_name}} to report instances of unethical behavior, actual or suspected fraud, or violation of the Company's Code of Conduct.",
+    "2. OBJECTIVES",
+    "- To encourage reporting of genuine concerns about unethical conduct\n- To protect whistleblowers from victimization\n- To ensure timely and fair investigation of complaints\n- To ensure compliance with legal and regulatory requirements",
+    "3. SCOPE",
+    "This Policy applies to:\n- All employees of the Company\n- Directors and Key Managerial Personnel\n- Contractors, vendors, and business partners\n- Shareholders and other stakeholders",
+    "4. DEFINITIONS",
+    "\"Whistleblower\": A person who reports a concern under this Policy.\n\"Protected Disclosures\": Disclosures made in good faith about unethical conduct.\n\"Vigilance Officer\": The person designated to receive and investigate complaints.",
+    "5. VIGILANCE OFFICER",
+    "Name: {{vigilance_officer_name}}\nEmail: {{vigilance_officer_email}}\nDesignation: Company Secretary/Chief Compliance Officer",
+    "6. REPORTING MECHANISM",
+    "Complaints can be submitted:\n- By email to: {{vigilance_officer_email}}\n- By post to: Vigilance Officer, {{company_name}}, [Address]\n- Through designated hotline: [Phone Number]",
+    "7. INVESTIGATION PROCESS",
+    "[AI will expand with detailed investigation procedure, timelines, and reporting mechanisms]",
+    "8. PROTECTION OF WHISTLEBLOWER",
+    "The Company will:\n- Maintain confidentiality of the whistleblower's identity\n- Protect from retaliation or victimization\n- Not tolerate harassment or discrimination",
+    "9. AUDIT COMMITTEE OVERSIGHT",
+    "Chairman: {{audit_committee_chairman}}\nThe Audit Committee will review all complaints and ensure proper resolution.",
+    "10. ANNUAL REVIEW",
+    "This Policy will be reviewed annually by the Audit Committee and Board of Directors.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "Approved by Board of Directors\nDate: [DATE]",
+    "[AI will add detailed clauses covering all aspects of whistleblower protection and investigation]"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

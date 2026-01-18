@@ -1,0 +1,74 @@
+{
+  "template_id": "director_appointment_resolution",
+  "name": "Board Resolution for Director Appointment",
+  "category": "corporate",
+  "description": "Resolution for appointment of director",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "149"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Corporate",
+    "Director",
+    "Appointment",
+    "Board Resolution"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "director_name",
+      "label": "Director Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "din",
+      "label": "DIN (if available)",
+      "type": "text",
+      "required": false
+    },
+    {
+      "id": "appointment_date",
+      "label": "Appointment Date",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "BOARD RESOLUTION FOR APPOINTMENT OF DIRECTOR",
+    "{{company_name}}\nCIN: {{cin}}",
+    "RESOLVED THAT pursuant to the provisions of Section 149, 152 and other applicable provisions of the Companies Act, 2013 and the Rules made thereunder, Mr./Ms. {{director_name}} (DIN: {{din}}) be and is hereby appointed as an Additional Director of the Company with effect from {{appointment_date}}.",
+    "RESOLVED FURTHER THAT the Additional Director so appointed shall hold office up to the date of the next Annual General Meeting of the Company.",
+    "RESOLVED FURTHER THAT the Board recommends the appointment of Mr./Ms. {{director_name}} as a Director of the Company to the members for their approval in the ensuing General Meeting.",
+    "RESOLVED FURTHER THAT the necessary forms be filed with the Registrar of Companies within the prescribed time limit.",
+    "RESOLVED FURTHER THAT [Managing Director/Company Secretary] be and is hereby authorized to do all acts, deeds and things necessary for giving effect to the above resolution.",
+    "For {{company_name}}",
+    "_____________________\nDirector",
+    "_____________________\nDirector",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

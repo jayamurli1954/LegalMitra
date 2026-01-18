@@ -1,0 +1,78 @@
+{
+  "template_id": "vendor_agreement",
+  "name": "Vendor/Supplier Agreement",
+  "category": "corporate",
+  "description": "Agreement with vendors for supply of goods/services",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Contract",
+    "Vendor",
+    "Supplier",
+    "Purchase"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "buyer_name",
+      "label": "Buyer/Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "vendor_name",
+      "label": "Vendor Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "goods_services",
+      "label": "Goods/Services to be supplied",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "payment_terms",
+      "label": "Payment Terms",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "30 Days",
+        "45 Days",
+        "60 Days",
+        "Against Delivery",
+        "Advance Payment"
+      ]
+    }
+  ],
+  "body": [
+    "VENDOR AGREEMENT",
+    "This Agreement is made on [DATE]",
+    "BETWEEN",
+    "{{buyer_name}} (hereinafter called \"the Buyer\")",
+    "AND",
+    "{{vendor_name}} (hereinafter called \"the Vendor\")",
+    "1. SUPPLY OF GOODS/SERVICES\nThe Vendor agrees to supply:\n{{goods_services}}",
+    "2. PAYMENT TERMS\nPayment: {{payment_terms}}",
+    "3. QUALITY STANDARDS\n[AI will add quality specifications]",
+    "4. DELIVERY TERMS\n[AI will add delivery schedule and terms]",
+    "5. WARRANTIES\n[AI will add warranty clauses]",
+    "6. RETURNS AND REPLACEMENTS\n[AI will add return policy]",
+    "7. TERMINATION\n[AI will add termination clauses]",
+    "8. DISPUTE RESOLUTION\n[AI will add arbitration clause]",
+    "IN WITNESS WHEREOF:",
+    "For {{buyer_name}}                      For {{vendor_name}}",
+    "_____________________                 _____________________\nAuthorized Signatory                  Authorized Signatory",
+    "Date:                                 Date:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

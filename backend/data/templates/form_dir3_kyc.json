@@ -1,0 +1,62 @@
+{
+  "template_id": "form_dir3_kyc",
+  "name": "DIR-3 KYC Form Filing Letter",
+  "category": "corporate",
+  "description": "Covering letter for DIR-3 KYC annual filing by directors",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Companies Act",
+    "DIR-3",
+    "KYC",
+    "Director",
+    "Compliance"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "director_name",
+      "label": "Director Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "din",
+      "label": "DIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    }
+  ],
+  "body": [
+    "To,\nThe Registrar of Companies\n[State]",
+    "Date: [DATE]",
+    "Subject: Filing of DIR-3 KYC Form for Financial Year {{financial_year}}",
+    "DIN: {{din}}\nDirector Name: {{director_name}}",
+    "Respected Sir/Madam,",
+    "I hereby submit Form DIR-3 KYC for the financial year {{financial_year}} in compliance with Rule 12A of the Companies (Appointment and Qualification of Directors) Rules, 2014.",
+    "DETAILS:\n- DIN: {{din}}\n- Director Name: {{director_name}}\n- Financial Year: {{financial_year}}\n- Filing Date: [DATE]",
+    "The form has been filed electronically through the MCA portal. KYC details have been verified and updated.",
+    "Thanking you,",
+    "{{director_name}}\nDIN: {{din}}",
+    "Enclosures:\n1. Form DIR-3 KYC acknowledgment\n2. Supporting documents"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

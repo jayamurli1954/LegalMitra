@@ -1,0 +1,67 @@
+{
+  "template_id": "cease_desist_letter",
+  "name": "Cease and Desist Letter",
+  "category": "legal_notice",
+  "description": "Legal notice to stop infringement or unauthorized activity",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Legal Notice",
+    "Cease and Desist",
+    "Infringement"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "sender_name",
+      "label": "Your Name/Company",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "recipient_name",
+      "label": "Recipient Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "infringement_details",
+      "label": "Details of Infringement/Issue",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "action_required",
+      "label": "Action Required from Recipient",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "CEASE AND DESIST NOTICE",
+    "Date: [DATE]",
+    "To,\n{{recipient_name}}\n[Address]",
+    "Dear Sir/Madam,",
+    "RE: CEASE AND DESIST NOTICE",
+    "This notice is issued on behalf of {{sender_name}} with respect to the following matter:",
+    "INFRINGEMENT/VIOLATION:\n{{infringement_details}}",
+    "It has come to our attention that you are engaging in activities that constitute [infringement/violation/breach] of our [rights/agreement/trademark/copyright].",
+    "DEMAND:\nYou are hereby directed to immediately:\n{{action_required}}",
+    "TIMELINE:\nYou are required to comply within 7 days from receipt of this notice.",
+    "CONSEQUENCES OF NON-COMPLIANCE:\nFailure to comply will result in legal proceedings without further notice, and you shall be liable for:\n1. Damages and compensation\n2. Legal costs\n3. Injunctive relief",
+    "This notice is issued without prejudice to our rights and remedies.",
+    "For {{sender_name}}",
+    "_____________________\nAuthorized Signatory",
+    "[Advocate details if sent through lawyer]"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

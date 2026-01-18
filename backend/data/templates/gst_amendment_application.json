@@ -1,0 +1,76 @@
+{
+  "template_id": "gst_amendment_application",
+  "name": "GST Registration Amendment Application",
+  "category": "gst",
+  "description": "Application for amendment in GST registration details (Form GST REG-14)",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Amendment",
+    "Registration",
+    "Form REG-14"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "amendment_type",
+      "label": "Type of Amendment",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Change of Address",
+        "Change of Business Name",
+        "Additional Place of Business",
+        "Change in Partners/Directors",
+        "Change in Contact Details"
+      ]
+    },
+    {
+      "id": "amendment_details",
+      "label": "Amendment Details",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Assistant Commissioner\nGST Department\n[Circle/Ward]",
+    "Date: [DATE]",
+    "Subject: Application for Amendment in GST Registration - Form GST REG-14",
+    "GSTIN: {{gstin}}\nName: {{taxpayer_name}}",
+    "Respected Sir/Madam,",
+    "We hereby apply for amendment in our GST registration details.",
+    "AMENDMENT REQUEST:\nType of Amendment: {{amendment_type}}",
+    "Details:\n{{amendment_details}}",
+    "[AI will expand based on amendment type with specific changes, old and new values]",
+    "Supporting documents for the amendment are enclosed.",
+    "Kindly process this application and approve the amendment.",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}",
+    "Enclosures:\n1. Form GST REG-14\n2. Supporting documents as per amendment type"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

@@ -1,0 +1,74 @@
+{
+  "template_id": "form_mbp1_disclosure",
+  "name": "MBP-1 Director Interest Disclosure",
+  "category": "corporate",
+  "description": "Form MBP-1 for disclosure of director's interest in companies/firms",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "184"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Companies Act",
+    "MBP-1",
+    "Section 184",
+    "Director Interest"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "director_name",
+      "label": "Director Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "din",
+      "label": "DIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "interest_details",
+      "label": "Interest Details",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "List companies/firms where director has interest"
+    }
+  ],
+  "body": [
+    "FORM MBP-1\n[Pursuant to Section 184(1) of Companies Act, 2013]",
+    "GENERAL NOTICE OF INTEREST",
+    "{{company_name}}\nCIN: {{cin}}",
+    "I, {{director_name}} (DIN: {{din}}), hereby give notice that I have the following interest in other companies, firms, or bodies corporate:",
+    "{{interest_details}}",
+    "[AI will expand with proper format listing:\n- Names of companies/firms\n- Nature of interest (director, partner, shareholder)\n- Extent of shareholding/interest]",
+    "I further confirm that:\n1. The above information is true and correct\n2. I will update this disclosure if any changes occur during the year\n3. I will make fresh disclosure at the first board meeting of each financial year",
+    "For {{company_name}}",
+    "{{director_name}}\nDirector\nDIN: {{din}}",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

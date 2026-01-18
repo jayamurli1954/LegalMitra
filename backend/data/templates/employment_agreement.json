@@ -1,0 +1,85 @@
+{
+  "template_id": "employment_agreement",
+  "name": "Employment Agreement",
+  "category": "corporate",
+  "description": "Comprehensive employment contract",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Contract",
+    "Employment",
+    "Agreement",
+    "HR"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "employee_name",
+      "label": "Employee Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "designation",
+      "label": "Designation",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "salary",
+      "label": "Monthly Salary (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "joining_date",
+      "label": "Date of Joining",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "notice_period",
+      "label": "Notice Period (days)",
+      "type": "number",
+      "required": true,
+      "placeholder": "30"
+    }
+  ],
+  "body": [
+    "EMPLOYMENT AGREEMENT",
+    "This Agreement is made on [DATE]",
+    "BETWEEN",
+    "{{company_name}}, a company incorporated under the Companies Act (hereinafter called \"the Company\")",
+    "AND",
+    "{{employee_name}} (hereinafter called \"the Employee\")",
+    "WHEREAS the Company desires to employ the Employee and the Employee has agreed to serve the Company on the terms and conditions hereinafter contained.",
+    "1. APPOINTMENT\nThe Employee is appointed as {{designation}} with effect from {{joining_date}}.",
+    "2. SALARY AND BENEFITS\nMonthly Salary: Rs. {{salary}}\n[AI will add: Standard benefits, allowances, incentives]",
+    "3. DUTIES AND RESPONSIBILITIES\n[AI will detail role-specific duties]",
+    "4. WORKING HOURS\n[AI will add standard working hours]",
+    "5. LEAVE POLICY\n[AI will add leave entitlements]",
+    "6. TERMINATION\nNotice Period: {{notice_period}} days",
+    "7. CONFIDENTIALITY\n[AI will add confidentiality clauses]",
+    "8. NON-COMPETE\n[AI will add non-compete terms]",
+    "IN WITNESS WHEREOF the parties have executed this Agreement.",
+    "For {{company_name}}                    {{employee_name}}",
+    "_____________________                  _____________________\nAuthorized Signatory                   Employee Signature",
+    "Date:                                  Date:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

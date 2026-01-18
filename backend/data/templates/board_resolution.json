@@ -1,0 +1,140 @@
+{
+  "template_id": "BOARD_RESOLUTION_V1",
+  "name": "Board Resolution (Generic)",
+  "category": "corporate",
+  "description": "Generic board resolution template for Indian companies under Companies Act, 2013",
+  "act": ["COMPANIES_ACT"],
+  "section": ["179", "173"],
+  "court": [],
+  "language": "en",
+  "tags": ["board resolution", "companies act", "corporate governance"],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "ABC Private Limited"
+    },
+    {
+      "id": "cin",
+      "label": "CIN (Corporate Identity Number)",
+      "type": "text",
+      "required": false,
+      "placeholder": "U12345MH2020PTC123456"
+    },
+    {
+      "id": "registered_office",
+      "label": "Registered Office Address",
+      "type": "text",
+      "required": true,
+      "placeholder": "Full registered office address"
+    },
+    {
+      "id": "meeting_date",
+      "label": "Meeting Date",
+      "type": "date",
+      "required": true,
+      "placeholder": "DD-MM-YYYY"
+    },
+    {
+      "id": "meeting_time",
+      "label": "Meeting Time",
+      "type": "text",
+      "required": true,
+      "placeholder": "11:00 AM"
+    },
+    {
+      "id": "meeting_place",
+      "label": "Meeting Place",
+      "type": "text",
+      "required": true,
+      "placeholder": "Registered Office / Virtual / Hybrid"
+    },
+    {
+      "id": "resolution_subject",
+      "label": "Resolution Subject",
+      "type": "text",
+      "required": true,
+      "placeholder": "Brief description of what is being resolved"
+    },
+    {
+      "id": "resolution_details",
+      "label": "Resolution Details",
+      "type": "text",
+      "required": true,
+      "placeholder": "Detailed description of the resolution"
+    },
+    {
+      "id": "authorized_person",
+      "label": "Authorized Person Name",
+      "type": "text",
+      "required": false,
+      "placeholder": "Name of person authorized to execute (if applicable)"
+    },
+    {
+      "id": "director_name",
+      "label": "Director Name (Certifying)",
+      "type": "text",
+      "required": true,
+      "placeholder": "Name of director certifying the resolution"
+    },
+    {
+      "id": "din",
+      "label": "DIN (Director Identification Number)",
+      "type": "text",
+      "required": false,
+      "placeholder": "12345678"
+    },
+    {
+      "id": "date",
+      "label": "Certification Date",
+      "type": "date",
+      "required": false,
+      "placeholder": "DD-MM-YYYY"
+    }
+  ],
+  "body": [
+    "CERTIFIED TRUE COPY OF THE RESOLUTION\nPASSED AT THE MEETING OF THE BOARD OF DIRECTORS\nOF {{company_name}}\n",
+    {
+      "condition": "cin exists",
+      "text": "CIN: {{cin}}"
+    },
+    "Registered Office: {{registered_office}}\n",
+    "Date of Meeting: {{meeting_date}}\nTime: {{meeting_time}}\nPlace: {{meeting_place}}\n",
+    "RESOLUTION\n",
+    "Subject: {{resolution_subject}}\n",
+    "\"RESOLVED THAT {{resolution_details}}\n",
+    {
+      "condition": "authorized_person exists",
+      "text": "RESOLVED FURTHER THAT {{authorized_person}} be and is hereby authorized to do all acts, deeds, matters, and things as may be necessary, expedient, or desirable to give effect to this resolution and to sign all necessary documents, agreements, and papers on behalf of the Company."
+    },
+    "RESOLVED FURTHER THAT a copy of this resolution, duly certified by any Director of the Company, shall be sufficient evidence of the passing of this resolution.\"\n",
+    "The above resolution was duly passed at the meeting of the Board of Directors of the Company held on {{meeting_date}}.\n\n",
+    "For {{company_name}}\n\n",
+    "Sd/-\n{{director_name}}\nDirector\n",
+    {
+      "condition": "din exists",
+      "text": "DIN: {{din}}"
+    },
+    "Date: {{date}}\n",
+    "Place: ___________"
+  ],
+  "disclaimer": true,
+  "statutory_references": [
+    {
+      "act": "COMPANIES_ACT",
+      "section": "173",
+      "title": "Meeting of Board"
+    },
+    {
+      "act": "COMPANIES_ACT",
+      "section": "179",
+      "title": "Powers of Board"
+    }
+  ],
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

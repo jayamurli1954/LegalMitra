@@ -1,0 +1,90 @@
+{
+  "template_id": "gst_refund_application",
+  "name": "GST Refund Application",
+  "category": "gst",
+  "description": "Application for GST refund claim",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [
+    "54"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Refund",
+    "Tax",
+    "Claim"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true,
+      "placeholder": "29AAAAA0000A1Z5"
+    },
+    {
+      "id": "refund_period",
+      "label": "Refund Period",
+      "type": "text",
+      "required": true,
+      "placeholder": "April 2025 to June 2025"
+    },
+    {
+      "id": "refund_amount",
+      "label": "Refund Amount (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "refund_reason",
+      "label": "Reason for Refund",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Export of Goods/Services",
+        "Inverted Duty Structure",
+        "ITC Accumulated",
+        "Tax Paid by Mistake"
+      ]
+    },
+    {
+      "id": "supporting_docs",
+      "label": "Supporting Documents",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "List all documents attached"
+    }
+  ],
+  "body": [
+    "To,\nThe Commissioner of GST,\n[City/State]",
+    "Date: [DATE]",
+    "Subject: Application for Refund of GST under Section 54 of CGST Act, 2017",
+    "Respected Sir/Madam,",
+    "I/We, {{taxpayer_name}}, registered under GSTIN: {{gstin}}, hereby submit this application for refund of GST.",
+    "REFUND DETAILS:\n- Refund Period: {{refund_period}}\n- Refund Amount: Rs. {{refund_amount}}\n- Reason for Refund: {{refund_reason}}",
+    "DETAILS OF REFUND CLAIM:\n[AI will expand this section based on refund reason]",
+    "SUPPORTING DOCUMENTS:\n{{supporting_docs}}",
+    "We request you to kindly process this refund claim and credit the refund amount to our registered bank account at the earliest.",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}\nAuthorized Signatory",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

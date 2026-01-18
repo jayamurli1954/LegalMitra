@@ -1,0 +1,110 @@
+{
+  "template_id": "tax_audit_report_3cb_3cd",
+  "name": "Tax Audit Report Form 3CB-3CD",
+  "category": "tax_compliance",
+  "description": "Tax audit report under Section 44AB of Income Tax Act",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [
+    "44A"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Income Tax",
+    "Audit",
+    "Form 3CB",
+    "Form 3CD",
+    "Section 44AB"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "assessee_name",
+      "label": "Name of Assessee",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan",
+      "label": "PAN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "assessment_year",
+      "label": "Assessment Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2025-26"
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    },
+    {
+      "id": "turnover",
+      "label": "Gross Turnover/Receipts (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "nature_of_business",
+      "label": "Nature of Business",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "auditor_name",
+      "label": "Auditor Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "auditor_firm",
+      "label": "Auditor Firm Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "auditor_membership_no",
+      "label": "Membership Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "auditor_frn",
+      "label": "Firm Registration Number",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "TAX AUDIT REPORT\nFORM NO. 3CB & 3CD\n[Pursuant to Section 44AB of the Income Tax Act, 1961]",
+    "Assessment Year: {{assessment_year}}\nFinancial Year: {{financial_year}}",
+    "===== PART A - FORM 3CB =====",
+    "We have audited the books of account and documents of:",
+    "Name: {{assessee_name}}\nPAN: {{pan}}\nNature of Business: {{nature_of_business}}\nGross Turnover/Receipts: Rs. {{turnover}}",
+    "For the previous year relevant to assessment year {{assessment_year}}.",
+    "AUDITOR'S CERTIFICATE:",
+    "We report that the accounts of {{assessee_name}} have been audited by us and in our opinion, they have been maintained in the manner required under Section 44AA of the Income Tax Act, 1961.",
+    "===== PART B - FORM 3CD =====\n(Particulars to be furnished under Section 44AB)",
+    "1. Name and address of assessee: {{assessee_name}}\n2. PAN: {{pan}}\n3. Status: [Individual/HUF/Firm/Company/AOP/BOI/LLP]\n4. Previous year: {{financial_year}}\n5. Assessment year: {{assessment_year}}\n6. Nature of business/profession: {{nature_of_business}}",
+    "[Detailed particulars as per Form 3CD clauses 1-44 will be populated by AI based on business nature]",
+    "For {{auditor_firm}}\nChartered Accountants\nFRN: {{auditor_frn}}",
+    "{{auditor_name}}\nPartner\nMembership No: {{auditor_membership_no}}\nUDIN: [To be generated]",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

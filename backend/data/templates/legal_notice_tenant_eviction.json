@@ -1,0 +1,50 @@
+{
+  "template_id": "LEGAL_NOTICE_EVICTION_V1",
+  "name": "Legal Notice - Tenant Eviction",
+  "category": "legal_notice",
+  "description": "Legal notice for eviction of tenant under Rent Control laws",
+  "act": ["RENT_CONTROL_ACT", "CPC"],
+  "section": [],
+  "court": ["District", "Rent Control Court"],
+  "language": "en",
+  "tags": ["eviction", "tenant", "landlord", "rent", "property"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "landlord_name", "label": "Landlord Name", "type": "text", "required": true},
+    {"id": "tenant_name", "label": "Tenant Name", "type": "text", "required": true},
+    {"id": "property_address", "label": "Property Address", "type": "text", "required": true},
+    {"id": "tenancy_start_date", "label": "Tenancy Start Date", "type": "date", "required": true},
+    {"id": "monthly_rent", "label": "Monthly Rent (₹)", "type": "number", "required": true},
+    {"id": "rent_arrears", "label": "Rent Arrears (₹) (if applicable)", "type": "number", "required": false},
+    {"id": "eviction_ground", "label": "Ground for Eviction", "type": "text", "required": true, "placeholder": "Non-payment of rent / Unauthorized subletting / Personal requirement / etc."},
+    {"id": "notice_period_days", "label": "Notice Period (Days)", "type": "number", "required": true, "placeholder": "30"},
+    {"id": "date", "label": "Notice Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "LEGAL NOTICE FOR EVICTION\n",
+    "Date: {{date}}\n",
+    "To,\n{{tenant_name}}\nTenant\n{{property_address}}\n",
+    "Subject: Notice to Vacate Premises\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{landlord_name}}, the lawful owner of the premises situated at {{property_address}}, I hereby serve upon you the following notice:\n",
+    "1. That you have been in occupation of the said premises as a tenant since {{tenancy_start_date}} at a monthly rent of ₹{{monthly_rent}}.\n",
+    "2. That you are hereby required to vacate and hand over peaceful and vacant possession of the said premises to my client on the ground of {{eviction_ground}}.\n",
+    {
+      "condition": "rent_arrears exists",
+      "text": "3. That you have failed and neglected to pay rent for the said premises and rent arrears amounting to ₹{{rent_arrears}} are outstanding and due."
+    },
+    "4. That {{eviction_ground}}, which entitles my client to seek eviction under the applicable Rent Control legislation and/or the terms of the tenancy agreement.\n",
+    "5. That this notice is being served upon you in accordance with law and the terms of the tenancy.\n",
+    "THEREFORE, you are hereby required to vacate and hand over peaceful and vacant possession of the said premises within {{notice_period_days}} days from the receipt of this notice, failing which my client shall be constrained to initiate appropriate legal proceedings for your eviction, along with recovery of arrears, mesne profits, damages, and costs, without any further reference to you.\n",
+    {
+      "condition": "rent_arrears exists",
+      "text": "You are further called upon to clear all outstanding rent arrears of ₹{{rent_arrears}} within the said period."
+    },
+    "This notice is issued without prejudice to all other rights and remedies available to my client under law.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate\nFor and on behalf of {{landlord_name}}"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

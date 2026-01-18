@@ -1,0 +1,122 @@
+{
+  "template_id": "compliance_certificate_banks",
+  "name": "Compliance Certificate for Banks",
+  "category": "corporate",
+  "description": "Certificate of compliance with loan covenants for banks",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Compliance",
+    "Banking",
+    "Certificate",
+    "Loan Covenant"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "bank_name",
+      "label": "Bank Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "loan_account_no",
+      "label": "Loan Account Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    },
+    {
+      "id": "debt_equity_ratio",
+      "label": "Debt-Equity Ratio",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 1.5:1"
+    },
+    {
+      "id": "dscr",
+      "label": "DSCR (Debt Service Coverage Ratio)",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 2.0"
+    },
+    {
+      "id": "current_ratio",
+      "label": "Current Ratio",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 1.8:1"
+    },
+    {
+      "id": "ca_name",
+      "label": "CA Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "ca_firm",
+      "label": "CA Firm Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "ca_membership_no",
+      "label": "Membership Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "ca_frn",
+      "label": "Firm Registration Number",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "CERTIFICATE OF COMPLIANCE WITH LOAN COVENANTS",
+    "To,\nThe Branch Manager\n{{bank_name}}\n[Branch Address]",
+    "Date: [DATE]",
+    "Sub: Certificate of Compliance with Loan Covenants - Loan A/c No. {{loan_account_no}}",
+    "Dear Sir/Madam,",
+    "This is to certify that we have examined the books of accounts, records, and documents of {{company_name}} (CIN: {{cin}}) for the financial year {{financial_year}} in relation to the terms and covenants of the loan agreement dated [AGREEMENT DATE] with {{bank_name}}.",
+    "Based on our examination and to the best of our knowledge and information, and according to the explanations given to us, we certify that:",
+    "1. FINANCIAL COVENANTS COMPLIANCE:\n   - Debt-Equity Ratio: {{debt_equity_ratio}} (Covenant: [Required Ratio])\n   - DSCR (Debt Service Coverage Ratio): {{dscr}} (Covenant: [Required DSCR])\n   - Current Ratio: {{current_ratio}} (Covenant: [Required Ratio])\n   - All financial covenants have been complied with.",
+    "2. REPAYMENT COMPLIANCE:\n   - There are no defaults in repayment of principal or interest during the period under review.\n   - All installments due up to [DATE] have been paid on time.",
+    "3. END-USE OF FUNDS:\n   - The funds borrowed from {{bank_name}} have been utilized for the purposes stated in the loan agreement.\n   - No diversion of funds has occurred.",
+    "4. SECURITY DOCUMENTATION:\n   - All required security documentation is in order and charges are duly registered.\n   - The collateral security remains unencumbered except for the charge created in favor of {{bank_name}}.",
+    "5. OTHER COVENANTS:\n   - The Company has complied with all non-financial covenants including submission of periodic statements, insurance policies, and regulatory compliances.\n   - No event of default as defined in the loan agreement has occurred.",
+    "This certificate is issued at the request of {{company_name}} for submission to {{bank_name}} in compliance with the loan agreement terms.",
+    "For {{ca_firm}}\nChartered Accountants\nFRN: {{ca_frn}}",
+    "{{ca_name}}\nPartner\nMembership No: {{ca_membership_no}}\nUDIN: [To be generated]",
+    "Date:\nPlace:",
+    "Note: This certificate is based on the information and explanations provided by the management of the company."
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

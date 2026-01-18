@@ -1,0 +1,139 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables & secrets
+.env
+.env.local
+backend/.env
+*.env
+**/*API*Key*.txt
+**/*API-Key*.txt
+**/*api*key*.txt
+**/*.key
+**/*.pem
+Google search API Key.txt
+LegalMitra_API-Key.txt
+*_API_KEY*.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+backend/data/*.db
+backend/data/*.sqlite
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+tmpclaude-*/
+tmpclaude-*
+
+# Test files
+test_*.pdf
+test_*.html
+*.test.json
+
+# Cache
+backend/data/search_cache.json
+backend/data/cache/
+
+# Generated files
+backend/app/templates/data/catalog.json
+*.pyc
+
+# Windows
+Thumbs.db
+desktop.ini
+nul
+NUL
+
+# Documentation - keep essential, ignore temporary
+# Keep: README.md, ARCHITECTURE.md, HOW_TO_RUN.md, START_HERE.md, INDEX.md, etc.
+
+# Temporary documentation files - excluded from git
+*_FIX*.md
+FIX_*.md
+FIXES_*.md
+DEBUG_*.md
+TEST_*.md
+*_TEST_*.md
+TEMPLATE_COUNT_FIX.md
+GOOGLE_SEARCH_SIDEBAR_FIX.md
+SIDEBAR_ISSUE_COMPLETE_SOLUTION.md
+SOLUTION_TEMPLATES_PAGE.md
+
+# Temporary .txt files (fix/status files)
+*_FIX*.txt
+FIX_*.txt
+FIXES_*.txt
+*_FIXED.txt
+*_UPDATED*.txt
+MODELS_UPDATED_AGAIN.txt
+
+# Temporary migration/comparison docs
+TEMPLATE_MIGRATION_COMPLETE.md
+TEMPLATE_FORMAT_COMPARISON.md
+TEMPLATE_SYSTEMS_EXPLAINED.md
+GIT_PUSH_GUIDE.md
+GITHUB_REPOSITORY_CLEANUP.md
+
+# Temporary status/summary docs
+PROJECT_STATUS_REVIEW.md
+project_review.md
+*_WORKING.md
+*_STATUS.md
+
+# Temporary guides (keep only essential ones)
+QUICK_TEST_GUIDE.md
+TEMP*.md
+TEMPORARY*.md
+
+# Phase implementation docs (already completed)
+PHASE_*_IMPLEMENTATION_SUMMARY.md
+
+# Setup/configuration guides (already done)
+*_SETUP.md
+HOW_TO_VIEW_ON_YOUR_LAPTOP.md
+
+# Migration/verification scripts (temporary)
+backend/migrate_templates_to_json.py
+backend/check_template_issues.py
+backend/list_all_templates.py
+backend/verify_python_templates.py
+backend/compare_templates.py

@@ -1,0 +1,84 @@
+{
+  "template_id": "gst_appeal_appellate_authority",
+  "name": "GST Appeal to Appellate Authority",
+  "category": "gst",
+  "description": "Appeal against GST assessment order to Appellate Authority under Section 107",
+  "act": [
+    "GST_ACT",
+    "IT_ACT"
+  ],
+  "section": [
+    "107"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Appeal",
+    "Section 107",
+    "Appellate Authority"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "appellant_name",
+      "label": "Appellant Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "order_number",
+      "label": "Order Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "order_date",
+      "label": "Order Date",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "demand_amount",
+      "label": "Demand Amount in Order (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "grounds_of_appeal",
+      "label": "Grounds of Appeal",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "BEFORE THE APPELLATE AUTHORITY\n[State] GST Department",
+    "APPEAL UNDER SECTION 107 OF CGST/SGST ACT, 2017",
+    "Appellant: {{appellant_name}}\nGSTIN: {{gstin}}",
+    "Vs.",
+    "Respondent: The Jurisdictional GST Officer\n[Ward/Circle]",
+    "ORDER APPEALED AGAINST:\n- Order Number: {{order_number}}\n- Order Date: {{order_date}}\n- Demand Amount: Rs. {{demand_amount}}",
+    "GROUNDS OF APPEAL:",
+    "{{grounds_of_appeal}}",
+    "[AI will expand with:\n1. Detailed grounds with legal provisions\n2. Facts and chronology\n3. Legal submissions with case laws\n4. Calculation errors (if any)\n5. Prayer for relief]",
+    "PRAYER:",
+    "In view of the above, it is prayed that this Hon'ble Authority may be pleased to:\n(a) Set aside/quash the impugned order\n(b) Grant refund/relief as claimed\n(c) Pass such other orders as deemed fit",
+    "For {{appellant_name}}\nGSTIN: {{gstin}}",
+    "Authorized Representative/Advocate\nDate:\nPlace:",
+    "Enclosures:\n1. Copy of impugned order\n2. Supporting documents\n3. Grounds of appeal"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

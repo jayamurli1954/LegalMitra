@@ -1,0 +1,70 @@
+{
+  "template_id": "section_154_rectification",
+  "name": "Rectification u/s 154 Application",
+  "category": "tax_compliance",
+  "description": "Application for rectification of mistake under Section 154",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [
+    "154"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Income Tax",
+    "Rectification",
+    "Section 154",
+    "Mistake"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan",
+      "label": "PAN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "assessment_year",
+      "label": "Assessment Year",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "mistake_description",
+      "label": "Description of Mistake",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Income Tax Officer\nWard/Circle: [Ward]",
+    "Date: [DATE]",
+    "Subject: Application for Rectification under Section 154 of Income Tax Act, 1961",
+    "PAN: {{pan}}\nAssessment Year: {{assessment_year}}",
+    "Respected Sir/Madam,",
+    "I/We, {{taxpayer_name}} (PAN: {{pan}}), submit this application for rectification of mistake apparent from record under Section 154 of the Income Tax Act, 1961.",
+    "MISTAKE IDENTIFIED:\n{{mistake_description}}",
+    "[AI will expand with:\n- Nature of mistake (arithmetical/factual)\n- Supporting evidence\n- Correct position\n- Financial impact]",
+    "This is an apparent mistake on record which requires rectification under Section 154.",
+    "Kindly rectify the mistake and issue a revised order.",
+    "For {{taxpayer_name}}\nPAN: {{pan}}",
+    "Authorized Signatory",
+    "Enclosures:\n1. Copy of original order\n2. Supporting documents\n3. Revised computation"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

@@ -1,0 +1,53 @@
+{
+  "template_id": "REPLY_CHEQUE_BOUNCE_V1",
+  "name": "Reply to Cheque Bounce Notice",
+  "category": "reply",
+  "description": "Reply to Section 138 NI Act notice denying liability or disputing facts",
+  "act": ["NI_ACT"],
+  "section": ["138", "139"],
+  "court": ["Magistrate Court"],
+  "language": "en",
+  "tags": ["cheque bounce", "section 138", "reply", "ni act"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "client_name", "label": "Client Name (Drawer)", "type": "text", "required": true},
+    {"id": "sender_name", "label": "Sender of Notice (Payee)", "type": "text", "required": true},
+    {"id": "sender_address", "label": "Sender Address", "type": "text", "required": true},
+    {"id": "notice_date", "label": "Date of Original Notice", "type": "date", "required": true},
+    {"id": "cheque_number", "label": "Cheque Number", "type": "text", "required": true},
+    {"id": "cheque_amount", "label": "Cheque Amount (₹)", "type": "number", "required": true},
+    {"id": "defense_ground", "label": "Ground for Defense", "type": "text", "required": true, "placeholder": "No legally enforceable debt / Cheque obtained by coercion / Payment already made / etc."},
+    {"id": "additional_facts", "label": "Additional Facts in Support", "type": "text", "required": false},
+    {"id": "date", "label": "Reply Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "REPLY TO LEGAL NOTICE UNDER SECTION 138 NI ACT\n",
+    "Date: {{date}}\n",
+    "To,\n{{sender_name}}\n{{sender_address}}\n",
+    "Subject: Reply to your Legal Notice dated {{notice_date}} under Section 138 of the Negotiable Instruments Act, 1881\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I write this reply to your legal notice dated {{notice_date}} concerning Cheque No. {{cheque_number}} for ₹{{cheque_amount}}.\n",
+    "2. At the outset, my client denies each and every allegation made in your notice as false, frivolous, and legally untenable.\n",
+    "3. My client states that {{defense_ground}}.\n",
+    {
+      "condition": "additional_facts exists",
+      "text": "4. My client further states that {{additional_facts}}."
+    },
+    "5. Your notice is misconceived and does not fulfill the requirements of a valid legal notice under Section 138 of the Negotiable Instruments Act, 1881.\n",
+    "6. The cheque in question was not issued towards discharge of any legally enforceable debt or liability. Therefore, the statutory presumption under Section 139 of the NI Act does not arise.\n",
+    "7. Even if the cheque was issued (which is denied), it was issued under coercion, undue influence, fraud, or for purposes other than discharge of debt.\n",
+    "8. Your demand for payment is wholly unjustified and unwarranted. My client is under no legal obligation to make any payment to you.\n",
+    "9. This reply is being issued within the statutory period to contest the false and baseless allegations made in your notice.\n",
+    "10. My client reserves all rights to defend any proceedings that may be initiated and to claim damages for issuance of a false and vexatious legal notice.\n",
+    "You are advised to verify the facts before initiating any legal proceedings, which will be defended on merits.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate\nFor and on behalf of {{client_name}}"
+  ],
+  "disclaimer": true,
+  "statutory_references": [
+    {"act": "NI_ACT", "section": "138", "title": "Dishonour of cheque for insufficiency of funds"},
+    {"act": "NI_ACT", "section": "139", "title": "Presumption in favour of holder"}
+  ],
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

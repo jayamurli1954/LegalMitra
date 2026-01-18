@@ -1,0 +1,57 @@
+{
+  "template_id": "LEGAL_NOTICE_DEFAMATION_V1",
+  "name": "Legal Notice - Defamation",
+  "category": "legal_notice",
+  "description": "Legal notice for defamatory statements seeking retraction and apology",
+  "act": ["IPC"],
+  "section": ["499", "500"],
+  "court": ["District", "Magistrate Court"],
+  "language": "en",
+  "tags": ["defamation", "reputation", "apology", "retraction"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "client_name", "label": "Client Name (Aggrieved Person)", "type": "text", "required": true},
+    {"id": "respondent_name", "label": "Respondent Name", "type": "text", "required": true},
+    {"id": "respondent_address", "label": "Respondent Address", "type": "text", "required": true},
+    {"id": "defamatory_statement", "label": "Defamatory Statement/Publication", "type": "text", "required": true},
+    {"id": "publication_date", "label": "Date of Publication/Statement", "type": "date", "required": true},
+    {"id": "publication_medium", "label": "Medium of Publication", "type": "text", "required": true, "placeholder": "Social media / Newspaper / Public speech / etc."},
+    {"id": "harm_description", "label": "Description of Harm to Reputation", "type": "text", "required": true},
+    {"id": "damages_claimed", "label": "Damages Claimed (₹) (if seeking monetary compensation)", "type": "number", "required": false},
+    {"id": "date", "label": "Notice Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "LEGAL NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{respondent_name}}\n{{respondent_address}}\n",
+    "Subject: Legal Notice for Defamation under Section 499 and 500 of the Indian Penal Code, 1860\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I hereby serve upon you the following legal notice:\n",
+    "1. That on {{publication_date}}, you made/published the following defamatory statement: \"{{defamatory_statement}}\".\n",
+    "2. That the said statement was made/published through {{publication_medium}}.\n",
+    "3. That the aforesaid statement is false, baseless, malicious, and defamatory in nature.\n",
+    "4. That the said statement was made with the deliberate intention to harm the reputation of my client and lower him/her in the estimation of right-thinking members of society.\n",
+    "5. That as a consequence of your defamatory statement, my client has suffered {{harm_description}}.\n",
+    "6. That your act of publishing defamatory statements constitutes an offence punishable under Sections 499 and 500 of the Indian Penal Code, 1860, and also gives rise to civil liability.\n",
+    {
+      "condition": "damages_claimed exists",
+      "text": "7. That my client has suffered quantifiable loss of reputation, mental agony, and financial loss, and is entitled to claim damages of ₹{{damages_claimed}} (Rupees {{damages_claimed}} only)."
+    },
+    "THEREFORE, you are hereby called upon to:\n\n(a) Immediately cease and desist from making any further defamatory statements against my client;\n\n(b) Publish an unconditional apology in the same medium through which the defamatory statement was made, within 7 (seven) days from the receipt of this notice;\n\n(c) Undertake in writing not to make any such statements in future;\n",
+    {
+      "condition": "damages_claimed exists",
+      "text": "(d) Pay damages of ₹{{damages_claimed}} to my client within 15 (fifteen) days from the receipt of this notice."
+    },
+    "TAKE NOTICE that if you fail to comply with the above demands within the stipulated period, my client shall be constrained to initiate appropriate criminal and/or civil proceedings against you for defamation, claiming damages, costs, and all consequential reliefs, without any further reference to you.\n",
+    "This notice is issued without prejudice to all other rights and remedies available to my client under law.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate"
+  ],
+  "disclaimer": true,
+  "statutory_references": [
+    {"act": "IPC", "section": "499", "title": "Defamation"},
+    {"act": "IPC", "section": "500", "title": "Punishment for defamation"}
+  ],
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

@@ -1,0 +1,74 @@
+═══════════════════════════════════════════════════════════════════════════
+                    LEGALMITRA - QUICK START GUIDE
+                    AI Legal Assistant for Indian Laws
+═══════════════════════════════════════════════════════════════════════════
+
+🚀 ONE-CLICK STARTUP (EASIEST WAY)
+
+1. Double-click: START.bat
+   (This will launch the setup script from the scripts folder)
+
+   That's it! The script will:
+   ✓ Check Python installation
+   ✓ Create virtual environment  
+   ✓ Install dependencies
+   ✓ Setup configuration
+   ✓ Start the server
+
+2. On first run, you'll be asked to add your API key
+   - Get OpenAI key: https://platform.openai.com/api-keys
+   - Or get Anthropic key: https://console.anthropic.com/
+   - Edit backend\.env file
+
+3. Access the application:
+   - Backend API: http://localhost:8888
+   - API Docs: http://localhost:8888/docs  
+   - Frontend: Open frontend\index.html in browser
+   
+   Note: Using port 8888 by default (change in backend\.env if needed)
+
+═══════════════════════════════════════════════════════════════════════════
+
+📋 PREREQUISITES
+
+• Python 3.8 or higher
+  Download: https://www.python.org/
+  ⚠ IMPORTANT: Check "Add Python to PATH" during installation
+
+• API Key (one of):
+  - OpenAI: https://platform.openai.com/api-keys
+  - Anthropic: https://console.anthropic.com/
+
+═══════════════════════════════════════════════════════════════════════════
+
+🖥️ CREATE DESKTOP SHORTCUT (OPTIONAL)
+
+1. Right-click CREATE_DESKTOP_SHORTCUT.ps1
+2. Select "Run with PowerShell"
+3. A shortcut "LegalMitra" will appear on your desktop
+4. Double-click it anytime to start!
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 WHAT CAN YOU DO?
+
+✓ Legal Research: Ask questions about Indian laws
+✓ Document Drafting: Create notices, petitions, replies
+✓ Case Search: Find relevant case laws
+✓ Statute Search: Look up acts and sections
+
+═══════════════════════════════════════════════════════════════════════════
+
+❓ NEED HELP?
+
+• See README_START.md for detailed guide
+• See PROJECT_SUMMARY.md for complete overview
+• Check http://localhost:8000/docs for API documentation
+
+═══════════════════════════════════════════════════════════════════════════
+
+Ready to start? Double-click START.bat now! ⚖️🤖
+(If it asks which program to open, see FIX_FILE_ASSOCIATION.md)
+
+═══════════════════════════════════════════════════════════════════════════
+

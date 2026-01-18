@@ -1,0 +1,75 @@
+{
+  "template_id": "gst_cancellation_application",
+  "name": "GST Registration Cancellation",
+  "category": "gst",
+  "description": "Application for cancellation of GST registration",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Cancellation",
+    "Registration",
+    "Tax"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "business_name",
+      "label": "Business Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true,
+      "placeholder": "29AAAAA0000A1Z5"
+    },
+    {
+      "id": "reason",
+      "label": "Reason for Cancellation",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Business Discontinued",
+        "Composition Scheme Opted",
+        "Merger/Amalgamation",
+        "Change in Constitution"
+      ]
+    },
+    {
+      "id": "cancellation_date",
+      "label": "Date from which cancellation sought",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Assistant Commissioner\nGST Department\n[Circle/Ward]",
+    "Date: [DATE]",
+    "Subject: Application for Cancellation of GST Registration",
+    "GSTIN: {{gstin}}\nBusiness Name: {{business_name}}",
+    "Respected Sir/Madam,",
+    "I/We hereby apply for cancellation of GST registration from {{cancellation_date}} for the following reason:",
+    "Reason: {{reason}}",
+    "All pending returns have been filed and all taxes, interest, and penalties (if any) have been paid up to the date of application.",
+    "Final return will be filed within the prescribed timeline as per GST rules.",
+    "Kindly process this application and cancel the GST registration.",
+    "For {{business_name}}\nGSTIN: {{gstin}}",
+    "Authorized Signatory\nDate:\nPlace:",
+    "Enclosures:\n1. Copy of last GST return filed\n2. Tax payment challans\n3. Supporting documents"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

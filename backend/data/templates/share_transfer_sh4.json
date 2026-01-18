@@ -1,0 +1,75 @@
+{
+  "template_id": "share_transfer_sh4",
+  "name": "Share Transfer Form SH-4",
+  "category": "corporate",
+  "description": "Form for transfer of shares",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "56"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Corporate",
+    "Shares",
+    "Transfer",
+    "SH-4",
+    "ROC"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "transferor_name",
+      "label": "Transferor Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "transferee_name",
+      "label": "Transferee Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "num_shares",
+      "label": "Number of Shares",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "share_value",
+      "label": "Value per Share (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "FORM SH-4\n[Pursuant to Section 56(1) of Companies Act, 2013]",
+    "NOTICE OF INTIMATION FOR TRANSFER/TRANSMISSION OF SHARES",
+    "Company Name: {{company_name}}",
+    "FROM: {{transferor_name}} (Transferor)\nTO: {{transferee_name}} (Transferee)",
+    "Number of Shares: {{num_shares}}\nFace Value per Share: Rs. {{share_value}}\nTotal Consideration: Rs. {{num_shares * share_value}}",
+    "The transferor hereby transfers the above shares to the transferee.",
+    "The Board of Directors may approve this transfer subject to verification of documents.",
+    "Transferor Signature: _____________________\nDate:",
+    "Transferee Signature: _____________________\nDate:",
+    "For use of Company:\nTransfer approved vide Board Resolution dated: __________",
+    "Company Secretary\nDate:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

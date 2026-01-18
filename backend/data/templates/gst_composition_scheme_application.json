@@ -1,0 +1,71 @@
+{
+  "template_id": "gst_composition_scheme_application",
+  "name": "GST Composition Scheme Application",
+  "category": "gst",
+  "description": "Application to opt for Composition Scheme under Section 10 of CGST Act",
+  "act": [
+    "GST_ACT",
+    "IT_ACT"
+  ],
+  "section": [
+    "10"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Composition Scheme",
+    "Section 10",
+    "Registration"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "turnover_fy",
+      "label": "Expected Turnover for FY (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "effective_from",
+      "label": "Scheme to be effective from",
+      "type": "text",
+      "required": true,
+      "placeholder": "01-Apr-2025"
+    }
+  ],
+  "body": [
+    "To,\nThe Assistant Commissioner\nGST Department\n[State]",
+    "Date: [DATE]",
+    "Subject: Application for Composition Scheme under Section 10 of CGST Act, 2017",
+    "GSTIN: {{gstin}}\nName: {{taxpayer_name}}",
+    "Respected Sir/Madam,",
+    "I/We, {{taxpayer_name}} (GSTIN: {{gstin}}), hereby apply to opt for Composition Scheme under Section 10 of the CGST Act, 2017.",
+    "DETAILS:\n- Expected Annual Turnover: Rs. {{turnover_fy}} (within Rs. 1.5 Crore limit)\n- Scheme effective from: {{effective_from}}\n- Business nature: [Manufacturing/Trading/Restaurant Services]",
+    "We understand that:\n1. We will pay tax at specified rates under the scheme\n2. We cannot claim Input Tax Credit\n3. We cannot make inter-state supplies\n4. We will not collect tax from customers",
+    "Kindly process our application and grant Composition Scheme registration.",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}",
+    "Enclosures:\n1. Form GST CMP-02\n2. Supporting documents"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

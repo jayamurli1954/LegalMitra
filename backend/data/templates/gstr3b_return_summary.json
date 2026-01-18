@@ -1,0 +1,80 @@
+{
+  "template_id": "gstr3b_return_summary",
+  "name": "GSTR-3B Return Filing Letter",
+  "category": "gst",
+  "description": "Covering letter for GSTR-3B monthly return filing",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "GSTR-3B",
+    "Monthly Return",
+    "Tax"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "return_period",
+      "label": "Return Period",
+      "type": "text",
+      "required": true,
+      "placeholder": "April 2025"
+    },
+    {
+      "id": "outward_supply_value",
+      "label": "Outward Taxable Supply Value (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "itc_claimed",
+      "label": "ITC Claimed (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "net_tax_payable",
+      "label": "Net Tax Payable (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Jurisdictional GST Officer\n[Circle/Ward]",
+    "Date: [DATE]",
+    "Subject: Filing of GSTR-3B for Return Period - {{return_period}}",
+    "GSTIN: {{gstin}}\nName: {{taxpayer_name}}",
+    "Respected Sir/Madam,",
+    "We hereby submit the GSTR-3B return for the period {{return_period}} through the GST portal.",
+    "RETURN DETAILS:\n- Return Period: {{return_period}}\n- Outward Taxable Supply Value: Rs. {{outward_supply_value}}\n- Input Tax Credit Claimed: Rs. {{itc_claimed}}\n- Net Tax Payable: Rs. {{net_tax_payable}}",
+    "The return has been filed and taxes have been paid through:\n- Cash Ledger: Rs. [Amount]\n- ITC Utilized: Rs. [Amount]",
+    "Acknowledgment number: [ARN]",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}",
+    "Enclosures:\n1. GSTR-3B Acknowledgment\n2. Payment Challans"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

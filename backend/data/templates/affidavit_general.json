@@ -1,0 +1,53 @@
+{
+  "template_id": "AFFIDAVIT_GENERAL_V1",
+  "name": "Affidavit (General)",
+  "category": "pleadings",
+  "description": "General affidavit template for sworn statements",
+  "act": ["CPC", "EVIDENCE_ACT"],
+  "section": [],
+  "court": ["All Courts"],
+  "language": "en",
+  "tags": ["affidavit", "sworn statement", "verification"],
+  "is_premium": false,
+  "fields": [
+    {"id": "deponent_name", "label": "Deponent Name", "type": "text", "required": true},
+    {"id": "deponent_father_name", "label": "Father's/Husband's Name", "type": "text", "required": true},
+    {"id": "deponent_age", "label": "Age", "type": "number", "required": true},
+    {"id": "deponent_occupation", "label": "Occupation", "type": "text", "required": true},
+    {"id": "deponent_address", "label": "Residential Address", "type": "text", "required": true},
+    {"id": "affidavit_purpose", "label": "Purpose of Affidavit", "type": "text", "required": true},
+    {"id": "fact_1", "label": "Fact/Statement 1", "type": "text", "required": true},
+    {"id": "fact_2", "label": "Fact/Statement 2", "type": "text", "required": false},
+    {"id": "fact_3", "label": "Fact/Statement 3", "type": "text", "required": false},
+    {"id": "fact_4", "label": "Fact/Statement 4", "type": "text", "required": false},
+    {"id": "place", "label": "Place", "type": "text", "required": true},
+    {"id": "date", "label": "Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "AFFIDAVIT\n",
+    "I, {{deponent_name}}, aged {{deponent_age}} years, son/daughter/wife of {{deponent_father_name}}, occupation {{deponent_occupation}}, resident of {{deponent_address}}, do hereby solemnly affirm and declare as under:\n",
+    "1. That I am the deponent in the present matter and am well acquainted with the facts and circumstances of the case. I am competent to swear this affidavit.\n",
+    "2. That I am submitting this affidavit for the purpose of {{affidavit_purpose}}.\n",
+    "3. That {{fact_1}}.\n",
+    {
+      "condition": "fact_2 exists",
+      "text": "4. That {{fact_2}}."
+    },
+    {
+      "condition": "fact_3 exists",
+      "text": "5. That {{fact_3}}."
+    },
+    {
+      "condition": "fact_4 exists",
+      "text": "6. That {{fact_4}}."
+    },
+    "7. That the contents of the above affidavit are true and correct to the best of my knowledge, information, and belief. Nothing material has been concealed therefrom.\n",
+    "DEPONENT\n\n",
+    "VERIFICATION\n\nI, the above-named deponent, do hereby verify that the contents of paragraphs 1 to 7 of the above affidavit are true and correct to the best of my knowledge and belief, and nothing material has been concealed therefrom.\n\nVerified at {{place}} on this {{date}}.\n\n",
+    "DEPONENT\n\n",
+    "Solemnly affirmed and signed before me on {{date}} at {{place}}.\n\nNotary Public / Oath Commissioner"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

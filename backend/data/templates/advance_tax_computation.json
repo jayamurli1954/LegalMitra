@@ -1,0 +1,97 @@
+{
+  "template_id": "advance_tax_computation",
+  "name": "Advance Tax Computation Statement",
+  "category": "tax_compliance",
+  "description": "Computation of advance tax payable in installments",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [
+    "80D",
+    "80C",
+    "234B"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Income Tax",
+    "Advance Tax",
+    "Computation",
+    "Tax Planning"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan",
+      "label": "PAN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "assessment_year",
+      "label": "Assessment Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2025-26"
+    },
+    {
+      "id": "estimated_income",
+      "label": "Estimated Total Income (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "income_from_business",
+      "label": "Income from Business/Profession (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "income_from_salary",
+      "label": "Income from Salary (Rs.)",
+      "type": "number",
+      "required": false
+    },
+    {
+      "id": "capital_gains",
+      "label": "Capital Gains (Rs.)",
+      "type": "number",
+      "required": false
+    },
+    {
+      "id": "deductions_80c_80d",
+      "label": "Deductions u/s 80C, 80D etc. (Rs.)",
+      "type": "number",
+      "required": false
+    }
+  ],
+  "body": [
+    "ADVANCE TAX COMPUTATION STATEMENT\nAssessment Year: {{assessment_year}}",
+    "Taxpayer: {{taxpayer_name}}\nPAN: {{pan}}",
+    "COMPUTATION OF TOTAL INCOME:\n1. Income from Salary: Rs. {{income_from_salary}}\n2. Income from Business/Profession: Rs. {{income_from_business}}\n3. Capital Gains: Rs. {{capital_gains}}\n4. Income from Other Sources: Rs. [To be calculated]",
+    "Gross Total Income: Rs. {{estimated_income}}",
+    "Less: Deductions under Chapter VI-A\n- Section 80C: Rs. [Amount]\n- Section 80D: Rs. [Amount]\n- Other deductions: Rs. {{deductions_80c_80d}}",
+    "Total Income: Rs. [Net Taxable Income]",
+    "TAX COMPUTATION:\n[Tax slab rates to be applied by AI based on taxpayer category]",
+    "Add: Surcharge (if applicable): Rs. [Amount]\nAdd: Health & Education Cess @ 4%: Rs. [Amount]",
+    "Total Tax Liability: Rs. [Total Amount]\nLess: TDS/TCS: Rs. [Amount]",
+    "Net Tax Payable: Rs. [Amount]",
+    "ADVANCE TAX INSTALLMENTS (Due Dates):\n1. By 15th June: 15% of tax = Rs. [Amount]\n2. By 15th September: 45% of tax = Rs. [Amount]\n3. By 15th December: 75% of tax = Rs. [Amount]\n4. By 15th March: 100% of tax = Rs. [Amount]",
+    "Note: Interest u/s 234B and 234C will apply for late/short payment.",
+    "Prepared by: [CA Name]\nDate:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

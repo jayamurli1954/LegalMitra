@@ -1,0 +1,46 @@
+{
+  "template_id": "VAKALATNAMA_V1",
+  "name": "Vakalatnama",
+  "category": "pleadings",
+  "description": "Vakalatnama (Authorization to Advocate)",
+  "act": ["CPC"],
+  "section": [],
+  "court": ["All Courts"],
+  "language": "en",
+  "tags": ["vakalatnama", "authorization", "advocate", "power of attorney"],
+  "is_premium": false,
+  "fields": [
+    {"id": "client_name", "label": "Client Name", "type": "text", "required": true},
+    {"id": "client_father_name", "label": "Father's/Husband's Name", "type": "text", "required": true},
+    {"id": "client_address", "label": "Client Address", "type": "text", "required": true},
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "advocate_enrollment_no", "label": "Advocate Enrollment Number", "type": "text", "required": true},
+    {"id": "case_type", "label": "Type of Case", "type": "text", "required": true, "placeholder": "Civil Suit / Criminal Case / Writ Petition / etc."},
+    {"id": "case_title", "label": "Case Title", "type": "text", "required": true, "placeholder": "ABC vs XYZ"},
+    {"id": "case_number", "label": "Case Number (if filed)", "type": "text", "required": false},
+    {"id": "court_name", "label": "Court Name", "type": "text", "required": true},
+    {"id": "date", "label": "Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "VAKALATNAMA\n",
+    "I, {{client_name}}, son/daughter/wife of {{client_father_name}}, resident of {{client_address}}, do hereby appoint and authorize {{advocate_name}}, Advocate, Enrollment No. {{advocate_enrollment_no}}, to act, appear, and plead on my behalf in the matter of:\n\n",
+    "{{case_title}}\n",
+    {
+      "condition": "case_number exists",
+      "text": "Case No.: {{case_number}}"
+    },
+    "Pending before: {{court_name}}\n",
+    "Nature of Case: {{case_type}}\n\n",
+    "2. I hereby authorize the said Advocate to:\n\n",
+    "(a) File, sign, verify, and present all pleadings, applications, petitions, and documents on my behalf;\n\n(b) Appear and argue on my behalf before the said Court and all subordinate and appellate courts;\n\n(c) Admit, deny, or compromise any matter or claim in the said proceedings;\n\n(d) Receive notices, orders, and summons on my behalf;\n\n(e) Withdraw or settle the case, if necessary;\n\n(f) File appeals, revisions, or reviews, if necessary;\n\n(g) Generally do all acts, deeds, matters, and things as may be necessary for the proper conduct and prosecution/defense of the said case.\n\n",
+    "3. I undertake to ratify and confirm all acts, deeds, matters, and things lawfully done by the said Advocate pursuant to this Vakalatnama.\n\n",
+    "4. This Vakalatnama shall remain in force until the final disposal of the said matter, including all appellate proceedings.\n\n",
+    "IN WITNESS WHEREOF, I have signed this Vakalatnama on {{date}}.\n\n\n",
+    "Client's Signature: _______________\nName: {{client_name}}\nDate: {{date}}\n\n\n",
+    "ACCEPTED\n\nI accept the above Vakalatnama.\n\n",
+    "Advocate's Signature: _______________\nName: {{advocate_name}}\nEnrollment No.: {{advocate_enrollment_no}}\nDate: {{date}}"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

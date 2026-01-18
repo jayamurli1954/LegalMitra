@@ -1,0 +1,99 @@
+{
+  "template_id": "board_resolution_loan",
+  "name": "Board Resolution - Taking Loan",
+  "category": "corporate",
+  "description": "Resolution for borrowing funds from banks/financial institutions",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "180"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Corporate",
+    "Board Resolution",
+    "Loan",
+    "Borrowing",
+    "Section 180"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "meeting_date",
+      "label": "Board Meeting Date",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "loan_amount",
+      "label": "Loan Amount (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "lender_name",
+      "label": "Lender/Bank Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "loan_purpose",
+      "label": "Purpose of Loan",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "security_offered",
+      "label": "Security/Collateral Offered",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "authorized_person",
+      "label": "Person Authorized to Sign Loan Documents",
+      "type": "text",
+      "required": true,
+      "placeholder": "Name, Designation, DIN"
+    }
+  ],
+  "body": [
+    "BOARD RESOLUTION\nFOR BORROWING OF FUNDS",
+    "{{company_name}}\n(CIN: {{cin}})",
+    "Extract of Resolution passed at the Board Meeting held on {{meeting_date}}",
+    "WHEREAS the Company requires funds for the purpose of {{loan_purpose}};",
+    "AND WHEREAS the Board deems it necessary and expedient to borrow funds from {{lender_name}};",
+    "NOW THEREFORE, IT IS HEREBY RESOLVED THAT:",
+    "1. Pursuant to Section 180(1)(c) of the Companies Act, 2013, and subject to such approvals as may be necessary, the consent of the Board be and is hereby accorded to borrow a sum not exceeding Rs. {{loan_amount}} (Rupees [Amount in Words]) from {{lender_name}}.",
+    "2. The loan shall be utilized for the following purpose:\n{{loan_purpose}}",
+    "3. The Company offers the following security/collateral for the said borrowing:\n{{security_offered}}",
+    "4. Mr./Ms. {{authorized_person}} be and is hereby authorized to:\n   a) Negotiate and finalize the terms and conditions of the loan\n   b) Execute all loan agreements, mortgage deeds, hypothecation deeds, and other documents\n   c) Create charge/mortgage on the assets of the Company as security\n   d) File necessary forms with ROC for registration of charge\n   e) Do all acts, deeds, and things necessary in this regard",
+    "5. RESOLVED FURTHER THAT the necessary Form CHG-1 be filed with the Registrar of Companies within the prescribed time limit for registration of charge created.",
+    "6. RESOLVED FURTHER THAT a certified copy of this resolution be furnished to {{lender_name}} and other concerned authorities.",
+    "For {{company_name}}",
+    "_____________________          _____________________\nDirector                       Director\nDIN:                          DIN:",
+    "Date:\nPlace:",
+    "Certified True Copy"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

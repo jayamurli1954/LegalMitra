@@ -1,0 +1,70 @@
+{
+  "template_id": "pf_compliance_report",
+  "name": "Provident Fund Compliance Report",
+  "category": "corporate",
+  "description": "Monthly PF compliance report",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Compliance",
+    "PF",
+    "EPFO",
+    "Labor"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pf_number",
+      "label": "PF Account Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "month_year",
+      "label": "Month & Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "January 2025"
+    },
+    {
+      "id": "total_employees",
+      "label": "Total Employees Covered",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "total_contribution",
+      "label": "Total PF Contribution (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "PROVIDENT FUND COMPLIANCE REPORT",
+    "Company: {{company_name}}\nPF Account Number: {{pf_number}}\nPeriod: {{month_year}}",
+    "1. EMPLOYEE COVERAGE\nTotal Employees: {{total_employees}}\nPF Members: [To be filled]",
+    "2. CONTRIBUTION DETAILS\nEmployee Contribution (12%): Rs. [Amount]\nEmployer Contribution (12%): Rs. [Amount]\nTotal PF Contribution: Rs. {{total_contribution}}",
+    "3. PAYMENT STATUS\nDue Date: [15th of next month]\nPayment Date: [Actual date]\nChallan Number: [Number]\nStatus: [Paid/Pending]",
+    "4. RETURN FILING\nECR Filed: [Yes/No]\nFiling Date: [Date]",
+    "5. COMPLIANCE STATUS\n✓ Contributions deposited on time\n✓ ECR filed within due date\n✓ Form 12A generated\n✓ UAN activated for all members",
+    "Prepared by: _____________________\nDate:",
+    "For {{company_name}}",
+    "_____________________\nAuthorized Signatory"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

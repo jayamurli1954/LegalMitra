@@ -1,0 +1,78 @@
+{
+  "template_id": "consultant_agreement",
+  "name": "Consultant/Professional Services Agreement",
+  "category": "corporate",
+  "description": "Agreement for hiring consultants or professional services",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Contract",
+    "Consultant",
+    "Professional Services",
+    "Agreement"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "client_name",
+      "label": "Client/Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "consultant_name",
+      "label": "Consultant Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "service_description",
+      "label": "Services Description",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "fees",
+      "label": "Professional Fees (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "duration",
+      "label": "Contract Duration",
+      "type": "text",
+      "required": true,
+      "placeholder": "6 months"
+    }
+  ],
+  "body": [
+    "PROFESSIONAL SERVICES AGREEMENT",
+    "This Agreement is made on [DATE]",
+    "BETWEEN",
+    "{{client_name}} (hereinafter called \"the Client\")",
+    "AND",
+    "{{consultant_name}} (hereinafter called \"the Consultant\")",
+    "1. SERVICES\nThe Consultant agrees to provide the following services:\n{{service_description}}",
+    "2. FEES\nProfessional Fees: Rs. {{fees}}\nPayment Terms: [AI will add payment schedule]",
+    "3. DURATION\nContract Period: {{duration}}",
+    "4. DELIVERABLES\n[AI will add specific deliverables]",
+    "5. CONFIDENTIALITY\n[AI will add confidentiality terms]",
+    "6. INTELLECTUAL PROPERTY\n[AI will add IP ownership clauses]",
+    "7. TERMINATION\n[AI will add termination conditions]",
+    "8. INDEMNITY\n[AI will add indemnity clauses]",
+    "IN WITNESS WHEREOF the parties have signed this Agreement.",
+    "{{client_name}}                         {{consultant_name}}",
+    "_____________________                 _____________________\nAuthorized Signatory                  Consultant",
+    "Date:                                 Date:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

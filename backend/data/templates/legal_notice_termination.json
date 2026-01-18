@@ -1,0 +1,111 @@
+{
+  "template_id": "legal_notice_termination",
+  "name": "Legal Notice - Termination of Agreement",
+  "category": "legal_notice",
+  "description": "Legal notice for termination of contract/agreement",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Legal Notice",
+    "Termination",
+    "Contract",
+    "Breach"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "sender_name",
+      "label": "Sender Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "sender_address",
+      "label": "Sender Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "recipient_name",
+      "label": "Recipient Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "recipient_address",
+      "label": "Recipient Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "agreement_type",
+      "label": "Type of Agreement",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Service Agreement, Lease Agreement"
+    },
+    {
+      "id": "agreement_date",
+      "label": "Agreement Date",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "breach_details",
+      "label": "Details of Breach/Reason for Termination",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "notice_period",
+      "label": "Notice Period (days)",
+      "type": "number",
+      "required": true,
+      "placeholder": "30"
+    },
+    {
+      "id": "lawyer_name",
+      "label": "Lawyer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "lawyer_address",
+      "label": "Lawyer Address",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "LEGAL NOTICE",
+    "To,\n{{recipient_name}}\n{{recipient_address}}",
+    "Date: [DATE]",
+    "LEGAL NOTICE FOR TERMINATION OF AGREEMENT",
+    "Dear Sir/Madam,",
+    "UNDER INSTRUCTIONS FROM AND ON BEHALF OF: {{sender_name}}",
+    "I am writing this legal notice under instructions from my client, {{sender_name}}, residing at {{sender_address}}.",
+    "RE: TERMINATION OF {{agreement_type}} DATED {{agreement_date}}",
+    "1. BACKGROUND:\n   My client and you had entered into a {{agreement_type}} dated {{agreement_date}} (\"Agreement\").",
+    "2. BREACH OF CONTRACT:\n   It has come to my client's notice that you have committed material breach of the Agreement as detailed below:",
+    "{{breach_details}}",
+    "3. TERMINATION NOTICE:\n   In view of the aforesaid material breach and violation of the terms of the Agreement, my client hereby terminates the Agreement with effect from {{notice_period}} days from the date of receipt of this notice.",
+    "4. DEMANDS:\n   My client hereby calls upon you to:\n   a) Immediately cease all activities under the terminated Agreement\n   b) Return all documents, materials, and property belonging to my client\n   c) Settle all outstanding dues, if any\n   d) [Any other specific demands]",
+    "5. CONSEQUENCES OF NON-COMPLIANCE:\n   Please note that if you fail to comply with the above demands within {{notice_period}} days, my client shall be constrained to initiate appropriate legal proceedings for:\n   - Recovery of damages\n   - Injunction\n   - Specific performance\n   - Any other relief deemed appropriate",
+    "All costs, charges, and expenses of such legal proceedings shall be borne by you.",
+    "6. RESERVATION OF RIGHTS:\n   This notice is issued without prejudice to all rights and remedies available to my client under the Agreement and under law, all of which are expressly reserved.",
+    "Kindly treat this as most urgent.",
+    "Yours faithfully,",
+    "{{lawyer_name}}\nAdvocate\n{{lawyer_address}}",
+    "For and on behalf of: {{sender_name}}"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

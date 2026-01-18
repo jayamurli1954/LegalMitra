@@ -1,0 +1,97 @@
+{
+  "template_id": "sebi_complaint_reply",
+  "name": "SEBI Complaint/Show Cause Reply",
+  "category": "corporate",
+  "description": "Reply to SEBI show cause notice or complaint",
+  "act": [
+    "SEBI_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Show Cause Notice",
+    "Reply",
+    "Complaint",
+    "Regulatory"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "notice_number",
+      "label": "SEBI Notice/Complaint Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "notice_date",
+      "label": "Notice Date",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "sebi_division",
+      "label": "SEBI Division/Wing",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enforcement Division"
+    },
+    {
+      "id": "allegations",
+      "label": "Allegations/Charges",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "reply_points",
+      "label": "Key Points for Reply",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Adjudicating Officer/Competent Authority\n{{sebi_division}}\nSecurities and Exchange Board of India\nSEBI Bhavan, Bandra Kurla Complex\nMumbai - 400051",
+    "Date: [DATE]",
+    "Subject: Reply to Show Cause Notice / Complaint No. {{notice_number}} dated {{notice_date}}",
+    "Ref: Company - {{company_name}}\nCIN: {{cin}}",
+    "Respected Sir/Madam,",
+    "We refer to the Show Cause Notice / Complaint bearing reference {{notice_number}} dated {{notice_date}} issued by your office.",
+    "COMPANY DETAILS:\nName: {{company_name}}\nCIN: {{cin}}\nRegistered Office: [Address]",
+    "ALLEGATIONS/CHARGES:",
+    "{{allegations}}",
+    "DETAILED REPLY:",
+    "{{reply_points}}",
+    "[AI will expand with:\n1. Point-by-point response to each allegation\n2. Facts and chronology\n3. Legal provisions and case laws\n4. Supporting evidence\n5. Compliance measures taken]",
+    "SUBMISSIONS:",
+    "1. The allegations are denied for reasons stated above\n2. The Company has complied with all applicable SEBI Regulations\n3. All disclosures have been made in accordance with law\n4. The Company is committed to maintaining highest standards of corporate governance",
+    "PRAYER:",
+    "In view of the above submissions, we pray that:\n(a) The proceedings may be dropped\n(b) The Company may be given a personal hearing opportunity\n(c) Any further relief as deemed fit",
+    "All supporting documents are enclosed herewith.",
+    "Thanking you,",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "_____________________\nAuthorized Signatory\nName: [Name]\nDesignation: [Designation]",
+    "Date:\nPlace:",
+    "Enclosures:\n1. Supporting Documents\n2. Board Resolutions (if applicable)\n3. Compliance Certificates"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

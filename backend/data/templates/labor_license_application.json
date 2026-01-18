@@ -1,0 +1,72 @@
+{
+  "template_id": "labor_license_application",
+  "name": "Labor License Application (Shops & Establishments)",
+  "category": "corporate",
+  "description": "Application for labor license under Shops and Establishments Act",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Labor Law",
+    "Shops Act",
+    "Establishment",
+    "License"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "establishment_name",
+      "label": "Establishment Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "state",
+      "label": "State",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "number_of_employees",
+      "label": "Number of Employees",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "establishment_address",
+      "label": "Establishment Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "nature_of_business",
+      "label": "Nature of Business",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Inspector of Shops and Establishments\n[State]\n[District]",
+    "Date: [DATE]",
+    "Subject: Application for Labor License",
+    "Establishment Name: {{establishment_name}}\nState: {{state}}",
+    "Respected Sir/Madam,",
+    "We hereby apply for registration/license under the [State] Shops and Establishments Act.",
+    "ESTABLISHMENT DETAILS:\n- Name: {{establishment_name}}\n- Address: {{establishment_address}}\n- Nature of Business: {{nature_of_business}}\n- Number of Employees: {{number_of_employees}}",
+    "We understand that:\n1. We will comply with all labor law provisions\n2. We will maintain required registers and records\n3. We will submit annual returns\n4. We will allow inspection as per law",
+    "All required documents are enclosed.",
+    "Kindly process our application.",
+    "For {{establishment_name}}",
+    "Authorized Signatory",
+    "Enclosures:\n1. Registration form\n2. Address proof\n3. ID proof of proprietor/partners/directors\n4. Photo of establishment"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

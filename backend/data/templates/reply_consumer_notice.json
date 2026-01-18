@@ -1,0 +1,49 @@
+{
+  "template_id": "REPLY_CONSUMER_NOTICE_V1",
+  "name": "Reply to Consumer Complaint Notice",
+  "category": "reply",
+  "description": "Reply to consumer complaint defending quality of product/service",
+  "act": ["CONSUMER_PROTECTION_ACT"],
+  "section": [],
+  "court": ["Consumer Forum"],
+  "language": "en",
+  "tags": ["consumer", "reply", "defense", "product", "service"],
+  "is_premium": false,
+  "fields": [
+    {"id": "company_name", "label": "Company/Business Name", "type": "text", "required": true},
+    {"id": "consumer_name", "label": "Consumer Name", "type": "text", "required": true},
+    {"id": "consumer_address", "label": "Consumer Address", "type": "text", "required": true},
+    {"id": "notice_date", "label": "Date of Consumer Notice", "type": "date", "required": true},
+    {"id": "product_service", "label": "Product/Service in Question", "type": "text", "required": true},
+    {"id": "defense_statement", "label": "Defense Statement", "type": "text", "required": true},
+    {"id": "quality_compliance", "label": "Quality Standards Complied", "type": "text", "required": false},
+    {"id": "offer_made", "label": "Offer/Resolution Proposed", "type": "text", "required": false},
+    {"id": "date", "label": "Reply Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "REPLY TO CONSUMER COMPLAINT NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{consumer_name}}\n{{consumer_address}}\n",
+    "Subject: Reply to your notice dated {{notice_date}} regarding {{product_service}}\n",
+    "Sir/Madam,\n",
+    "This has reference to your notice dated {{notice_date}} alleging deficiency in service/defect in product regarding {{product_service}}.\n",
+    "2. {{company_name}} categorically denies any deficiency in service or defect in the product supplied/service rendered.\n",
+    "3. {{defense_statement}}\n",
+    {
+      "condition": "quality_compliance exists",
+      "text": "4. The product/service provided complies with all applicable quality standards and specifications, specifically {{quality_compliance}}."
+    },
+    "5. Your complaint is misconceived, exaggerated, and unsustainable. There has been no deficiency in service or unfair trade practice on the part of {{company_name}}.\n",
+    "6. {{company_name}} has at all times acted in good faith and in accordance with applicable laws, regulations, and industry standards.\n",
+    {
+      "condition": "offer_made exists",
+      "text": "7. Without prejudice to the above and purely on humanitarian grounds, {{company_name}} is willing to {{offer_made}}."
+    },
+    "8. This reply is issued without prejudice to all rights and defenses available to {{company_name}} under law.\n",
+    "You are requested to reconsider your complaint in light of the above facts.\n\n",
+    "For {{company_name}}\n\nAuthorized Signatory"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

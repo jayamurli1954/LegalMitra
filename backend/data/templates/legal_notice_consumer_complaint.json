@@ -1,0 +1,73 @@
+{
+  "template_id": "LEGAL_NOTICE_CONSUMER_V1",
+  "name": "Legal Notice - Consumer Complaint",
+  "category": "legal_notice",
+  "description": "Legal notice for consumer grievances and deficiency in service",
+  "act": ["CONSUMER_PROTECTION_ACT"],
+  "section": [],
+  "court": ["Consumer Court", "District Consumer Forum"],
+  "language": "en",
+  "tags": ["consumer", "deficiency", "service", "product", "complaint"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": false},
+    {"id": "consumer_name", "label": "Consumer Name", "type": "text", "required": true},
+    {"id": "consumer_address", "label": "Consumer Address", "type": "text", "required": true},
+    {"id": "seller_name", "label": "Seller/Service Provider Name", "type": "text", "required": true},
+    {"id": "seller_address", "label": "Seller Address", "type": "text", "required": true},
+    {"id": "product_service", "label": "Product/Service Description", "type": "text", "required": true},
+    {"id": "purchase_date", "label": "Purchase/Service Date", "type": "date", "required": true},
+    {"id": "amount_paid", "label": "Amount Paid (₹)", "type": "number", "required": true},
+    {"id": "invoice_number", "label": "Invoice/Bill Number", "type": "text", "required": false},
+    {"id": "deficiency_description", "label": "Description of Deficiency/Defect", "type": "text", "required": true},
+    {"id": "complaint_date", "label": "Date Complaint was First Made", "type": "date", "required": false},
+    {"id": "compensation_sought", "label": "Compensation Sought (₹)", "type": "number", "required": false},
+    {"id": "date", "label": "Notice Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "LEGAL NOTICE UNDER CONSUMER PROTECTION ACT\n",
+    "Date: {{date}}\n",
+    "To,\n{{seller_name}}\n{{seller_address}}\n",
+    "Subject: Notice for Deficiency in Service/Defective Product\n",
+    "Sir/Madam,\n",
+    {
+      "condition": "advocate_name exists",
+      "text": "Under instructions from and on behalf of my client {{consumer_name}}, I hereby serve upon you the following legal notice:"
+    },
+    {
+      "condition": "advocate_name !exists",
+      "text": "I, {{consumer_name}}, consumer, hereby serve upon you the following legal notice:"
+    },
+    "1. That on {{purchase_date}}, {{product_service}} was purchased/availed from your establishment for a sum of ₹{{amount_paid}}.\n",
+    {
+      "condition": "invoice_number exists",
+      "text": "2. That the said transaction is evidenced by Invoice/Bill No. {{invoice_number}}."
+    },
+    "3. That the said product/service was found to be defective/deficient in the following manner: {{deficiency_description}}.\n",
+    {
+      "condition": "complaint_date exists",
+      "text": "4. That complaint regarding the said deficiency/defect was first made on {{complaint_date}}, but despite assurances, the deficiency has not been rectified."
+    },
+    "5. That the aforesaid deficiency/defect amounts to unfair trade practice and deficiency in service under the Consumer Protection Act, 2019.\n",
+    "6. That the consumer has suffered mental agony, physical harassment, and financial loss due to the said deficiency.\n",
+    "THEREFORE, you are hereby called upon to:\n\n(a) Replace the defective product with a new one of the same make and model / Rectify the deficiency in service;\n\n(b) Refund the entire amount of ₹{{amount_paid}} paid by the consumer;\n",
+    {
+      "condition": "compensation_sought exists",
+      "text": "(c) Pay compensation of ₹{{compensation_sought}} for mental agony, harassment, and loss of time;"
+    },
+    "(d) The above within 15 (fifteen) days from the receipt of this notice.\n",
+    "TAKE NOTICE that if you fail to comply with the above demands within the stipulated period, the consumer shall be constrained to file a complaint before the appropriate Consumer Forum under the Consumer Protection Act, 2019, claiming refund, replacement, compensation, and costs, without any further reference to you.\n",
+    "This notice is issued without prejudice to all other rights and remedies available under law.\n\n",
+    {
+      "condition": "advocate_name exists",
+      "text": "Sd/-\n{{advocate_name}}\nAdvocate\nFor and on behalf of {{consumer_name}}"
+    },
+    {
+      "condition": "advocate_name !exists",
+      "text": "Sd/-\n{{consumer_name}}\nConsumer"
+    }
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

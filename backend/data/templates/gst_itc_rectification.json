@@ -1,0 +1,75 @@
+{
+  "template_id": "gst_itc_rectification",
+  "name": "Input Tax Credit Rectification",
+  "category": "gst",
+  "description": "Letter for rectification of Input Tax Credit (ITC) in GST returns",
+  "act": [
+    "GST_ACT",
+    "IT_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "ITC",
+    "Rectification",
+    "Input Tax Credit"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "return_period",
+      "label": "Return Period",
+      "type": "text",
+      "required": true,
+      "placeholder": "Apr 2025"
+    },
+    {
+      "id": "incorrect_itc",
+      "label": "Incorrectly Claimed ITC (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "correct_itc",
+      "label": "Correct ITC (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Jurisdictional GST Officer\n[Circle/Ward]",
+    "Date: [DATE]",
+    "Subject: Application for Rectification of Input Tax Credit in GSTR-3B",
+    "GSTIN: {{gstin}}\nReturn Period: {{return_period}}",
+    "Respected Sir/Madam,",
+    "We, {{company_name}} (GSTIN: {{gstin}}), wish to bring to your notice an error in claiming Input Tax Credit in our GSTR-3B return for the period {{return_period}}.",
+    "DETAILS OF ERROR:\nITC Claimed (Incorrect): Rs. {{incorrect_itc}}\nCorrect ITC Amount: Rs. {{correct_itc}}\nDifference: Rs. {{abs(int(incorrect_itc) - int(correct_itc))}}",
+    "The error occurred due to [AI will suggest common reasons]. We request permission to rectify this error in the next return.",
+    "Supporting invoices and documents are enclosed for verification.",
+    "Thanking you,",
+    "For {{company_name}}\nGSTIN: {{gstin}}",
+    "Enclosures:\n1. Copy of incorrect return\n2. Supporting invoices\n3. Revised computation"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

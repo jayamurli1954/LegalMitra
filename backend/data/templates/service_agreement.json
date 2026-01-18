@@ -1,0 +1,104 @@
+{
+  "template_id": "service_agreement",
+  "name": "Professional Services Agreement",
+  "category": "corporate",
+  "description": "Agreement for providing professional services",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Services",
+    "Contract",
+    "Agreement",
+    "Professional"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "client_name",
+      "label": "Client Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "client_address",
+      "label": "Client Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "service_provider_name",
+      "label": "Service Provider Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "service_provider_address",
+      "label": "Service Provider Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "services_description",
+      "label": "Description of Services",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "service_fee",
+      "label": "Service Fee (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "payment_terms",
+      "label": "Payment Terms",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 30 days from invoice date"
+    },
+    {
+      "id": "agreement_duration",
+      "label": "Agreement Duration",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., 1 year"
+    },
+    {
+      "id": "jurisdiction",
+      "label": "Jurisdiction",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "PROFESSIONAL SERVICES AGREEMENT",
+    "This Agreement is made on [DATE] between:",
+    "CLIENT:\n{{client_name}}\n{{client_address}}\n(hereinafter referred to as \"Client\")",
+    "AND",
+    "SERVICE PROVIDER:\n{{service_provider_name}}\n{{service_provider_address}}\n(hereinafter referred to as \"Service Provider\")",
+    "1. SCOPE OF SERVICES\n   The Service Provider agrees to provide the following services to the Client:\n   {{services_description}}",
+    "2. TERM\n   This Agreement shall commence on [START DATE] and continue for a period of {{agreement_duration}}, unless terminated earlier as provided herein.",
+    "3. FEES AND PAYMENT\n   3.1 The Client agrees to pay the Service Provider a fee of Rs. {{service_fee}} for the services rendered.\n   3.2 Payment terms: {{payment_terms}}\n   3.3 All fees are exclusive of applicable taxes (GST), which shall be borne by the Client.",
+    "4. DELIVERABLES AND TIMELINES\n   [AI will expand based on services description]",
+    "5. INTELLECTUAL PROPERTY\n   All intellectual property created during the provision of services shall be [owned by Client/Service Provider/jointly owned as per discussion].",
+    "6. CONFIDENTIALITY\n   Both parties agree to maintain confidentiality of any proprietary information exchanged during the term of this Agreement.",
+    "7. TERMINATION\n   Either party may terminate this Agreement by providing [30/60/90] days' written notice to the other party.",
+    "8. LIMITATION OF LIABILITY\n   The Service Provider's liability under this Agreement shall be limited to the fees paid by the Client.",
+    "9. INDEMNIFICATION\n   Each party shall indemnify the other against any claims arising from breach of this Agreement.",
+    "10. GOVERNING LAW\n    This Agreement shall be governed by the laws of India. Courts at {{jurisdiction}} shall have exclusive jurisdiction.",
+    "11. ENTIRE AGREEMENT\n    This Agreement constitutes the entire understanding between the parties.",
+    "IN WITNESS WHEREOF, the parties have executed this Agreement:",
+    "For {{client_name}}                  For {{service_provider_name}}",
+    "_____________________              _____________________\nAuthorized Signatory               Authorized Signatory\nName:                              Name:\nDate:                              Date:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

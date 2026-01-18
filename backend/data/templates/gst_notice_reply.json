@@ -1,0 +1,90 @@
+{
+  "template_id": "gst_notice_reply",
+  "name": "GST Notice Reply Template",
+  "category": "gst",
+  "description": "Reply to GST department show cause notice or demand notice",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Notice",
+    "Reply",
+    "Show Cause",
+    "Tax"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer/Company Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "ABC Private Limited"
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true,
+      "placeholder": "29AAAAA0000A1Z5"
+    },
+    {
+      "id": "notice_number",
+      "label": "Notice Reference Number",
+      "type": "text",
+      "required": true,
+      "placeholder": "GST/SCN/2025/1234"
+    },
+    {
+      "id": "notice_date",
+      "label": "Notice Date",
+      "type": "text",
+      "required": true,
+      "placeholder": "15-Jan-2025"
+    },
+    {
+      "id": "notice_type",
+      "label": "Type of Notice",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Show Cause Notice",
+        "Demand Notice",
+        "Audit Notice",
+        "Scrutiny Notice"
+      ]
+    },
+    {
+      "id": "reply_points",
+      "label": "Key Points for Reply",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "List main points you want to address"
+    }
+  ],
+  "body": [
+    "To,\nThe Designated Officer\nGST Department\n[Office Address]",
+    "Date: [DATE]",
+    "Subject: Reply to {{notice_type}} - {{notice_number}} dated {{notice_date}}\nRef: GSTIN - {{gstin}}",
+    "Respected Sir/Madam,",
+    "We, {{taxpayer_name}} (GSTIN: {{gstin}}), hereby submit our reply to the {{notice_type}} bearing reference number {{notice_number}} dated {{notice_date}}.",
+    "DETAILED REPLY:\n{{reply_points}}",
+    "[AI will expand with point-by-point responses, legal provisions, case laws, and supporting documentation]",
+    "PRAYER:\nIn view of the above submissions, we request your good office to:\n1. Accept our reply and drop the proceedings\n2. Grant us a personal hearing opportunity\n3. Allow submission of additional documents if required",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}\nAuthorized Signatory",
+    "Enclosures:\n1. Supporting Documents\n2. Relevant Invoices/Bills\n3. Legal Citations"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

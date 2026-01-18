@@ -1,0 +1,50 @@
+{
+  "template_id": "LEGAL_NOTICE_BREACH_CONTRACT_V1",
+  "name": "Legal Notice - Breach of Contract",
+  "category": "legal_notice",
+  "description": "Legal notice for breach of contractual obligations",
+  "act": ["CONTRACT_ACT", "CPC"],
+  "section": [],
+  "court": ["District", "Civil Court"],
+  "language": "en",
+  "tags": ["breach", "contract", "damages", "specific performance"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "client_name", "label": "Client Name", "type": "text", "required": true},
+    {"id": "respondent_name", "label": "Respondent Name", "type": "text", "required": true},
+    {"id": "respondent_address", "label": "Respondent Address", "type": "text", "required": true},
+    {"id": "contract_date", "label": "Contract Date", "type": "date", "required": true},
+    {"id": "contract_description", "label": "Brief Description of Contract", "type": "text", "required": true},
+    {"id": "breach_description", "label": "Description of Breach", "type": "text", "required": true},
+    {"id": "breach_date", "label": "Date of Breach", "type": "date", "required": true},
+    {"id": "damages_amount", "label": "Damages Amount (₹) (if quantifiable)", "type": "number", "required": false},
+    {"id": "remedy_sought", "label": "Remedy Sought", "type": "text", "required": true, "placeholder": "Specific performance / Damages / Termination / etc."},
+    {"id": "date", "label": "Notice Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "LEGAL NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{respondent_name}}\n{{respondent_address}}\n",
+    "Subject: Legal Notice for Breach of Contract\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I hereby serve upon you the following legal notice:\n",
+    "1. That on {{contract_date}}, you and my client entered into a contract whereby {{contract_description}}.\n",
+    "2. That the said contract created legally enforceable rights and obligations between the parties.\n",
+    "3. That pursuant to the terms of the said contract, you were obligated to perform certain acts and comply with specific conditions.\n",
+    "4. That on or about {{breach_date}}, you committed a material breach of the said contract by {{breach_description}}.\n",
+    "5. That your aforesaid breach has caused substantial loss, damage, and inconvenience to my client.\n",
+    {
+      "condition": "damages_amount exists",
+      "text": "6. That my client has suffered quantifiable damages to the tune of ₹{{damages_amount}} (Rupees {{damages_amount}} only) as a direct consequence of your breach."
+    },
+    "7. That my client is entitled to {{remedy_sought}} as per the terms of the contract and applicable law.\n",
+    "THEREFORE, you are hereby called upon to remedy the said breach by {{remedy_sought}} within 15 (fifteen) days from the receipt of this notice.\n",
+    "TAKE NOTICE that if you fail to comply with the above demand within the stipulated period, my client shall be constrained to initiate appropriate legal proceedings against you for breach of contract, claiming {{remedy_sought}}, along with interest, costs, and all consequential reliefs, without any further reference to you.\n",
+    "This notice is issued without prejudice to all other rights and remedies available to my client under law.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

@@ -1,0 +1,718 @@
+# Terms of Use
+
+**Effective Date:** December 15, 2024  
+**Last Updated:** December 15, 2024  
+**Version:** 1.1
+
+---
+
+## 1. Acceptance of Terms
+
+### 1.1 Agreement to Terms
+By accessing, browsing, or using LegalMitra ("Service," "Platform," "we," "our," or "us"), you ("User," "you," or "your") agree to be bound by these Terms of Use ("Terms").
+
+### 1.2 Legal Binding
+These Terms constitute a legally binding agreement between you and LegalMitra.
+
+### 1.3 Non-Acceptance
+**IF YOU DO NOT AGREE WITH ANY PART OF THESE TERMS, YOU MUST NOT USE THIS SERVICE.**
+
+### 1.4 Additional Terms
+These Terms incorporate by reference:
+- Privacy Policy
+- Disclaimer
+- Cookie Policy (if applicable)
+- Any additional guidelines or rules posted on the Platform
+
+---
+
+## 2. Description of Service
+
+### 2.1 Service Overview
+LegalMitra is an AI-powered legal assistant that provides:
+- Legal information and research assistance
+- Case law searches and citations
+- Document drafting capabilities
+- Compliance guidance
+- Procedural information
+- Industry-specific legal guidance
+
+**All services relate to Indian laws and regulations.**
+
+### 2.2 Nature of Service
+LegalMitra is an **informational tool** and NOT:
+- ❌ A law firm or legal practice
+- ❌ A substitute for professional legal counsel
+- ❌ A provider of legal advice
+- ❌ Your attorney or legal representative
+
+### 2.3 Service Availability
+- Service is provided "as available"
+- We do not guarantee uninterrupted access
+- Service may be modified, suspended, or discontinued at any time
+- We may impose usage limits at our discretion
+
+### 2.4 Beta Features
+Some features may be in beta or testing phase:
+- Marked as "Beta" or "Experimental"
+- May not work as expected
+- May be discontinued without notice
+- Feedback is appreciated
+
+---
+
+## 3. Eligibility and User Requirements
+
+### 3.1 Age Requirement
+You must be at least **18 years old** to use this service.
+
+### 3.2 Legal Capacity
+You must have the legal capacity to enter into binding agreements under Indian law.
+
+### 3.3 Minors
+If you are under 18:
+- You must have verifiable parental/guardian consent
+- Your parent/guardian agrees to these Terms
+- We may request proof of consent
+
+### 3.4 Prohibited Users
+You may NOT use this service if:
+- You are legally prohibited from using such services
+- Your account has been previously suspended or terminated
+- You are accessing from a jurisdiction where the service is prohibited
+
+### 3.5 Verification
+We reserve the right to verify your eligibility at any time.
+
+---
+
+## 4. Acceptable Use Policy
+
+### 4.1 Permitted Uses
+You may use LegalMitra to:
+✅ Research Indian laws and regulations  
+✅ Obtain general legal information  
+✅ Draft legal documents (for review by a lawyer)  
+✅ Search case laws and precedents  
+✅ Understand compliance requirements  
+✅ Learn about legal procedures  
+
+### 4.2 Prohibited Uses
+You agree NOT to use LegalMitra for:
+
+**A. Illegal Activities:**
+- ❌ Any illegal or criminal purpose
+- ❌ Violating any local, state, or national laws
+- ❌ Infringing intellectual property rights
+- ❌ Committing fraud or misrepresentation
+
+**B. Harmful Content:**
+- ❌ Uploading malicious code or viruses
+- ❌ Attempting to gain unauthorized access
+- ❌ Interfering with service operation
+- ❌ Reverse engineering or decompiling
+
+**C. Abuse:**
+- ❌ Harassing, threatening, or defaming others
+- ❌ Impersonating any person or entity
+- ❌ Spamming or sending unsolicited communications
+- ❌ Automated scraping or data mining
+
+**D. Commercial Misuse:**
+- ❌ Reselling or redistributing the service
+- ❌ Using for competing services
+- ❌ Commercial use without authorization
+- ❌ Bulk or automated queries
+
+**E. Confidentiality Violations:**
+- ❌ Sharing confidential case information
+- ❌ Violating attorney-client privilege
+- ❌ Disclosing sensitive personal data of others
+- ❌ Breaching court-imposed confidentiality
+
+### 4.3 Content Standards
+Any content you input must:
+- Be lawful and truthful
+- Not violate any third-party rights
+- Not contain offensive or harmful material
+- Comply with applicable laws
+
+### 4.4 Monitoring
+We reserve the right to:
+- Monitor usage patterns
+- Investigate suspected violations
+- Remove or disable access to content
+- Report illegal activities to authorities
+
+### 4.5 Consequences of Violation
+If you violate these Terms, we may:
+- Suspend or terminate your access
+- Remove your content
+- Report to law enforcement
+- Seek legal remedies
+- Refuse future service
+
+---
+
+## 5. User Accounts (If Applicable in Future Versions)
+
+### 5.1 Account Creation
+**Current Version (v1.0):** No user accounts required
+
+**Future Versions (v2.0+):**
+- You may need to create an account
+- You must provide accurate information
+- You are responsible for account security
+- One account per person
+
+### 5.2 Account Security
+You are responsible for:
+- Maintaining confidentiality of credentials
+- All activities under your account
+- Notifying us of unauthorized access
+- Logging out after each session
+
+### 5.3 Account Termination
+We may terminate accounts that:
+- Violate these Terms
+- Are inactive for extended periods
+- Are associated with fraudulent activity
+- Are requested for closure by the user
+
+---
+
+## 6. Intellectual Property Rights
+
+### 6.1 Our Intellectual Property
+**Owned by LegalMitra:**
+- Service design, layout, and interface
+- Software, code, and algorithms
+- Logos, trademarks, and branding
+- Original content and documentation
+- AI model configurations
+
+**Protected By:**
+- Copyright laws
+- Trademark laws
+- Trade secret laws
+- Patent laws (if applicable)
+
+### 6.2 License to Use
+We grant you a limited, non-exclusive, non-transferable, revocable license to:
+- Access and use the service
+- For personal, non-commercial purposes
+- In accordance with these Terms
+
+**You MAY NOT:**
+- ❌ Copy, modify, or distribute our content
+- ❌ Create derivative works
+- ❌ Reverse engineer the software
+- ❌ Remove copyright notices
+- ❌ Use our branding without permission
+
+### 6.3 Third-Party Content
+**Case Laws and Statutes:**
+- Belong to Government of India/Courts
+- Used under fair use or public domain
+- Properly attributed to sources (e.g., Indian Kanoon)
+
+**AI Model Responses:**
+- Generated by third-party AI services
+- Subject to their terms and licenses
+
+### 6.4 User-Generated Content
+**You Retain Ownership Of:**
+- Queries you input
+- Documents you create
+- Content you provide
+
+**You Grant Us:**
+- Right to process your input
+- Right to use anonymized data for improvement
+- Right to store (if you enable conversation history)
+
+**We Do NOT Claim:**
+- Ownership of your content
+- Rights to your legal work product
+- Rights to your confidential information
+
+### 6.5 Feedback and Suggestions
+If you provide feedback, suggestions, or ideas:
+- We may use them without compensation
+- You grant us perpetual, worldwide license
+- No confidentiality obligation on our part
+- We are not obligated to implement suggestions
+
+### 6.6 Copyright Infringement
+If you believe your copyright has been infringed:
+- Email: legal@legalmitra.com
+- Provide: Details of copyrighted work, location of infringement, contact information
+- We will investigate and take appropriate action
+
+---
+
+## 7. API Keys and Third-Party Services
+
+### 7.1 Your Responsibility
+You are responsible for:
+- Obtaining your own API keys (Anthropic, OpenAI, etc.)
+- Complying with third-party service terms
+- Costs associated with API usage
+- Securing your API keys
+
+### 7.2 We Are NOT Responsible For:
+- ❌ Third-party service availability
+- ❌ Third-party pricing changes
+- ❌ Third-party terms violations
+- ❌ Loss of API access
+
+### 7.3 API Key Security
+**IMPORTANT:**
+- Store API keys in .env file only
+- Never share your API keys
+- Never commit API keys to GitHub
+- Rotate keys if compromised
+
+### 7.4 Third-Party Terms
+You must comply with terms of:
+- Anthropic Claude
+- OpenAI (if used)
+- Indian Kanoon API
+- Any other integrated services
+
+---
+
+## 8. Payment and Subscription (Future Feature)
+
+### 8.1 Current Version (v1.0)
+**FREE TO USE** - No payment required
+
+### 8.2 Future Versions (v2.0+)
+If we introduce paid features:
+
+**A. Pricing:**
+- Clearly displayed before purchase
+- Subject to change with notice
+- May vary by region or currency
+
+**B. Payment Methods:**
+- Credit/debit cards
+- UPI, net banking
+- Other methods as available
+
+**C. Billing:**
+- Monthly or annual subscriptions
+- Auto-renewal unless cancelled
+- Refund policy as stated
+
+**D. Taxes:**
+- Prices may exclude GST
+- You are responsible for applicable taxes
+
+### 8.3 Refund Policy (When Applicable)
+- Refunds handled case-by-case
+- No refunds for completed services
+- Contact support for refund requests
+
+---
+
+## 9. Disclaimer of Warranties
+
+### 9.1 "AS IS" Basis
+THE SERVICE IS PROVIDED **"AS IS"** AND **"AS AVAILABLE"** WITHOUT WARRANTIES OF ANY KIND.
+
+### 9.2 We Disclaim All Warranties
+Including but not limited to:
+- ❌ Warranties of merchantability
+- ❌ Fitness for a particular purpose
+- ❌ Non-infringement
+- ❌ Accuracy or completeness
+- ❌ Uninterrupted or error-free service
+- ❌ Security or virus-free operation
+
+### 9.3 No Legal Advice
+- Service does NOT provide legal advice
+- Responses are informational only
+- Not a substitute for qualified counsel
+- No attorney-client relationship created
+
+### 9.4 AI Limitations
+AI responses may:
+- Contain errors or inaccuracies
+- Be incomplete or outdated
+- Misinterpret queries
+- Provide irrelevant information
+- Fail to cite all relevant laws
+
+**YOU MUST VERIFY ALL INFORMATION INDEPENDENTLY.**
+
+### 9.5 Third-Party Reliability
+We do not warrant:
+- Accuracy of third-party content
+- Availability of third-party services
+- Quality of AI model responses
+- Validity of case law citations
+
+---
+
+## 10. Limitation of Liability
+
+### 10.1 Maximum Liability
+TO THE FULLEST EXTENT PERMITTED BY INDIAN LAW, OUR TOTAL LIABILITY TO YOU SHALL NOT EXCEED:
+- **₹10,000 (Ten Thousand Rupees)**, OR
+- **The amount you paid us (if any) in the 12 months preceding the claim**
+
+**Whichever is less.**
+
+### 10.2 Excluded Damages
+WE SHALL NOT BE LIABLE FOR:
+- ❌ Indirect, incidental, or consequential damages
+- ❌ Loss of profits, revenue, or business opportunities
+- ❌ Loss of data or information
+- ❌ Legal fees or court costs
+- ❌ Damages from reliance on service
+- ❌ Third-party claims
+- ❌ Service interruptions or errors
+
+### 10.3 Legal Consequences
+WE ARE NOT LIABLE FOR:
+- Legal outcomes based on our information
+- Missed deadlines or limitation periods
+- Incorrect legal strategies
+- Court judgments or decisions
+- Regulatory actions
+- Financial losses
+
+### 10.4 Exceptions
+This limitation does NOT apply to:
+- Gross negligence or willful misconduct
+- Fraud or fraudulent misrepresentation
+- Death or personal injury caused by our negligence
+- Liabilities that cannot be limited by law
+
+### 10.5 Basis of Bargain
+These limitations reflect the allocation of risk between you and us and form an essential basis of our agreement.
+
+---
+
+## 11. Indemnification
+
+### 11.1 Your Agreement to Indemnify
+You agree to **indemnify, defend, and hold harmless** LegalMitra, its officers, directors, employees, and agents from:
+
+**A. Claims arising from:**
+- Your use or misuse of the service
+- Your violation of these Terms
+- Your violation of any laws or regulations
+- Your infringement of third-party rights
+- Content you provide or create
+- Your negligence or misconduct
+
+**B. Including:**
+- Legal fees and costs
+- Damages and settlements
+- Regulatory fines or penalties
+- Court judgments
+
+### 11.2 Process
+If a claim is made:
+- We will notify you promptly
+- You will cooperate in defense
+- We may participate in defense
+- You may not settle without our consent
+
+---
+
+## 12. Dispute Resolution
+
+### 12.1 Informal Resolution
+Before initiating formal proceedings:
+- Contact us at legal@legalmitra.com
+- Describe the dispute in detail
+- We will attempt good-faith resolution
+- Allow 30 days for resolution attempts
+
+### 12.2 Negotiation
+Both parties agree to negotiate in good faith to resolve disputes.
+
+### 12.3 Mediation (Optional)
+If negotiation fails, parties may agree to mediation by:
+- A mutually acceptable mediator
+- Under Indian mediation rules
+- Costs shared equally
+
+### 12.4 Arbitration
+If informal resolution fails, disputes shall be resolved by **binding arbitration**:
+
+**A. Arbitration Rules:**
+- Conducted under Arbitration and Conciliation Act, 1996
+- Single arbitrator mutually appointed
+- Seat: [Your City], India
+- Language: English
+- Decision is final and binding
+
+**B. Exceptions to Arbitration:**
+- Intellectual property disputes
+- Injunctive relief matters
+- Small claims court matters (if eligible)
+
+### 12.5 Class Action Waiver
+**YOU AGREE THAT DISPUTES WILL BE RESOLVED ON AN INDIVIDUAL BASIS.**
+- No class actions or representative proceedings
+- No consolidation with other users' claims
+- No arbitration or litigation on behalf of others
+
+### 12.6 Limitation Period
+Claims must be brought within **1 year** of the cause of action arising, or be forever barred.
+
+---
+
+## 13. Governing Law and Jurisdiction
+
+### 13.1 Governing Law
+These Terms are governed by:
+- **Laws of India**
+- Without regard to conflict of law principles
+
+### 13.2 Exclusive Jurisdiction
+Subject to arbitration provisions, disputes shall be under the exclusive jurisdiction of:
+- **Courts in [Your City, e.g., Bangalore], Karnataka, India**
+
+### 13.3 Venue
+You consent to personal jurisdiction and venue in these courts.
+
+### 13.4 Language
+These Terms are written in English. Translations (if any) are for convenience only.
+
+---
+
+## 14. Termination
+
+### 14.1 Termination by You
+You may stop using the service at any time:
+- No formal termination required (v1.0)
+- Simply cease accessing the service
+- Delete any locally stored data
+
+### 14.2 Termination by Us
+We may terminate or suspend your access:
+
+**Immediately if:**
+- You violate these Terms
+- You engage in illegal activities
+- You abuse or misuse the service
+- Required by law or regulation
+- For security or safety reasons
+
+**With Notice:**
+- We discontinue the service
+- We modify service substantially
+- For any other reason with 30 days' notice
+
+### 14.3 Effect of Termination
+Upon termination:
+- Your right to use service ceases immediately
+- We may delete your data (if stored)
+- Provisions that should survive will survive
+- You remain liable for any obligations
+
+### 14.4 Survival
+The following sections survive termination:
+- Intellectual Property Rights
+- Disclaimer of Warranties
+- Limitation of Liability
+- Indemnification
+- Governing Law
+- Dispute Resolution
+
+---
+
+## 15. Modifications to Terms
+
+### 15.1 Right to Modify
+We reserve the right to modify these Terms at any time.
+
+### 15.2 Notice of Changes
+We will notify you of material changes by:
+- Email (if we have your email address)
+- Prominent notice on the platform
+- Update to "Last Updated" date
+
+### 15.3 Effective Date
+Changes become effective:
+- **30 days after posting**, unless
+- Required by law to be immediate
+- Notified otherwise
+
+### 15.4 Your Acceptance
+Continued use after changes constitutes acceptance of modified Terms.
+
+### 15.5 Objection to Changes
+If you object to changes:
+- Stop using the service before effective date
+- Contact us to terminate (if applicable)
+- Changes will not apply to you after termination
+
+---
+
+## 16. General Provisions
+
+### 16.1 Entire Agreement
+These Terms, together with Privacy Policy and Disclaimer, constitute the entire agreement between you and us.
+
+### 16.2 Severability
+If any provision is found invalid or unenforceable:
+- That provision will be modified to the minimum extent necessary
+- Or removed if modification is not possible
+- Remaining provisions continue in full force
+
+### 16.3 Waiver
+Failure to enforce any provision does not constitute a waiver of:
+- That provision
+- Our right to enforce it in the future
+- Any other provision
+
+### 16.4 Assignment
+**You may NOT:**
+- Transfer or assign these Terms
+- Transfer your rights or obligations
+
+**We may:**
+- Assign these Terms without notice
+- Transfer to affiliates or successors
+- Subcontract obligations
+
+### 16.5 No Third-Party Beneficiaries
+These Terms are for your and our benefit only:
+- No third party has rights under these Terms
+- Except our affiliates, officers, and employees
+
+### 16.6 Force Majeure
+We are not liable for delays or failures due to:
+- Acts of God, natural disasters
+- War, terrorism, civil unrest
+- Government actions or regulations
+- Internet or power failures
+- Other events beyond our reasonable control
+
+### 16.7 Relationship
+These Terms do not create:
+- ❌ Partnership or joint venture
+- ❌ Employer-employee relationship
+- ❌ Franchisor-franchisee relationship
+- ❌ Agency relationship
+
+### 16.8 Notices
+**To You:**
+- Email (if provided)
+- In-app notification
+- Posting on website
+
+**To Us:**
+- Email: legal@legalmitra.com
+- Mail: [Physical Address]
+
+**Effective:** 3 business days after sending
+
+### 16.9 Interpretation
+In case of ambiguity:
+- Headings are for convenience only
+- Examples are illustrative, not exhaustive
+- "Including" means "including but not limited to"
+- Singular includes plural and vice versa
+
+### 16.10 Electronic Communications
+You consent to receive communications from us electronically:
+- Email, in-app messages
+- Satisfies legal written communication requirements
+- You may withdraw consent by stopping use
+
+---
+
+## 17. Accessibility
+
+We strive to make our service accessible to users with disabilities:
+- Following WCAG guidelines where possible
+- Providing alternative text for images
+- Keyboard navigation support
+- Screen reader compatibility
+
+**Feedback:** If you encounter accessibility issues, contact: accessibility@legalmitra.com
+
+---
+
+## 18. Export Control
+
+If our service is subject to export controls:
+- You may not use service in violation of export laws
+- You may not export, re-export, or transfer the service
+- Compliance is your responsibility
+
+---
+
+## 19. Government Use
+
+If you are a government entity:
+- Additional terms may apply
+- Contact us for government-specific agreements
+- Special pricing or licensing may be available
+
+---
+
+## 20. Contact Information
+
+For questions about these Terms:
+
+**General Inquiries:**
+Email: support@legalmitra.com  
+Phone: [Contact Number]  
+
+**Legal Matters:**
+Email: legal@legalmitra.com  
+
+**Terms Interpretation:**
+Email: legal@legalmitra.com  
+
+**Mailing Address:**
+LegalMitra  
+Flat No. 201, Sarvajit Heights Apartment
+Kembathalli Main Road, Gottigere, Bengaluru 560083]  
+Karnataka India  
+
+
+---
+
+## 21. Feedback and Suggestions
+
+We welcome your feedback:
+- Email: jayamurli1954@gmail.com
+- Use in-app feedback forms
+- Rate our service (if prompted)
+
+**Note:** Feedback may be used to improve service without compensation.
+
+---
+
+## 22. Acknowledgment
+
+**BY USING LEGALMITRA, YOU ACKNOWLEDGE THAT:**
+1. You have read and understood these Terms
+2. You agree to be bound by these Terms
+3. You meet eligibility requirements
+4. You will comply with all applicable laws
+5. You understand the limitations and disclaimers
+6. You waive any claims inconsistent with these Terms
+
+**IF YOU DO NOT AGREE, DO NOT USE THIS SERVICE.**
+
+---
+
+**Effective Date:** December 15, 2025  
+**Last Updated:** December 15, 2025  
+**Version:** 1.1  
+
+**© 2025 LegalMitra. All Rights Reserved.**
+
+---
+
+[END OF TERMS OF USE]

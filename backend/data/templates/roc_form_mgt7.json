@@ -1,0 +1,65 @@
+{
+  "template_id": "roc_form_mgt7",
+  "name": "Annual Return MGT-7 Filing Letter",
+  "category": "corporate",
+  "description": "Covering letter for filing MGT-7 annual return",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [
+    "92"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Corporate",
+    "ROC",
+    "MGT-7",
+    "Annual Return",
+    "Filing"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "financial_year",
+      "label": "Financial Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2024-25"
+    }
+  ],
+  "body": [
+    "To,\nThe Registrar of Companies\n[State]",
+    "Date: [DATE]",
+    "Subject: Filing of Annual Return in Form MGT-7",
+    "CIN: {{cin}}\nCompany Name: {{company_name}}\nFinancial Year: {{financial_year}}",
+    "Respected Sir/Madam,",
+    "Please find enclosed Form MGT-7 (Annual Return) for the financial year ended March 31, 2025, pursuant to Section 92 of the Companies Act, 2013.",
+    "The return has been duly certified by a Practicing Company Secretary as required under law.",
+    "All applicable fees have been paid through the MCA portal.",
+    "Kindly acknowledge receipt and process the same.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "_____________________\nDirector",
+    "Enclosures:\n1. Form MGT-7\n2. Certification by PCS\n3. Payment Challan"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

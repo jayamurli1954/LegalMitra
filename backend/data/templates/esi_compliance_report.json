@@ -1,0 +1,64 @@
+{
+  "template_id": "esi_compliance_report",
+  "name": "ESI Compliance Report",
+  "category": "corporate",
+  "description": "Monthly ESI compliance report",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Compliance",
+    "ESI",
+    "Labor",
+    "Social Security"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "esi_number",
+      "label": "ESI Code Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "month_year",
+      "label": "Month & Year",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "total_contribution",
+      "label": "Total ESI Contribution (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "ESI COMPLIANCE REPORT",
+    "Company: {{company_name}}\nESI Code: {{esi_number}}\nPeriod: {{month_year}}",
+    "1. COVERAGE\nTotal Covered Employees: [Number]",
+    "2. CONTRIBUTION\nEmployee Share (0.75%): Rs. [Amount]\nEmployer Share (3.25%): Rs. [Amount]\nTotal ESI: Rs. {{total_contribution}}",
+    "3. PAYMENT STATUS\nDue Date: [21st of month]\nPayment Date: [Date]\nChallan Number: [Number]",
+    "4. RETURN FILING\nMonthly Return Filed: [Yes/No]",
+    "5. COMPLIANCE CHECKLIST\n✓ Contributions paid\n✓ Return filed\n✓ Registers maintained",
+    "Prepared by: _____________________",
+    "For {{company_name}}\n_____________________\nAuthorized Signatory"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

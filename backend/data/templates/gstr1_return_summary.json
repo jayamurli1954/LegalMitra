@@ -1,0 +1,92 @@
+{
+  "template_id": "gstr1_return_summary",
+  "name": "GSTR-1 Return Filing Summary Letter",
+  "category": "gst",
+  "description": "Covering letter for GSTR-1 (Outward Supplies) return filing",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "GSTR-1",
+    "Return",
+    "Outward Supplies"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "taxpayer_name",
+      "label": "Taxpayer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "gstin",
+      "label": "GSTIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "return_period",
+      "label": "Return Period",
+      "type": "text",
+      "required": true,
+      "placeholder": "April 2025"
+    },
+    {
+      "id": "total_taxable_value",
+      "label": "Total Taxable Value (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "cgst_amount",
+      "label": "CGST Amount (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "sgst_amount",
+      "label": "SGST Amount (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "igst_amount",
+      "label": "IGST Amount (Rs.)",
+      "type": "number",
+      "required": false
+    },
+    {
+      "id": "cess_amount",
+      "label": "CESS Amount (Rs.)",
+      "type": "number",
+      "required": false
+    }
+  ],
+  "body": [
+    "To,\nThe Jurisdictional GST Officer\n[Circle/Ward]",
+    "Date: [DATE]",
+    "Subject: Filing of GSTR-1 for Return Period - {{return_period}}",
+    "GSTIN: {{gstin}}\nName: {{taxpayer_name}}",
+    "Respected Sir/Madam,",
+    "We hereby submit the GSTR-1 return for the period {{return_period}} through the GST portal.",
+    "RETURN SUMMARY:\n- Return Period: {{return_period}}\n- Total Taxable Value: Rs. {{total_taxable_value}}\n- CGST: Rs. {{cgst_amount}}\n- SGST: Rs. {{sgst_amount}}\n- IGST: Rs. {{igst_amount}}\n- CESS: Rs. {{cess_amount}}\n- Total Tax Liability: Rs. {{cgst_amount + sgst_amount + (igst_amount or 0) + (cess_amount or 0)}}",
+    "The return has been filed electronically. Acknowledgment number and copy are enclosed.",
+    "All applicable taxes have been paid within the prescribed time limit.",
+    "Thanking you,",
+    "For {{taxpayer_name}}\nGSTIN: {{gstin}}\nAuthorized Signatory",
+    "Enclosures:\n1. GSTR-1 Return Acknowledgment\n2. Payment Challans"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

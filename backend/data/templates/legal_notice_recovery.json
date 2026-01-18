@@ -1,0 +1,109 @@
+{
+  "template_id": "legal_notice_recovery",
+  "name": "Legal Notice - Recovery of Dues",
+  "category": "legal_notice",
+  "description": "Legal notice for recovery of outstanding payment",
+  "act": [],
+  "section": [
+    "138"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Legal Notice",
+    "Recovery",
+    "Demand",
+    "Payment"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "sender_name",
+      "label": "Sender/Client Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "sender_address",
+      "label": "Sender Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "recipient_name",
+      "label": "Recipient/Defaulter Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "recipient_address",
+      "label": "Recipient Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "amount_due",
+      "label": "Amount Due (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "invoice_details",
+      "label": "Invoice/Transaction Details",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "Invoice nos., dates, services/goods provided"
+    },
+    {
+      "id": "due_date",
+      "label": "Original Due Date",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "lawyer_name",
+      "label": "Lawyer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "lawyer_address",
+      "label": "Lawyer Address",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "LEGAL NOTICE",
+    "To,\n{{recipient_name}}\n{{recipient_address}}",
+    "Date: [DATE]",
+    "LEGAL NOTICE UNDER SECTION 138 OF NEGOTIABLE INSTRUMENTS ACT / CONTRACT ACT",
+    "Dear Sir/Madam,",
+    "UNDER INSTRUCTIONS FROM AND ON BEHALF OF: {{sender_name}}",
+    "I am writing this legal notice under instructions from my client, {{sender_name}}, residing at {{sender_address}}, in the matter of recovery of outstanding dues.",
+    "FACTS OF THE CASE:",
+    "1. My client and you have entered into a business transaction wherein my client provided goods/services as detailed below:\n   {{invoice_details}}",
+    "2. The total outstanding amount due and payable by you to my client is Rs. {{amount_due}} (Rupees [Amount in Words]).",
+    "3. The payment was due on {{due_date}}, but despite repeated reminders and requests, you have failed and neglected to make the payment.",
+    "4. This willful default and deliberate refusal to pay the legitimate dues has caused financial loss and mental agony to my client.",
+    "NOTICE:",
+    "Under instructions from my client, I hereby call upon you to pay the outstanding amount of Rs. {{amount_due}} along with interest @ [X]% per annum from {{due_date}} till the date of actual payment, within 15 (fifteen) days from the receipt of this notice.",
+    "FURTHER NOTICE:",
+    "Please note that if you fail to make the payment within the stipulated time of 15 days, my client shall be constrained to initiate appropriate legal proceedings against you including filing a civil suit for recovery, criminal complaint under Section 138 of the Negotiable Instruments Act (if applicable), or any other legal remedy available under law.",
+    "All such legal proceedings shall be at your risk, cost, and consequences. My client reserves the right to claim interest, damages, legal costs, and any other relief as deemed fit.",
+    "This notice is issued without prejudice to any rights, remedies, and contentions available to my client under law, all of which are expressly reserved.",
+    "Kindly treat this as most urgent and serious.",
+    "Yours faithfully,",
+    "{{lawyer_name}}\nAdvocate\n{{lawyer_address}}",
+    "For and on behalf of: {{sender_name}}",
+    "Note: This notice is sent by Registered Post AD / Speed Post / Email"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

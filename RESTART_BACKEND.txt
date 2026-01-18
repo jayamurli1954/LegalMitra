@@ -1,0 +1,74 @@
+============================================
+  HOW TO RESTART BACKEND WITH NEW MODELS
+============================================
+
+The backend needs to be restarted to load the new models (33 models including 6 FREE ones!)
+
+METHOD 1: Quick Restart
+-----------------------
+1. Go to the command prompt where backend is running
+2. Press Ctrl+C (stops the backend)
+3. Wait 2 seconds
+4. Press UP arrow key (recalls last command)
+5. Press ENTER
+6. Backend restarts with new models!
+
+METHOD 2: Manual Restart
+------------------------
+1. Go to backend terminal
+2. Press Ctrl+C
+3. Type: python -m app.main
+4. Press ENTER
+
+METHOD 3: New Terminal
+----------------------
+1. Open NEW Command Prompt
+2. Type: cd D:\SanMitra_Tech\LegalMitra\backend
+3. Type: python -m app.main
+4. Press ENTER
+
+============================================
+  AFTER RESTART - SEE THE NEW MODELS
+============================================
+
+1. Open browser
+2. Go to: model-selector.html (should already be open)
+3. Refresh page (F5 or Ctrl+R)
+4. You'll now see:
+
+   🆓 FREE TIER (6 models) - GOLDEN section at top!
+   ⭐ Premium Tier (6 models)
+   ⚖️ Balanced Tier (6 models)
+   💰 Budget Tier (7 models)
+
+   Total: 33 models (was only 9 before!)
+
+============================================
+  FREE MODELS YOU'LL SEE
+============================================
+
+🆓 Llama 3.2 3B (FREE)
+🆓 Llama 3.1 8B (FREE) ← Best for most tasks
+🆓 Gemini Flash 1.5 (FREE) ← Best for long documents
+🆓 Mistral 7B (FREE)
+🆓 Phi-3 Mini (FREE)
+🆓 Gemma 2 9B (FREE)
+
+All completely FREE, unlimited usage!
+
+============================================
+  QUICK TEST
+============================================
+
+After restarting backend:
+
+1. Refresh model-selector.html (F5)
+2. See golden FREE TIER section
+3. Click "Llama 3.1 8B (FREE)"
+4. Go to index.html
+5. Ask: "What is GST?"
+6. Get answer for FREE!
+7. Check cost-dashboard.html
+8. Should show $0.00 cost!
+
+============================================

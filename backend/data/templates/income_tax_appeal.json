@@ -1,0 +1,83 @@
+{
+  "template_id": "income_tax_appeal",
+  "name": "Income Tax Appeal Format",
+  "category": "tax_compliance",
+  "description": "Appeal to CIT(A) against assessment order",
+  "act": [
+    "IT_ACT"
+  ],
+  "section": [
+    "246A"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Income Tax",
+    "Appeal",
+    "CIT(A)",
+    "Assessment"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "appellant_name",
+      "label": "Appellant Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan",
+      "label": "PAN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "assessment_year",
+      "label": "Assessment Year",
+      "type": "text",
+      "required": true,
+      "placeholder": "2025-26"
+    },
+    {
+      "id": "order_number",
+      "label": "Assessment Order Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "order_date",
+      "label": "Order Date",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "grounds_of_appeal",
+      "label": "Grounds of Appeal",
+      "type": "multiline",
+      "required": true
+    }
+  ],
+  "body": [
+    "BEFORE THE COMMISSIONER OF INCOME TAX (APPEALS)\n[City]",
+    "APPEAL UNDER SECTION 246A OF THE INCOME TAX ACT, 1961",
+    "Appellant: {{appellant_name}}\nPAN: {{pan}}\nAssessment Year: {{assessment_year}}",
+    "Vs.",
+    "Respondent: The Income Tax Officer\nWard/Circle: [Ward]",
+    "GROUNDS OF APPEAL",
+    "The appellant most respectfully submits this appeal against the order dated {{order_date}} bearing number {{order_number}} on the following grounds:",
+    "{{grounds_of_appeal}}",
+    "[AI will expand with:\n1. Detailed grounds with legal provisions\n2. Facts of the case\n3. Case laws supporting appellant\n4. Prayer for relief]",
+    "PRAYER",
+    "In light of the above submissions, the appellant prays that this Hon'ble Authority may be pleased to:\n(a) Set aside the impugned order\n(b) Grant relief as claimed\n(c) Pass such other orders as deemed fit",
+    "For {{appellant_name}}\nPAN: {{pan}}",
+    "Authorized Representative\nDate:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

@@ -1,0 +1,87 @@
+{
+  "template_id": "sebi_security_and_cyber_security_policy",
+  "name": "SEBI Information Security & Cyber Security Policy",
+  "category": "corporate",
+  "description": "Information security and cyber security policy as required under SEBI Cyber Security Framework",
+  "act": [
+    "IT_ACT",
+    "SEBI_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Cyber Security",
+    "Information Security",
+    "IT Security",
+    "Compliance"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cio_ciso_name",
+      "label": "CIO/CISO Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "policy_effective_date",
+      "label": "Policy Effective From",
+      "type": "date",
+      "required": true
+    }
+  ],
+  "body": [
+    "INFORMATION SECURITY & CYBER SECURITY POLICY",
+    "{{company_name}}\nCIN: {{cin}}",
+    "[Pursuant to SEBI Cyber Security Framework and Information Security Guidelines]",
+    "Policy Effective Date: {{policy_effective_date}}\nLast Updated: [DATE]",
+    "1. INTRODUCTION",
+    "This Policy establishes the framework for managing information security and cyber security risks for {{company_name}}.",
+    "2. OBJECTIVES",
+    "- Protect Company's information assets\n- Ensure business continuity\n- Comply with regulatory requirements\n- Protect stakeholder data and privacy",
+    "3. SCOPE",
+    "This Policy applies to:\n- All IT systems and infrastructure\n- Data and information assets\n- Employees and third-party vendors\n- All business processes",
+    "4. INFORMATION SECURITY MANAGEMENT",
+    "4.1 Information Classification:\n- Confidential\n- Internal Use\n- Public",
+    "4.2 Access Control:\n[AI will add access control procedures]",
+    "5. CYBER SECURITY FRAMEWORK",
+    "5.1 Chief Information Security Officer (CISO):\nName: {{cio_ciso_name}}\nDesignation: CIO/CISO",
+    "5.2 Security Measures:\n[AI will add:\n- Network security\n- Application security\n- Data encryption\n- Incident response\n- Business continuity plan]",
+    "6. RISK MANAGEMENT",
+    "[AI will add risk assessment and mitigation procedures]",
+    "7. INCIDENT REPORTING AND RESPONSE",
+    "[AI will add incident handling procedures and timelines]",
+    "8. VENDOR MANAGEMENT",
+    "[AI will add vendor security requirements and assessments]",
+    "9. TRAINING AND AWARENESS",
+    "[AI will add training programs for employees]",
+    "10. AUDIT AND COMPLIANCE",
+    "[AI will add audit procedures and compliance monitoring]",
+    "11. REVIEW AND UPDATES",
+    "This Policy will be reviewed annually and updated as required.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "Approved by:\n_____________________\nBoard of Directors\nDate: [DATE]"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

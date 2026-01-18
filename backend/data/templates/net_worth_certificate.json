@@ -1,0 +1,113 @@
+{
+  "template_id": "net_worth_certificate",
+  "name": "Net Worth Certificate",
+  "category": "corporate",
+  "description": "Certificate stating the net worth of a company/individual",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Compliance",
+    "Net Worth",
+    "Certificate",
+    "Financial"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "entity_name",
+      "label": "Entity Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "entity_type",
+      "label": "Entity Type",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Company",
+        "LLP",
+        "Partnership Firm",
+        "Proprietorship",
+        "Individual"
+      ]
+    },
+    {
+      "id": "pan",
+      "label": "PAN/CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "as_on_date",
+      "label": "Net Worth as on Date",
+      "type": "date",
+      "required": true
+    },
+    {
+      "id": "total_assets",
+      "label": "Total Assets (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "total_liabilities",
+      "label": "Total Liabilities (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "net_worth_amount",
+      "label": "Net Worth (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "ca_name",
+      "label": "CA Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "ca_firm",
+      "label": "CA Firm",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "ca_membership_no",
+      "label": "Membership Number",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "NET WORTH CERTIFICATE",
+    "To Whomsoever It May Concern",
+    "Date: [DATE]",
+    "This is to certify that we have examined the books of accounts and financial records of:",
+    "Name: {{entity_name}}\nPAN/CIN: {{pan}}\nEntity Type: {{entity_type}}",
+    "Based on our examination and the financial statements as on {{as_on_date}}, we certify that the Net Worth of {{entity_name}} is as follows:",
+    "COMPUTATION OF NET WORTH:",
+    "Total Assets:                        Rs. {{total_assets}}",
+    "Less: Total External Liabilities:    Rs. {{total_liabilities}}\n      (Excluding Capital/Reserves)",
+    "NET WORTH:                           Rs. {{net_worth_amount}}",
+    "BREAKUP OF ASSETS:\n[AI will provide detailed breakup based on entity type]",
+    "BREAKUP OF LIABILITIES:\n[AI will provide detailed breakup based on entity type]",
+    "The above certificate is issued based on the books of accounts, balance sheet, and other financial records made available to us.",
+    "For {{ca_firm}}\nChartered Accountants",
+    "{{ca_name}}\nPartner/Proprietor\nMembership No: {{ca_membership_no}}\nUDIN: [To be generated]",
+    "Date:\nPlace:",
+    "Note: This certificate is issued at the request of {{entity_name}} and is valid as on {{as_on_date}}."
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

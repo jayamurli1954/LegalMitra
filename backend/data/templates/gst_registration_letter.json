@@ -1,0 +1,89 @@
+{
+  "template_id": "gst_registration_letter",
+  "name": "GST Registration Application Letter",
+  "category": "gst",
+  "description": "Application letter for GST registration under GST Act 2017",
+  "act": [
+    "GST_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "GST",
+    "Registration",
+    "Tax",
+    "Application"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "applicant_name",
+      "label": "Applicant Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Company/Individual Name"
+    },
+    {
+      "id": "pan",
+      "label": "PAN Number",
+      "type": "text",
+      "required": true,
+      "placeholder": "AAAPZ1234C"
+    },
+    {
+      "id": "business_type",
+      "label": "Type of Business",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Manufacturing",
+        "Trading",
+        "Services",
+        "Mixed"
+      ]
+    },
+    {
+      "id": "state",
+      "label": "State",
+      "type": "text",
+      "required": true,
+      "placeholder": "e.g., Karnataka"
+    },
+    {
+      "id": "turnover",
+      "label": "Expected Annual Turnover",
+      "type": "text",
+      "required": true,
+      "placeholder": "50,00,000"
+    },
+    {
+      "id": "address",
+      "label": "Business Address",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "Complete address"
+    }
+  ],
+  "body": [
+    "To,\nThe Assistant Commissioner,\nGST Department,\n{{state}}",
+    "Date: [DATE]",
+    "Subject: Application for GST Registration",
+    "Respected Sir/Madam,",
+    "I/We, {{applicant_name}} (PAN: {{pan}}), hereby apply for registration under the Goods and Services Tax Act, 2017.",
+    "BUSINESS DETAILS:\n- Nature of Business: {{business_type}}\n- Expected Annual Turnover: Rs. {{turnover}}\n- State of Registration: {{state}}\n- Business Address: {{address}}",
+    "All required documents including PAN, address proof, and identity proof are enclosed herewith.",
+    "Kindly process our application at the earliest and grant GST registration.",
+    "Thanking you,",
+    "{{applicant_name}}\nPAN: {{pan}}",
+    "Enclosures:\n1. PAN Card copy\n2. Address Proof\n3. Identity Proof\n4. Bank Account Details"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

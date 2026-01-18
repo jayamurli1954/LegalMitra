@@ -1,0 +1,88 @@
+{
+  "template_id": "NDA_SIMPLE_V1",
+  "name": "Non-Disclosure Agreement (Simple - India)",
+  "category": "corporate",
+  "description": "Simple NDA for protecting confidential business information under Indian law",
+  "act": ["COMPANIES_ACT", "CONTRACT_ACT"],
+  "section": [],
+  "court": [],
+  "language": "en",
+  "tags": ["nda", "confidentiality", "business", "corporate", "contract"],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Disclosing Party (Company Name)",
+      "type": "text",
+      "required": true,
+      "placeholder": "ABC Private Limited"
+    },
+    {
+      "id": "company_address",
+      "label": "Disclosing Party Address",
+      "type": "text",
+      "required": true,
+      "placeholder": "Registered office address"
+    },
+    {
+      "id": "receiving_party_name",
+      "label": "Receiving Party Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Name of person/entity receiving confidential information"
+    },
+    {
+      "id": "receiving_party_address",
+      "label": "Receiving Party Address",
+      "type": "text",
+      "required": true,
+      "placeholder": "Full address of receiving party"
+    },
+    {
+      "id": "purpose",
+      "label": "Purpose of Disclosure",
+      "type": "text",
+      "required": true,
+      "placeholder": "Business discussions / Partnership evaluation / etc."
+    },
+    {
+      "id": "duration_years",
+      "label": "Confidentiality Duration (Years)",
+      "type": "number",
+      "required": true,
+      "placeholder": "2"
+    },
+    {
+      "id": "date",
+      "label": "Agreement Date",
+      "type": "date",
+      "required": false,
+      "placeholder": "DD-MM-YYYY"
+    }
+  ],
+  "body": [
+    "NON-DISCLOSURE AGREEMENT\n",
+    "This Agreement is made on {{date}} between:\n",
+    "{{company_name}}, a company incorporated under the Companies Act, 2013, having its registered office at {{company_address}} (hereinafter referred to as the \"Disclosing Party\", which expression shall include its successors and assigns)\n",
+    "AND\n",
+    "{{receiving_party_name}}, having its address at {{receiving_party_address}} (hereinafter referred to as the \"Receiving Party\", which expression shall include its successors and assigns)\n",
+    "WHEREAS the parties are desirous of entering into discussions for the purpose of {{purpose}}, and in the course of such discussions, the Disclosing Party may share certain confidential and proprietary information with the Receiving Party.\n",
+    "NOW THEREFORE, in consideration of the mutual covenants and agreements herein contained, the parties agree as follows:\n",
+    "1. DEFINITIONS\n\n1.1 \"Confidential Information\" means any and all business, technical, financial, or commercial information, whether disclosed in writing, orally, or in any other form, which relates to the business, operations, or affairs of the Disclosing Party, including but not limited to:\n\n   (a) Business plans, strategies, and financial information;\n   (b) Technical data, designs, processes, and know-how;\n   (c) Customer and supplier information;\n   (d) Marketing plans and pricing information;\n   (e) Any other information marked as \"Confidential\" or which a reasonable person would understand to be confidential.\n",
+    "2. OBLIGATIONS OF THE RECEIVING PARTY\n\n2.1 The Receiving Party agrees that it shall:\n\n   (a) Hold and maintain the Confidential Information in strict confidence;\n   (b) Not disclose the Confidential Information to any third party without the prior written consent of the Disclosing Party;\n   (c) Use the Confidential Information solely for the purpose stated above;\n   (d) Not copy, reproduce, or modify the Confidential Information without prior written authorization;\n   (e) Take all reasonable measures to protect the secrecy of and prevent unauthorized access to the Confidential Information.\n\n2.2 The Receiving Party shall limit access to the Confidential Information to only those employees, consultants, or advisors who have a legitimate need to know and who have been informed of the confidential nature of such information.\n",
+    "3. EXCLUSIONS\n\nThe obligations under this Agreement shall not apply to information that:\n\n   (a) Was known to the Receiving Party prior to disclosure by the Disclosing Party;\n   (b) Is or becomes publicly available through no breach of this Agreement by the Receiving Party;\n   (c) Is lawfully received by the Receiving Party from a third party without breach of any confidentiality obligation;\n   (d) Is required to be disclosed by law, regulation, or court order (provided that the Receiving Party gives prior written notice to the Disclosing Party).\n",
+    "4. TERM\n\nThis Agreement shall remain in effect for a period of {{duration_years}} years from the date of execution. The obligations of confidentiality shall survive the termination of this Agreement for the stated period.\n",
+    "5. RETURN OF INFORMATION\n\nUpon termination of this Agreement or upon request by the Disclosing Party, the Receiving Party shall immediately return or destroy all Confidential Information in its possession, including all copies, notes, and derivatives thereof.\n",
+    "6. NO LICENSE\n\nNothing in this Agreement shall be construed as granting any license, right, or interest in any intellectual property of the Disclosing Party to the Receiving Party.\n",
+    "7. REMEDIES\n\nThe Receiving Party acknowledges that any breach of this Agreement may cause irreparable harm to the Disclosing Party for which monetary damages may be inadequate. Accordingly, the Disclosing Party shall be entitled to seek equitable relief, including injunction and specific performance, in addition to all other remedies available at law.\n",
+    "8. GOVERNING LAW AND JURISDICTION\n\nThis Agreement shall be governed by and construed in accordance with the laws of India. The courts at [City] shall have exclusive jurisdiction over any disputes arising under this Agreement.\n",
+    "9. ENTIRE AGREEMENT\n\nThis Agreement constitutes the entire understanding between the parties concerning the subject matter hereof and supersedes all prior agreements, understandings, and discussions, whether written or oral.\n",
+    "IN WITNESS WHEREOF, the parties hereto have executed this Agreement on the date first written above.\n\n",
+    "For {{company_name}}:\n\nSignature: ___________________\nName:\nDesignation:\nDate:\n\n",
+    "For {{receiving_party_name}}:\n\nSignature: ___________________\nName:\nDesignation:\nDate:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

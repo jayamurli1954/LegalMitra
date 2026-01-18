@@ -1,0 +1,88 @@
+{
+  "template_id": "partnership_deed",
+  "name": "Partnership Deed",
+  "category": "corporate",
+  "description": "Partnership agreement for business partnership",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Partnership",
+    "Deed",
+    "Agreement",
+    "Business"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "firm_name",
+      "label": "Firm Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "partner1_name",
+      "label": "Partner 1 Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "partner2_name",
+      "label": "Partner 2 Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "capital_partner1",
+      "label": "Capital by Partner 1 (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "capital_partner2",
+      "label": "Capital by Partner 2 (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "profit_ratio",
+      "label": "Profit Sharing Ratio",
+      "type": "text",
+      "required": true,
+      "placeholder": "50:50"
+    }
+  ],
+  "body": [
+    "PARTNERSHIP DEED",
+    "This Partnership Deed is made on [DATE]",
+    "BETWEEN",
+    "{{partner1_name}} (hereinafter called \"First Partner\")",
+    "AND",
+    "{{partner2_name}} (hereinafter called \"Second Partner\")",
+    "Collectively referred to as \"Partners\"",
+    "1. FIRM NAME\nThe partnership firm shall be known as: {{firm_name}}",
+    "2. NATURE OF BUSINESS\n[AI will add business description]",
+    "3. CAPITAL\nPartner 1 Capital: Rs. {{capital_partner1}}\nPartner 2 Capital: Rs. {{capital_partner2}}\nTotal Capital: Rs. {{capital_partner1 + capital_partner2}}",
+    "4. PROFIT SHARING\nProfit/Loss Ratio: {{profit_ratio}}",
+    "5. DUTIES AND RESPONSIBILITIES\n[AI will define roles of each partner]",
+    "6. BANKING AND ACCOUNTS\n[AI will add banking arrangements]",
+    "7. DRAWINGS\n[AI will add drawing limits]",
+    "8. ADMISSION OF NEW PARTNER\n[AI will add admission terms]",
+    "9. RETIREMENT/DEATH\n[AI will add exit clauses]",
+    "10. DISSOLUTION\n[AI will add dissolution terms]",
+    "IN WITNESS WHEREOF the partners have signed:",
+    "{{partner1_name}}                       {{partner2_name}}",
+    "_____________________                 _____________________\nPartner 1                             Partner 2",
+    "Date:                                 Date:",
+    "WITNESSES:\n1. _____________________\n2. _____________________"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

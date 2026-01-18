@@ -1,0 +1,100 @@
+{
+  "template_id": "sebi_disclosure_related_party_transaction",
+  "name": "SEBI Disclosure - Related Party Transaction",
+  "category": "corporate",
+  "description": "Disclosure of material related party transaction under SEBI Listing Regulations",
+  "act": [
+    "SEBI_ACT"
+  ],
+  "section": [
+    "23"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Related Party",
+    "Disclosure",
+    "Regulation 23",
+    "Listing Obligations"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "related_party_name",
+      "label": "Related Party Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "relationship",
+      "label": "Relationship with Company",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Director",
+        "Key Managerial Personnel",
+        "Relative of Director",
+        "Subsidiary",
+        "Associate Company",
+        "Promoter",
+        "Promoter Group"
+      ]
+    },
+    {
+      "id": "transaction_details",
+      "label": "Transaction Details",
+      "type": "multiline",
+      "required": true,
+      "placeholder": "Description of transaction, nature, terms"
+    },
+    {
+      "id": "transaction_value",
+      "label": "Transaction Value (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "transaction_date",
+      "label": "Transaction Date",
+      "type": "date",
+      "required": true
+    }
+  ],
+  "body": [
+    "DISCLOSURE OF MATERIAL RELATED PARTY TRANSACTION\nUNDER REGULATION 23(1) OF SEBI (LISTING OBLIGATIONS AND DISCLOSURE REQUIREMENTS) REGULATIONS, 2015",
+    "{{company_name}}\nCIN: {{cin}}",
+    "Date: [DATE]",
+    "To,\nThe Secretary\nThe Stock Exchanges\n[BSE/NSE]",
+    "Subject: Disclosure of Material Related Party Transaction",
+    "Dear Sir/Madam,",
+    "Pursuant to Regulation 23(1) of the SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015, we hereby disclose the following material related party transaction entered into by {{company_name}}:",
+    "TRANSACTION DETAILS:",
+    "1. Company Name: {{company_name}}\n2. CIN: {{cin}}\n3. Related Party: {{related_party_name}}\n4. Relationship: {{relationship}}\n5. Transaction Details:\n   {{transaction_details}}\n6. Transaction Value: Rs. {{transaction_value}}\n7. Transaction Date: {{transaction_date}}\n8. Approving Authority: [Board of Directors/Audit Committee/Shareholders]",
+    "[AI will expand with:\n- Details of approval process\n- Fair value assessment\n- Impact on company\n- Compliance with policy]",
+    "The transaction has been entered into in the ordinary course of business and on an arm's length basis as per the Company's Related Party Transaction Policy.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "_____________________\nCompany Secretary\nName: [Name]\nSEBI Regn. No.: [If applicable]",
+    "Enclosures:\n1. Copy of Board Resolution\n2. Audit Committee approval (if applicable)\n3. Related Party Transaction Policy"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

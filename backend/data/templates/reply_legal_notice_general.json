@@ -1,0 +1,47 @@
+{
+  "template_id": "REPLY_LEGAL_NOTICE_V1",
+  "name": "Reply to Legal Notice (General)",
+  "category": "reply",
+  "description": "General reply to legal notice denying allegations and rejecting demands",
+  "act": [],
+  "section": [],
+  "court": [],
+  "language": "en",
+  "tags": ["reply", "legal notice", "denial", "response"],
+  "is_premium": false,
+  "fields": [
+    {"id": "advocate_name", "label": "Advocate Name", "type": "text", "required": true},
+    {"id": "client_name", "label": "Client Name (Respondent)", "type": "text", "required": true},
+    {"id": "sender_name", "label": "Sender of Original Notice", "type": "text", "required": true},
+    {"id": "sender_address", "label": "Sender Address", "type": "text", "required": true},
+    {"id": "notice_date", "label": "Date of Original Notice", "type": "date", "required": true},
+    {"id": "notice_subject", "label": "Subject of Original Notice", "type": "text", "required": true},
+    {"id": "allegations_summary", "label": "Summary of Allegations", "type": "text", "required": true},
+    {"id": "denial_grounds", "label": "Grounds for Denial", "type": "text", "required": true},
+    {"id": "counter_allegations", "label": "Counter-Allegations (if any)", "type": "text", "required": false},
+    {"id": "date", "label": "Reply Date", "type": "date", "required": false}
+  ],
+  "body": [
+    "REPLY TO LEGAL NOTICE\n",
+    "Date: {{date}}\n",
+    "To,\n{{sender_name}}\n{{sender_address}}\n",
+    "Subject: Reply to your Legal Notice dated {{notice_date}}\n",
+    "Sir/Madam,\n",
+    "Under instructions from and on behalf of my client {{client_name}}, I write this reply to your legal notice dated {{notice_date}} concerning {{notice_subject}}.\n",
+    "2. At the outset, I am to state that my client denies each and every allegation, assertion, and claim made in your aforesaid legal notice as false, baseless, misconceived, and unsustainable in law.\n",
+    "3. Your notice alleges that {{allegations_summary}}. My client categorically denies these allegations for the following reasons:\n\n{{denial_grounds}}\n",
+    "4. Your demand for payment/compliance, as contained in the said notice, is wholly unjustified, unwarranted, and legally untenable. My client is under no legal or contractual obligation to comply with your demands.\n",
+    {
+      "condition": "counter_allegations exists",
+      "text": "5. In fact, it is {{sender_name}} who has {{counter_allegations}}. My client reserves all rights to initiate appropriate legal proceedings against {{sender_name}} for the same."
+    },
+    "6. Your legal notice appears to have been issued with the malafide intention of harassing and pressuring my client into making undue payments/concessions.\n",
+    "7. My client reserves all rights and remedies available under law, including the right to claim damages for frivolous and vexatious legal notice.\n",
+    "8. This reply is issued without prejudice to all rights, contentions, and defenses available to my client.\n",
+    "You are advised not to issue any further communication on this matter and desist from making any false, baseless, or defamatory statements against my client.\n\n",
+    "Sd/-\n{{advocate_name}}\nAdvocate\nFor and on behalf of {{client_name}}"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16"
+}

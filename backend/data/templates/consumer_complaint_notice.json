@@ -1,0 +1,73 @@
+{
+  "template_id": "consumer_complaint_notice",
+  "name": "Consumer Complaint Notice",
+  "category": "legal_notice",
+  "description": "Notice for consumer grievance/complaint",
+  "act": [],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Legal Notice",
+    "Consumer",
+    "Complaint",
+    "Consumer Protection Act"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "consumer_name",
+      "label": "Consumer Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "seller_name",
+      "label": "Seller/Service Provider Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "product_service",
+      "label": "Product/Service Details",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "complaint_details",
+      "label": "Nature of Complaint",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "amount_paid",
+      "label": "Amount Paid (Rs.)",
+      "type": "number",
+      "required": true
+    }
+  ],
+  "body": [
+    "CONSUMER COMPLAINT NOTICE",
+    "Date: [DATE]",
+    "To,\n{{seller_name}}\n[Address]",
+    "Dear Sir/Madam,",
+    "RE: CONSUMER COMPLAINT - DEFICIENCY IN SERVICE",
+    "This is to bring to your notice the following grievance:",
+    "CONSUMER DETAILS:\nName: {{consumer_name}}\nAddress: [Address]",
+    "TRANSACTION DETAILS:\nProduct/Service: {{product_service}}\nAmount Paid: Rs. {{amount_paid}}\nDate of Purchase: [Date]",
+    "COMPLAINT:\n{{complaint_details}}",
+    "RELIEF SOUGHT:\n1. Replacement of defective product / Re-performance of service\n2. Refund of amount paid: Rs. {{amount_paid}}\n3. Compensation for mental agony and harassment\n4. Interest on amount from date of payment",
+    "You are required to redress this complaint within 15 days failing which a complaint will be filed before the Consumer Disputes Redressal Forum under the Consumer Protection Act, 2019.",
+    "This notice is issued under the Consumer Protection Act, 2019.",
+    "{{consumer_name}}",
+    "Signature: _____________________\nDate:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

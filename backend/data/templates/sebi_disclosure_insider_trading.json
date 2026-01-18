@@ -1,0 +1,110 @@
+{
+  "template_id": "sebi_disclosure_insider_trading",
+  "name": "SEBI Disclosure - Insider Trading Compliance",
+  "category": "corporate",
+  "description": "Disclosure under SEBI (Prohibition of Insider Trading) Regulations, 2015",
+  "act": [
+    "SEBI_ACT"
+  ],
+  "section": [
+    "7"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "SEBI",
+    "Insider Trading",
+    "Disclosure",
+    "Regulation 7",
+    "Compliance"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "person_name",
+      "label": "Insider Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "pan_din",
+      "label": "PAN/DIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "designation",
+      "label": "Designation",
+      "type": "text",
+      "required": true,
+      "placeholder": "Director/Key Managerial Personnel"
+    },
+    {
+      "id": "transaction_type",
+      "label": "Transaction Type",
+      "type": "dropdown",
+      "required": true,
+      "options": [
+        "Purchase",
+        "Sale",
+        "Pledge",
+        "Release of Pledge",
+        "Other"
+      ]
+    },
+    {
+      "id": "security_type",
+      "label": "Type of Security",
+      "type": "text",
+      "required": true,
+      "placeholder": "Equity Shares/Debentures"
+    },
+    {
+      "id": "quantity",
+      "label": "Quantity",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "transaction_date",
+      "label": "Transaction Date",
+      "type": "date",
+      "required": true
+    }
+  ],
+  "body": [
+    "DISCLOSURE UNDER REGULATION 7(2) OF SEBI (PROHIBITION OF INSIDER TRADING) REGULATIONS, 2015",
+    "{{company_name}}\nCIN: {{cin}}",
+    "Date: [DATE]",
+    "To,\nThe Company Secretary\n{{company_name}}\n[Registered Office Address]",
+    "Dear Sir/Madam,",
+    "I, {{person_name}} (PAN/DIN: {{pan_din}}), holding the position of {{designation}} in {{company_name}}, hereby make the following disclosure as required under Regulation 7(2) of the SEBI (Prohibition of Insider Trading) Regulations, 2015.",
+    "DISCLOSURE DETAILS:",
+    "1. Name of Insider: {{person_name}}\n2. Designation: {{designation}}\n3. PAN/DIN: {{pan_din}}\n4. Type of Transaction: {{transaction_type}}\n5. Type of Security: {{security_type}}\n6. Quantity: {{quantity}}\n7. Transaction Date: {{transaction_date}}\n8. Transaction Value: Rs. [Amount]",
+    "I confirm that:\n- I am aware of my responsibilities under SEBI (PIT) Regulations, 2015\n- This transaction has been disclosed within the prescribed timeline\n- The information provided is true and correct",
+    "I further undertake to make timely disclosures of any future transactions as required under the Regulations.",
+    "For {{company_name}}",
+    "{{person_name}}\nDesignation: {{designation}}\nPAN/DIN: {{pan_din}}",
+    "Date:\nPlace:"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

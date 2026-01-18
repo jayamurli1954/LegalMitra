@@ -1,0 +1,76 @@
+{
+  "template_id": "form_inc22_address_change",
+  "name": "INC-22 Change of Registered Office Address",
+  "category": "corporate",
+  "description": "Application for change of registered office address (Form INC-22)",
+  "act": [
+    "COMPANIES_ACT"
+  ],
+  "section": [],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Companies Act",
+    "INC-22",
+    "Registered Office",
+    "Address Change"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "company_name",
+      "label": "Company Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cin",
+      "label": "CIN",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "old_address",
+      "label": "Old Registered Office Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "new_address",
+      "label": "New Registered Office Address",
+      "type": "multiline",
+      "required": true
+    },
+    {
+      "id": "effective_date",
+      "label": "Change Effective From",
+      "type": "text",
+      "required": true
+    }
+  ],
+  "body": [
+    "To,\nThe Registrar of Companies\n[State]",
+    "Date: [DATE]",
+    "Subject: Application for Change of Registered Office Address - Form INC-22",
+    "Company: {{company_name}}\nCIN: {{cin}}",
+    "Respected Sir/Madam,",
+    "We hereby apply for change of registered office address of our company.",
+    "OLD ADDRESS:\n{{old_address}}",
+    "NEW ADDRESS:\n{{new_address}}",
+    "EFFECTIVE DATE: {{effective_date}}",
+    "The change of address was approved by the Board of Directors vide Resolution dated [DATE].",
+    "All documents including utility bills, lease deed, and board resolution are enclosed.",
+    "Kindly process and approve the change.",
+    "For {{company_name}}\nCIN: {{cin}}",
+    "_____________________\nDirector",
+    "Enclosures:\n1. Form INC-22\n2. Board Resolution\n3. Proof of new address\n4. NOC from landlord (if applicable)"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}

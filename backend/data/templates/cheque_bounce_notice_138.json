@@ -1,0 +1,91 @@
+{
+  "template_id": "cheque_bounce_notice_138",
+  "name": "Legal Notice for Cheque Bounce (Section 138)",
+  "category": "legal_notice",
+  "description": "Notice under Section 138 of Negotiable Instruments Act for dishonored cheque",
+  "act": [
+    "NI_ACT"
+  ],
+  "section": [
+    "138"
+  ],
+  "court": [
+    "District",
+    "High Court",
+    "Supreme Court"
+  ],
+  "language": "en",
+  "tags": [
+    "Negotiable Instruments Act",
+    "Section 138",
+    "Cheque Bounce",
+    "Criminal"
+  ],
+  "is_premium": false,
+  "fields": [
+    {
+      "id": "sender_name",
+      "label": "Sender/Payee Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "drawer_name",
+      "label": "Drawer/Accused Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cheque_number",
+      "label": "Cheque Number",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cheque_date",
+      "label": "Cheque Date",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "cheque_amount",
+      "label": "Cheque Amount (Rs.)",
+      "type": "number",
+      "required": true
+    },
+    {
+      "id": "bank_name",
+      "label": "Bank Name",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "bounce_reason",
+      "label": "Reason for Dishonor",
+      "type": "text",
+      "required": true,
+      "placeholder": "Insufficient funds"
+    }
+  ],
+  "body": [
+    "LEGAL NOTICE\nUNDER SECTION 138 OF THE NEGOTIABLE INSTRUMENTS ACT, 1881",
+    "To,\n{{drawer_name}}\n[Address]",
+    "Date: [DATE]",
+    "FROM: {{sender_name}}\n[Address]",
+    "Dear Sir/Madam,",
+    "LEGAL NOTICE FOR DISHONOR OF CHEQUE",
+    "Under instructions from my client, {{sender_name}}, I am writing this notice regarding dishonor of cheque issued by you.",
+    "CHEQUE DETAILS:\n- Cheque Number: {{cheque_number}}\n- Date: {{cheque_date}}\n- Amount: Rs. {{cheque_amount}}\n- Drawn on: {{bank_name}}\n- Payable to: {{sender_name}}",
+    "DISHONOR:\nThe above cheque was presented for payment but was dishonored with the remark: \"{{bounce_reason}}\".",
+    "The dishonor memo was received on [DATE].",
+    "NOTICE:\nPursuant to Section 138 of the Negotiable Instruments Act, 1881, you are called upon to pay the cheque amount of Rs. {{cheque_amount}} within 15 days from the receipt of this notice.",
+    "Failing which, criminal complaint under Section 138 shall be filed before the competent court, and you shall be liable for:\n- Imprisonment up to 2 years\n- Fine up to twice the cheque amount\n- Both",
+    "Kindly make payment immediately.",
+    "For {{sender_name}}",
+    "[Lawyer Name]\nAdvocate\n[Address]"
+  ],
+  "disclaimer": true,
+  "version": "1.0",
+  "last_updated": "2026-01-16",
+  "author": "LegalMitra"
+}
