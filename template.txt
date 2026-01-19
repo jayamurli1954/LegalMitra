@@ -1,0 +1,960 @@
+
+Got it. You already have a **very strong base (~63 templates)** covering Tax, GST, Corporate, SEBI, Notices, and Contracts.
+To make **LegalMitra Marketplace truly comprehensive (100–120+ templates)** and *commercially attractive*, the missing gap is mainly in:
+
+* **Litigation & Court Practice**
+* **Property & Real Estate**
+* **Family Law**
+* **Startups & IP**
+* **Criminal Law (basic)**
+* **HR & Labour (expanded)**
+* **Regulatory + Digital Law (new-age)**
+
+Below is a **curated, non-duplicative list of ~60 additional templates**, neatly categorized and aligned with **Indian legal demand**.
+
+---
+
+## 📂 A. Litigation & Court Practice (High Demand) – 15 Templates
+
+1. Plaint under CPC (Money Recovery Suit)
+2. Written Statement (Civil Suit)
+3. Interim Application / IA Format
+4. Caveat Petition (Section 148A CPC)
+5. Execution Petition
+6. Application for Condonation of Delay
+7. Application for Certified Copy
+8. Application under Order 7 Rule 11 CPC
+9. Application for Temporary Injunction (Order 39)
+10. Affidavit of Evidence (Plaintiff/Defendant)
+11. Criminal Complaint u/s 200 CrPC
+12. Bail Application (Regular Bail)
+13. Anticipatory Bail Application (438 CrPC)
+14. Compounding Application (138 NI Act)
+15. Memo of Appeal (Civil / Criminal)
+
+---
+
+## 🏠 B. Property & Real Estate – 10 Templates
+
+16. Sale Agreement (Immovable Property)
+17. Sale Deed (Residential Property)
+18. Lease Deed (Commercial Property)
+19. Leave & License Agreement
+20. Gift Deed (Immovable Property)
+21. Partition Deed (Family Property)
+22. Power of Attorney (Property Specific)
+23. Builder–Buyer Agreement
+24. Rent Enhancement Notice
+25. Possession Notice to Builder
+
+---
+
+## 👨‍👩‍👧 C. Family & Personal Laws – 8 Templates
+
+26. Mutual Divorce Petition (Section 13B HMA)
+27. Maintenance Application (Section 125 CrPC)
+28. Domestic Violence Complaint (PWDV Act)
+29. Child Custody Application
+30. Legal Notice for Restitution of Conjugal Rights
+31. Will (Simple – Hindu / Muslim / Christian)
+32. Codicil to Will
+33. Succession Certificate Application
+
+---
+
+## 🚀 D. Startup, IP & Business Expansion – 10 Templates
+
+34. Founders Agreement
+35. Shareholders Agreement (SHA)
+36. Term Sheet (Startup Investment)
+37. ESOP Policy
+38. IP Assignment Agreement
+39. Trademark Objection Reply
+40. Trademark Opposition Notice
+41. Copyright Assignment Agreement
+42. Franchise Agreement
+43. Joint Venture Agreement
+
+---
+
+## 👮 E. Criminal Law (Basic but Essential) – 6 Templates
+
+44. FIR Draft (Police Complaint)
+45. Private Criminal Complaint Format
+46. Compromise Deed (Criminal Matters)
+47. Application for Quashing FIR (Section 482 CrPC)
+48. Protest Petition
+49. Victim Compensation Application
+
+---
+
+## 👷 F. Labour & HR (Expanded Coverage) – 6 Templates
+
+50. Appointment Letter
+51. Experience Certificate
+52. Termination Letter (Misconduct / Redundancy)
+53. Show Cause Notice to Employee
+54. Gratuity Claim Application
+55. Full & Final Settlement Letter
+
+---
+
+## 🌐 G. Digital, Compliance & New-Age Law – 8 Templates
+
+56. Website Terms & Conditions
+57. Privacy Policy (DPDP Act, 2023 compliant)
+58. Cookie Policy
+59. E-commerce Seller Agreement
+60. Data Breach Incident Report
+61. IT Act Legal Notice (Cyber Harassment/Fraud)
+62. Social Media Defamation Notice
+63. Influencer Agreement
+
+---
+
+## 📊 Final Count Snapshot
+
+| Category      | Templates |
+| ------------- | --------- |
+| Existing      | ~63       |
+| New Suggested | ~60       |
+| **Total**     | **120+**  |
+
+---
+
+## 🔥 Marketplace Strategy Tip (Important)
+
+For **LegalMitra monetization**, tag templates as:
+
+* 🟢 **Free** – Awareness & Lead Magnet
+* 🔵 **Pro** – ₹99–₹299 (Notices, Agreements)
+* 🟣 **Lawyer+** – ₹499–₹999 (Petitions, Appeals, Drafts)
+
+This aligns perfectly with **SMEs, startups, individuals & junior advocates**.
+
+---
+
+Perfect 👍 — for **LegalMitra**, the **right approach is NOT 100 different JSON structures**, but:
+
+> **ONE STANDARD JSON SCHEMA**
+>
+> * **100+ template instances using that schema**
+
+Below I’ll give you **(A) the master JSON schema**, and **(B) sample JSON templates** you can directly store in DB / CMS / marketplace.
+This is **production-ready** and scalable.
+
+---
+
+# ✅ A. Master JSON Schema (STANDARD FOR ALL TEMPLATES)
+
+This schema works for **Notices, Agreements, Petitions, Tax, GST, Corporate, Criminal, Family, IP — everything**.
+
+```json
+{
+  "template_id": "",
+  "slug": "",
+  "title": "",
+  "short_description": "",
+  "category": "",
+  "sub_category": "",
+  "price_type": "FREE | PAID",
+  "price_amount": 0,
+  "jurisdiction": {
+    "country": "India",
+    "courts": []
+  },
+  "applicable_laws": [],
+  "use_cases": [],
+  "keywords": [],
+  "form_fields": [],
+  "sections": [],
+  "output_format": ["PDF", "DOCX"],
+  "created_by": "LegalMitra",
+  "status": "ACTIVE",
+  "version": "1.0"
+}
+```
+
+---
+
+# ✅ B. Field Object Structure (IMPORTANT)
+
+### 🔹 `form_fields` (Dynamic Input UI)
+
+```json
+{
+  "field_id": "",
+  "label": "",
+  "type": "text | textarea | date | number | select | checkbox",
+  "required": true,
+  "placeholder": "",
+  "options": []
+}
+```
+
+---
+
+### 🔹 `sections` (Document Draft Logic)
+
+```json
+{
+  "section_id": "",
+  "heading": "",
+  "content_template": ""
+}
+```
+
+---
+
+# ✅ C. SAMPLE JSON TEMPLATES (READY TO USE)
+
+---
+
+## 1️⃣ Legal Notice – Non-Payment of Dues
+
+```json
+{
+  "template_id": "LM-NOTICE-001",
+  "slug": "legal-notice-non-payment-dues",
+  "title": "Legal Notice for Non-Payment of Dues",
+  "short_description": "Legal notice for recovery of outstanding dues and unpaid amounts",
+  "category": "Legal Notice",
+  "sub_category": "Recovery",
+  "price_type": "FREE",
+  "price_amount": 0,
+  "jurisdiction": {
+    "country": "India",
+    "courts": ["District Court", "Civil Court"]
+  },
+  "applicable_laws": ["CPC", "Indian Contract Act, 1872"],
+  "use_cases": [
+    "Business payment recovery",
+    "Outstanding invoice recovery"
+  ],
+  "keywords": ["payment recovery", "legal notice", "outstanding dues"],
+  "form_fields": [
+    {
+      "field_id": "sender_name",
+      "label": "Sender Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enter sender full name",
+      "options": []
+    },
+    {
+      "field_id": "recipient_name",
+      "label": "Recipient Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Enter recipient full name",
+      "options": []
+    },
+    {
+      "field_id": "amount_due",
+      "label": "Outstanding Amount",
+      "type": "number",
+      "required": true,
+      "placeholder": "Enter amount due",
+      "options": []
+    },
+    {
+      "field_id": "due_date",
+      "label": "Due Date",
+      "type": "date",
+      "required": true,
+      "placeholder": "",
+      "options": []
+    }
+  ],
+  "sections": [
+    {
+      "section_id": "intro",
+      "heading": "Introduction",
+      "content_template": "Under instructions from my client {{sender_name}}, I hereby issue this legal notice to {{recipient_name}}."
+    },
+    {
+      "section_id": "default",
+      "heading": "Default in Payment",
+      "content_template": "You have failed to pay an outstanding amount of ₹{{amount_due}} despite the due date {{due_date}}."
+    },
+    {
+      "section_id": "demand",
+      "heading": "Demand",
+      "content_template": "You are hereby called upon to pay the said amount within 15 days from receipt of this notice."
+    },
+    {
+      "section_id": "consequence",
+      "heading": "Legal Consequences",
+      "content_template": "Failure will compel my client to initiate appropriate legal proceedings at your risk and cost."
+    }
+  ],
+  "output_format": ["PDF", "DOCX"],
+  "created_by": "LegalMitra",
+  "status": "ACTIVE",
+  "version": "1.0"
+}
+```
+
+---
+
+## 2️⃣ Employment Agreement (Paid Template Example)
+
+```json
+{
+  "template_id": "LM-AGREEMENT-004",
+  "slug": "employment-agreement-india",
+  "title": "Employment Agreement",
+  "short_description": "Comprehensive employment agreement under Indian labour laws",
+  "category": "Agreement",
+  "sub_category": "Employment",
+  "price_type": "PAID",
+  "price_amount": 299,
+  "jurisdiction": {
+    "country": "India",
+    "courts": ["Labour Court"]
+  },
+  "applicable_laws": [
+    "Indian Contract Act, 1872",
+    "Shops and Establishments Act"
+  ],
+  "use_cases": [
+    "Hiring full-time employees",
+    "Employment compliance"
+  ],
+  "keywords": ["employment agreement", "HR contract", "employee terms"],
+  "form_fields": [
+    {
+      "field_id": "employer_name",
+      "label": "Employer Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Company Name",
+      "options": []
+    },
+    {
+      "field_id": "employee_name",
+      "label": "Employee Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Employee Full Name",
+      "options": []
+    },
+    {
+      "field_id": "designation",
+      "label": "Designation",
+      "type": "text",
+      "required": true,
+      "placeholder": "Job Title",
+      "options": []
+    },
+    {
+      "field_id": "salary",
+      "label": "Monthly Salary",
+      "type": "number",
+      "required": true,
+      "placeholder": "₹ Amount",
+      "options": []
+    }
+  ],
+  "sections": [
+    {
+      "section_id": "appointment",
+      "heading": "Appointment",
+      "content_template": "The Employer appoints {{employee_name}} as {{designation}} on the terms herein."
+    },
+    {
+      "section_id": "remuneration",
+      "heading": "Salary",
+      "content_template": "The employee shall be paid a monthly salary of ₹{{salary}} subject to statutory deductions."
+    },
+    {
+      "section_id": "termination",
+      "heading": "Termination",
+      "content_template": "Either party may terminate this agreement by giving 30 days written notice."
+    }
+  ],
+  "output_format": ["PDF", "DOCX"],
+  "created_by": "LegalMitra",
+  "status": "ACTIVE",
+  "version": "1.0"
+}
+```
+
+---
+
+## 3️⃣ Caveat Petition (Court Filing)
+
+```json
+{
+  "template_id": "LM-COURT-012",
+  "slug": "caveat-petition-cpc",
+  "title": "Caveat Petition under Section 148A CPC",
+  "short_description": "Prevent ex-parte orders by filing caveat petition",
+  "category": "Litigation",
+  "sub_category": "Civil Procedure",
+  "price_type": "PAID",
+  "price_amount": 199,
+  "jurisdiction": {
+    "country": "India",
+    "courts": ["District Court", "High Court"]
+  },
+  "applicable_laws": ["Code of Civil Procedure, 1908"],
+  "use_cases": [
+    "Prevent ex-parte injunctions"
+  ],
+  "keywords": ["caveat", "section 148A", "civil court"],
+  "form_fields": [
+    {
+      "field_id": "caveator_name",
+      "label": "Caveator Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "",
+      "options": []
+    },
+    {
+      "field_id": "opposite_party",
+      "label": "Opposite Party Name",
+      "type": "text",
+      "required": true,
+      "placeholder": "",
+      "options": []
+    }
+  ],
+  "sections": [
+    {
+      "section_id": "statement",
+      "heading": "Caveat Statement",
+      "content_template": "The caveator {{caveator_name}} apprehends filing of proceedings by {{opposite_party}}."
+    }
+  ],
+  "output_format": ["PDF", "DOCX"],
+  "created_by": "LegalMitra",
+  "status": "ACTIVE",
+  "version": "1.0"
+}
+```
+
+---
+
+# ✅ D. How You Scale This to 120+ Templates
+
+You **reuse the SAME schema** and only change:
+
+* `template_id`
+* `title`
+* `category`
+* `applicable_laws`
+* `form_fields`
+* `sections`
+
+✅ Works with **React forms**
+✅ Works with **PDF/DOCX generator**
+✅ Works with **pricing & marketplace**
+✅ Lawyer-friendly & future-proof
+
+---
+
+Excellent decision 👍
+**Category-wise modular JSON** is exactly how a serious product like **LegalMitra** should be built.
+
+Below is a **clean, scalable architecture** that lets you:
+
+* Keep code manageable
+* Reuse fields & sections
+* Add 1000+ templates later without refactor
+* Let lawyers + devs work independently
+
+---
+
+# 🧩 LegalMitra – Modular Template Architecture (Category-Wise)
+
+## 🎯 Core Idea
+
+Instead of **1 huge JSON per template**, you split into:
+
+```
+/templates
+  /core
+  /categories
+  /instances
+```
+
+---
+
+## 1️⃣ CORE (Shared Across ALL Templates)
+
+### 📁 `/core/base_template.json`
+
+```json
+{
+  "template_id": "",
+  "slug": "",
+  "title": "",
+  "category": "",
+  "sub_category": "",
+  "price_type": "FREE | PAID",
+  "price_amount": 0,
+  "jurisdiction": {
+    "country": "India",
+    "courts": []
+  },
+  "applicable_laws": [],
+  "keywords": [],
+  "output_format": ["PDF", "DOCX"],
+  "version": "1.0",
+  "status": "ACTIVE"
+}
+```
+
+---
+
+### 📁 `/core/common_fields.json`
+
+```json
+{
+  "party_name": {
+    "label": "Party Name",
+    "type": "text",
+    "required": true
+  },
+  "address": {
+    "label": "Address",
+    "type": "textarea",
+    "required": true
+  },
+  "date": {
+    "label": "Date",
+    "type": "date",
+    "required": true
+  },
+  "amount": {
+    "label": "Amount (₹)",
+    "type": "number",
+    "required": true
+  }
+}
+```
+
+---
+
+### 📁 `/core/common_sections.json`
+
+```json
+{
+  "legal_notice_closure": {
+    "heading": "Legal Consequences",
+    "content_template": "Failing compliance, my client reserves the right to initiate appropriate legal proceedings."
+  },
+  "jurisdiction_clause": {
+    "heading": "Jurisdiction",
+    "content_template": "Courts at {{jurisdiction_city}} alone shall have jurisdiction."
+  }
+}
+```
+
+---
+
+## 2️⃣ CATEGORY MODULES (Reusable Logic)
+
+---
+
+## 📧 A. Legal Notices Module
+
+### 📁 `/categories/legal_notice/fields.json`
+
+```json
+{
+  "sender_name": {
+    "label": "Sender Name",
+    "type": "text",
+    "required": true
+  },
+  "recipient_name": {
+    "label": "Recipient Name",
+    "type": "text",
+    "required": true
+  },
+  "notice_period": {
+    "label": "Notice Period (Days)",
+    "type": "number",
+    "required": true
+  }
+}
+```
+
+---
+
+### 📁 `/categories/legal_notice/sections.json`
+
+```json
+{
+  "notice_intro": {
+    "heading": "Legal Notice",
+    "content_template": "Under instructions from my client {{sender_name}}, this legal notice is issued to {{recipient_name}}."
+  },
+  "notice_demand": {
+    "heading": "Demand",
+    "content_template": "You are called upon to comply within {{notice_period}} days from receipt of this notice."
+  }
+}
+```
+
+---
+
+## 📄 B. Agreements Module
+
+### 📁 `/categories/agreement/fields.json`
+
+```json
+{
+  "party_one": {
+    "label": "First Party",
+    "type": "text",
+    "required": true
+  },
+  "party_two": {
+    "label": "Second Party",
+    "type": "text",
+    "required": true
+  },
+  "effective_date": {
+    "label": "Effective Date",
+    "type": "date",
+    "required": true
+  }
+}
+```
+
+---
+
+### 📁 `/categories/agreement/sections.json`
+
+```json
+{
+  "agreement_intro": {
+    "heading": "Agreement",
+    "content_template": "This Agreement is entered into on {{effective_date}} between {{party_one}} and {{party_two}}."
+  },
+  "termination_clause": {
+    "heading": "Termination",
+    "content_template": "Either party may terminate this agreement by giving prior written notice."
+  }
+}
+```
+
+---
+
+## ⚖️ C. Litigation Module
+
+### 📁 `/categories/litigation/fields.json`
+
+```json
+{
+  "court_name": {
+    "label": "Court Name",
+    "type": "text",
+    "required": true
+  },
+  "case_number": {
+    "label": "Case Number",
+    "type": "text",
+    "required": false
+  }
+}
+```
+
+---
+
+### 📁 `/categories/litigation/sections.json`
+
+```json
+{
+  "prayer_clause": {
+    "heading": "Prayer",
+    "content_template": "It is therefore prayed that this Hon’ble Court may be pleased to grant appropriate relief."
+  }
+}
+```
+
+---
+
+## 3️⃣ TEMPLATE INSTANCES (LIGHTWEIGHT)
+
+Now each actual template becomes **VERY small** and references modules.
+
+---
+
+### 📁 `/instances/legal_notice_non_payment.json`
+
+```json
+{
+  "extends": "core/base_template.json",
+  "template_id": "LM-LN-001",
+  "slug": "legal-notice-non-payment",
+  "title": "Legal Notice for Non-Payment of Dues",
+  "category": "Legal Notice",
+  "sub_category": "Recovery",
+  "price_type": "FREE",
+  "jurisdiction": {
+    "country": "India",
+    "courts": ["Civil Court"]
+  },
+  "applicable_laws": ["Indian Contract Act, 1872"],
+  "use_fields": [
+    "common.party_name",
+    "legal_notice.sender_name",
+    "legal_notice.recipient_name",
+    "common.amount",
+    "legal_notice.notice_period"
+  ],
+  "use_sections": [
+    "legal_notice.notice_intro",
+    "legal_notice.notice_demand",
+    "common.legal_notice_closure"
+  ]
+}
+```
+
+---
+
+## 4️⃣ HOW YOUR RENDER ENGINE WORKS (CRITICAL)
+
+```text
+1. Load base_template.json
+2. Merge category fields
+3. Merge common fields
+4. Resolve use_fields[]
+5. Resolve use_sections[]
+6. Inject user inputs
+7. Generate DOCX / PDF
+```
+
+⚙️ **No duplication**
+⚙️ **One change = global update**
+⚙️ **Lawyer-safe drafting**
+
+---
+
+## 5️⃣ CATEGORY COUNT PLAN (100+ EASY)
+
+| Category        | Templates |
+| --------------- | --------- |
+| Legal Notices   | 25        |
+| Agreements      | 25        |
+| Tax (IT + GST)  | 20        |
+| Corporate / ROC | 15        |
+| Litigation      | 15        |
+| Property        | 10        |
+| Family          | 10        |
+| **Total**       | **120+**  |
+
+---
+
+Perfect — this is a **very important, lawyer-grade addition** 👍
+Below is a **clean, modular way** to add **Lawyer Disclaimer** and **Risk Score** into your existing **category-wise JSON architecture** without breaking anything.
+
+---
+
+# ⚖️ LegalMitra – Lawyer Disclaimer & Risk Scoring (Modular Design)
+
+## 🎯 Design Goals
+
+✔ Protect LegalMitra legally
+✔ Clearly differentiate **self-service vs lawyer-required** documents
+✔ Enable **future monetization** (lawyer connect / upsell)
+✔ Zero duplication, fully reusable
+
+---
+
+## 1️⃣ CORE MODULE – Lawyer Disclaimer
+
+### 📁 `/core/disclaimer.json`
+
+```json
+{
+  "standard_disclaimer": {
+    "title": "Legal Disclaimer",
+    "content": "This document is generated using an automated legal template for general informational purposes only. It does not constitute legal advice, opinion, or professional legal services. LegalMitra and its affiliates do not guarantee accuracy or suitability for any specific case. Users are advised to consult a qualified advocate or legal professional before using this document."
+  },
+
+  "court_disclaimer": {
+    "title": "Court Filing Disclaimer",
+    "content": "This draft is a preliminary format and may require customization, verification, and vetting by a licensed advocate before filing in any court or tribunal. Improper filing may result in rejection or adverse legal consequences."
+  },
+
+  "tax_disclaimer": {
+    "title": "Tax & Compliance Disclaimer",
+    "content": "Tax laws are subject to frequent changes and interpretations. This template does not replace professional advice from a Chartered Accountant, Tax Practitioner, or Advocate."
+  }
+}
+```
+
+---
+
+## 2️⃣ CORE MODULE – Risk Score Engine
+
+### 📁 `/core/risk_score.json`
+
+```json
+{
+  "risk_levels": {
+    "LOW": {
+      "score_range": "1-3",
+      "label": "Low Risk",
+      "description": "Suitable for self-use. Lawyer review optional."
+    },
+    "MEDIUM": {
+      "score_range": "4-6",
+      "label": "Medium Risk",
+      "description": "Legal review recommended before execution or submission."
+    },
+    "HIGH": {
+      "score_range": "7-10",
+      "label": "High Risk",
+      "description": "Strongly advised to consult or engage a qualified lawyer."
+    }
+  }
+}
+```
+
+---
+
+## 3️⃣ TEMPLATE-LEVEL RISK METADATA (VERY IMPORTANT)
+
+Each template gets **one risk object** — simple, readable, enforceable.
+
+### 🔹 Risk Object Structure
+
+```json
+{
+  "risk_score": 0,
+  "risk_level": "LOW | MEDIUM | HIGH",
+  "lawyer_required": false,
+  "reason": ""
+}
+```
+
+---
+
+## 4️⃣ UPDATED TEMPLATE INSTANCE (WITH DISCLAIMER + RISK)
+
+### 📁 `/instances/legal_notice_non_payment.json`
+
+```json
+{
+  "extends": "core/base_template.json",
+  "template_id": "LM-LN-001",
+  "slug": "legal-notice-non-payment",
+  "title": "Legal Notice for Non-Payment of Dues",
+  "category": "Legal Notice",
+  "sub_category": "Recovery",
+  "price_type": "FREE",
+
+  "jurisdiction": {
+    "country": "India",
+    "courts": ["Civil Court"]
+  },
+
+  "applicable_laws": [
+    "Indian Contract Act, 1872",
+    "Code of Civil Procedure, 1908"
+  ],
+
+  "risk": {
+    "risk_score": 5,
+    "risk_level": "MEDIUM",
+    "lawyer_required": false,
+    "reason": "Incorrect facts or amounts may weaken recovery or cause counter-claims."
+  },
+
+  "disclaimer_refs": [
+    "standard_disclaimer"
+  ],
+
+  "use_fields": [
+    "common.party_name",
+    "legal_notice.sender_name",
+    "legal_notice.recipient_name",
+    "common.amount",
+    "legal_notice.notice_period"
+  ],
+
+  "use_sections": [
+    "legal_notice.notice_intro",
+    "legal_notice.notice_demand",
+    "common.legal_notice_closure"
+  ]
+}
+```
+
+---
+
+## 5️⃣ COURT TEMPLATE EXAMPLE (HIGH RISK)
+
+### 📁 `/instances/anticipatory_bail_application.json`
+
+```json
+{
+  "template_id": "LM-CRIM-007",
+  "title": "Anticipatory Bail Application",
+  "category": "Criminal Law",
+  "sub_category": "Bail",
+
+  "risk": {
+    "risk_score": 9,
+    "risk_level": "HIGH",
+    "lawyer_required": true,
+    "reason": "Criminal procedure, judicial discretion, and factual accuracy are critical."
+  },
+
+  "disclaimer_refs": [
+    "standard_disclaimer",
+    "court_disclaimer"
+  ]
+}
+```
+
+---
+
+## 6️⃣ UI / PRODUCT INTEGRATION (HOW THIS HELPS YOU)
+
+### 🖥️ Marketplace UI
+
+* 🟢 **Low Risk** → “Self-Use”
+* 🟡 **Medium Risk** → “Lawyer Review Recommended”
+* 🔴 **High Risk** → “Lawyer Mandatory”
+
+### 💰 Monetization Hook
+
+```text
+⚠ This document has HIGH legal risk.
+👉 Connect with a verified lawyer for ₹999
+```
+
+---
+
+## 7️⃣ DEFAULT RISK MAPPING (RECOMMENDED)
+
+| Category           | Risk       |
+| ------------------ | ---------- |
+| Simple Notices     | LOW–MEDIUM |
+| Agreements         | MEDIUM     |
+| Tax Filings        | MEDIUM     |
+| Court Petitions    | HIGH       |
+| Criminal Law       | HIGH       |
+| Property Transfers | HIGH       |
+| Family Law         | HIGH       |
+
+---
+
+## 8️⃣ WHY THIS IS A BIG WIN FOR LEGALMITRA
+
+✔ Reduces platform liability
+✔ Lawyer-friendly (they won’t resist adoption)
+✔ Clear audit trail
+✔ Ready for DPDP / compliance scrutiny
+✔ Enables **lawyer marketplace later**
+
+---
+

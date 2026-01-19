@@ -3,7 +3,7 @@ Smart Routing API - Model selection based on query complexity
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from app.services.smart_router import smart_router
 
@@ -23,6 +23,8 @@ class ModelSelectionRequest(BaseModel):
 
 
 class ModelSelectionResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     selected_model_id: str
     model_name: str
     tier: str

@@ -3,7 +3,7 @@ Cost Tracking API - Monitor and analyze AI API usage costs
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Dict
 from app.services.cost_tracker import cost_tracker
 
@@ -11,6 +11,8 @@ router = APIRouter()
 
 
 class RecordUsageRequest(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     model_id: str
     model_name: str
     query_type: str

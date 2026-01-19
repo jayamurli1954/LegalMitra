@@ -3,7 +3,7 @@ Model Selection API - Allows users to choose AI models via OpenRouter
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import List, Dict, Any, Optional
 from app.services.openrouter_service import openrouter_service
 
@@ -12,6 +12,8 @@ router = APIRouter()
 
 class ModelInfo(BaseModel):
     """Model information"""
+    model_config = ConfigDict(protected_namespaces=())
+    
     id: str
     name: str
     tier: str  # premium, balanced, budget

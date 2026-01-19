@@ -8,6 +8,19 @@ from typing import Dict, List, Optional, Any
 import json
 from pydantic import BaseModel
 
+# Import template modules
+from .categories.gst_templates import get_gst_templates
+from .categories.income_tax_templates import get_income_tax_templates
+from .categories.corporate_templates import get_corporate_templates
+from .categories.contract_templates import get_contract_templates
+from .categories.compliance_templates import get_compliance_templates
+from .categories.legal_notice_templates import get_legal_notice_templates
+from .categories.banking_templates import get_banking_templates
+from .categories.real_estate_templates import get_real_estate_templates
+from .categories.litigation_templates import get_litigation_templates
+from .categories.family_law_templates import get_family_law_templates
+from .categories.criminal_law_templates import get_criminal_law_templates
+
 
 class TemplateField(BaseModel):
     """Field definition for template"""
@@ -94,13 +107,57 @@ class TemplateService:
                     "name": "Legal Notices",
                     "description": "Legal notices, demand letters, cease & desist",
                     "icon": "mail"
+                },
+                "banking": {
+                    "name": "Banking & Finance",
+                    "description": "Loan applications, bank guarantees, LC, overdrafts",
+                    "icon": "account_balance_wallet"
+                },
+                "real_estate": {
+                    "name": "Real Estate",
+                    "description": "Sale deed, rent agreement, property documents",
+                    "icon": "home"
+                },
+                "litigation": {
+                    "name": "Litigation & Court Practice",
+                    "description": "Plaints, IAs, bail applications, appeals, court filings",
+                    "icon": "gavel"
+                },
+                "family_law": {
+                    "name": "Family & Personal Law",
+                    "description": "Divorce, maintenance, custody, wills, succession",
+                    "icon": "family_restroom"
+                },
+                "criminal_law": {
+                    "name": "Criminal Law",
+                    "description": "FIR, complaints, bail, quashing, criminal proceedings",
+                    "icon": "policy"
                 }
             },
             "templates": self._get_default_templates()
         }
 
     def _get_default_templates(self) -> List[Dict]:
-        """Get comprehensive CA/Corporate template library"""
+        """Get comprehensive CA/Corporate template library - Now loaded from modular files"""
+        templates = []
+
+        # Load templates from category modules
+        templates.extend(get_gst_templates())
+        templates.extend(get_income_tax_templates())
+        templates.extend(get_corporate_templates())
+        templates.extend(get_contract_templates())
+        templates.extend(get_compliance_templates())
+        templates.extend(get_legal_notice_templates())
+        templates.extend(get_banking_templates())
+        templates.extend(get_real_estate_templates())
+        templates.extend(get_litigation_templates())
+        templates.extend(get_family_law_templates())
+        templates.extend(get_criminal_law_templates())
+
+        return templates
+
+    def _get_default_templates_old(self) -> List[Dict]:
+        """OLD IMPLEMENTATION - Kept for reference, can be deleted later"""
         return [
             # ==================== GST TEMPLATES ====================
             {

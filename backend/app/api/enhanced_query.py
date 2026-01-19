@@ -3,7 +3,7 @@ Enhanced Query API with Smart Routing, Failover, and Disclaimers
 """
 
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional, Dict, Any
 from app.services.enhanced_ai_service import enhanced_ai_service
 from app.services.query_classifier import query_classifier
@@ -21,6 +21,8 @@ class EnhancedQueryRequest(BaseModel):
 
 class EnhancedQueryResponse(BaseModel):
     """Response from enhanced query processing"""
+    model_config = ConfigDict(protected_namespaces=())
+    
     response: str
     classification: Dict[str, Any]
     model_used: Dict[str, Any]

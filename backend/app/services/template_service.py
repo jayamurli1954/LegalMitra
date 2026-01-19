@@ -1,6 +1,7 @@
 """
 Template Service - JSON-Driven Legal Document Templates
 Ready-made editable templates for Indian legal workflows
+Also loads templates from Python code for backward compatibility
 """
 
 import json
@@ -9,8 +10,27 @@ import re
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
+import sys
 
 logger = logging.getLogger(__name__)
+
+# Import Python template functions
+try:
+    from app.templates.categories.gst_templates import get_gst_templates
+    from app.templates.categories.income_tax_templates import get_income_tax_templates
+    from app.templates.categories.corporate_templates import get_corporate_templates
+    from app.templates.categories.contract_templates import get_contract_templates
+    from app.templates.categories.compliance_templates import get_compliance_templates
+    from app.templates.categories.legal_notice_templates import get_legal_notice_templates
+    from app.templates.categories.banking_templates import get_banking_templates
+    from app.templates.categories.real_estate_templates import get_real_estate_templates
+    from app.templates.categories.litigation_templates import get_litigation_templates
+    from app.templates.categories.family_law_templates import get_family_law_templates
+    from app.templates.categories.criminal_law_templates import get_criminal_law_templates
+    PYTHON_TEMPLATES_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Python templates not available: {e}")
+    PYTHON_TEMPLATES_AVAILABLE = False
 
 
 class TemplateService:
@@ -24,25 +44,55 @@ class TemplateService:
         logger.info("Template Service initialized")
 
     def _load_templates(self):
-        """Load all templates from JSON files"""
-        try:
-            if not self.templates_dir.exists():
-                logger.warning(f"Templates directory not found: {self.templates_dir}")
-                return
+        """Load all templates from Python code first, then JSON files (Python templates take priority)"""
+        json_count = 0
+        python_count = 0
+        
+        # First, load from Python code (authoritative source - 112 templates)
+        if PYTHON_TEMPLATES_AVAILABLE:
+            try:
+                python_templates = []
+                python_templates.extend(get_gst_templates())
+                python_templates.extend(get_income_tax_templates())
+                python_templates.extend(get_corporate_templates())
+                python_templates.extend(get_contract_templates())
+                python_templates.extend(get_compliance_templates())
+                python_templates.extend(get_legal_notice_templates())
+                python_templates.extend(get_banking_templates())
+                python_templates.extend(get_real_estate_templates())
+                python_templates.extend(get_litigation_templates())
+                python_templates.extend(get_family_law_templates())
+                python_templates.extend(get_criminal_law_templates())
 
-            for template_file in self.templates_dir.rglob("*.json"):
-                try:
-                    with open(template_file, 'r', encoding='utf-8') as f:
-                        template_data = json.load(f)
-                        template_id = template_data.get('template_id')
-                        if template_id:
-                            self.templates_cache[template_id] = template_data
-                            logger.info(f"Loaded template: {template_id}")
-                except Exception as e:
-                    logger.error(f"Failed to load template {template_file}: {e}")
+                for template in python_templates:
+                    template_id = template.get('id')
+                    if template_id:
+                        # Convert Python format to JSON format
+                        template_data = {
+                            'template_id': template_id,
+                            'name': template.get('name'),
+                            'category': template.get('category'),
+                            'description': template.get('description'),
+                            'fields': template.get('fields', []),
+                            'template_text': template.get('template_text', ''),
+                            'tags': template.get('tags', []),
+                            'is_premium': template.get('is_premium', False),
+                            'court': template.get('court', []),
+                            'act': template.get('act', []),
+                            'language': template.get('language', 'en'),
+                            'applicable_for': template.get('applicable_for', [])
+                        }
+                        self.templates_cache[template_id] = template_data
+                        python_count += 1
 
-        except Exception as e:
-            logger.error(f"Failed to load templates: {e}")
+            except Exception as e:
+                logger.error(f"Failed to load Python templates: {e}")
+
+        # Note: JSON templates are NOT loaded to avoid duplicates
+        # Python code is the authoritative source with exactly 112 templates
+        # JSON files are legacy/backup only
+
+        logger.info(f"✅ Loaded {python_count} templates from Python code (authoritative source)")
 
     def get_template(self, template_id: str) -> Optional[Dict]:
         """Get template by ID"""
