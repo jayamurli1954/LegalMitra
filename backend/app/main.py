@@ -45,18 +45,10 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root() -> dict:
-    """Root endpoint with instructions"""
-    return {
-        "message": "LegalMitra API is running ✅",
-        "status": "ok",
-        "instructions": "Open frontend/index.html in your browser to use LegalMitra",
-        "frontend_path": str(Path(__file__).parent.parent.parent / "frontend" / "index.html"),
-        "api_documentation": "http://localhost:8888/docs",
-        "health_check": "http://localhost:8888/health",
-        "model_selector": "Open frontend/model-selector.html to choose AI models"
-    }
+# Root endpoint removed to allow StaticFiles to serve index.html at /
+# @app.get("/")
+# async def root() -> dict:
+#     ...
 
 @app.get("/health")
 async def root_health() -> dict:
