@@ -8,11 +8,14 @@ AI provider (Anthropic or OpenAI).  The rest of the codebase should use the
 `ai_service` singleton rather than calling providers directly.
 """
 
+import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.core.config import get_settings
 from app.services.web_search_service import web_search_service
+
+logger = logging.getLogger(__name__)
 
 try:
     import anthropic  # type: ignore
