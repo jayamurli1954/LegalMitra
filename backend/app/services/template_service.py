@@ -68,12 +68,24 @@ class TemplateService:
                     template_id = template.get('id')
                     if template_id:
                         # Convert Python format to JSON format
+                        # Normalize fields: Python templates use 'name' as field ID, JSON uses 'id'
+                        normalized_fields = []
+                        for field in template.get('fields', []):
+                            normalized_field = field.copy()
+                            # If field has 'name' but no 'id', use 'name' as 'id'
+                            if 'name' in normalized_field and 'id' not in normalized_field:
+                                normalized_field['id'] = normalized_field['name']
+                            # Ensure 'id' exists
+                            if 'id' not in normalized_field:
+                                normalized_field['id'] = normalized_field.get('name', f"field_{len(normalized_fields)}")
+                            normalized_fields.append(normalized_field)
+                        
                         template_data = {
                             'template_id': template_id,
                             'name': template.get('name'),
                             'category': template.get('category'),
                             'description': template.get('description'),
-                            'fields': template.get('fields', []),
+                            'fields': normalized_fields,
                             'template_text': template.get('template_text', ''),
                             'tags': template.get('tags', []),
                             'is_premium': template.get('is_premium', False),
@@ -184,32 +196,42 @@ class TemplateService:
         # Add default values
         enriched_fields = self._add_default_fields(fields)
 
-        # Render body
+        # Render template - support both 'template_text' (Python templates) and 'body' (JSON templates)
+        template_text = template.get('template_text', '')
         body_paragraphs = template.get('body', [])
-        rendered_paragraphs = []
+        
+        if template_text:
+            # Python templates use 'template_text' field
+            rendered_body = self._replace_placeholders(template_text, enriched_fields)
+        elif body_paragraphs:
+            # JSON templates use 'body' array
+            rendered_paragraphs = []
 
-        for paragraph in body_paragraphs:
-            # Get text (support for both string and dict format)
-            if isinstance(paragraph, str):
-                text = paragraph
-            elif isinstance(paragraph, dict):
-                # Check conditional rendering for dict format
-                if 'condition' in paragraph:
-                    if not self._evaluate_condition(paragraph['condition'], enriched_fields):
-                        continue
-                text = paragraph.get('text', '')
+            for paragraph in body_paragraphs:
+                # Get text (support for both string and dict format)
+                if isinstance(paragraph, str):
+                    text = paragraph
+                elif isinstance(paragraph, dict):
+                    # Check conditional rendering for dict format
+                    if 'condition' in paragraph:
+                        if not self._evaluate_condition(paragraph['condition'], enriched_fields):
+                            continue
+                    text = paragraph.get('text', '')
+                else:
+                    continue
+
+                # Replace placeholders
+                rendered_text = self._replace_placeholders(text, enriched_fields)
+                rendered_paragraphs.append(rendered_text)
+
+            # Join paragraphs
+            if format == "html":
+                rendered_body = "\n".join([f"<p>{p}</p>" for p in rendered_paragraphs])
             else:
-                continue
-
-            # Replace placeholders
-            rendered_text = self._replace_placeholders(text, enriched_fields)
-            rendered_paragraphs.append(rendered_text)
-
-        # Join paragraphs
-        if format == "html":
-            rendered_body = "\n".join([f"<p>{p}</p>" for p in rendered_paragraphs])
+                rendered_body = "\n\n".join(rendered_paragraphs)
         else:
-            rendered_body = "\n\n".join(rendered_paragraphs)
+            logger.error(f"Template {template_id} has neither 'template_text' nor 'body' field")
+            return None
 
         # Add disclaimer if required
         if template.get('disclaimer', True):

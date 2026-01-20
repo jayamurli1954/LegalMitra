@@ -408,8 +408,10 @@
                 console.error('Error loading templates:', error);
                 document.getElementById('templates-grid').innerHTML = `
                     <div class="no-results">
-                        <p>❌ Failed to load templates. Please check if the backend is running.</p>
-                        <p style="font-size: 0.9em; color: #999; margin-top: 10px;">${CONFIG.API_BASE_URL}</p>
+                        <p>❌ Failed to load templates.</p>
+                        <p style="color: red; margin: 10px 0;">Error: ${error.message}</p>
+                        <pre style="text-align: left; background: #f5f5f5; padding: 10px; overflow: auto; max-height: 200px; font-size: 0.8em;">${error.stack || 'No stack trace'}</pre>
+                        <p style="font-size: 0.9em; color: #999; margin-top: 10px;">API: ${CONFIG.API_BASE_URL}</p>
                     </div>
                 `;
             }

@@ -392,8 +392,20 @@ class AIService:
         provider = self.settings.AI_PROVIDER.lower().strip()
         
         # Normalize provider names - handle variations (google -> gemini)
+        # Also handle potential misconfiguration strings seen in deployment
         original_provider = provider
-        if provider == "google":
+        
+        # Handle specific misconfiguration cases (common in deployment environments)
+        if "google (or anthropic, openai)" in provider.lower() or "or anthropic" in provider.lower() or "or openai" in provider.lower():
+            print(f"WARNING: Detected invalid AI_PROVIDER value: '{self.settings.AI_PROVIDER}'. Defaulting to 'gemini'.")
+            logger.warning(f"Invalid AI_PROVIDER detected: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
+            provider = "gemini"
+        elif provider == "google":
+            provider = "gemini"
+        elif provider not in ["anthropic", "openai", "gemini", "grok", "zai", "openrouter"]:
+            # If provider is still invalid after normalization, default to gemini
+            print(f"WARNING: Unknown AI_PROVIDER value: '{self.settings.AI_PROVIDER}'. Defaulting to 'gemini'.")
+            logger.warning(f"Unknown AI_PROVIDER: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
             provider = "gemini"
         
         # Debug: Log the provider value after normalization
