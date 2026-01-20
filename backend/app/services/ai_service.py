@@ -86,13 +86,24 @@ class AIService:
         self._openai_client = None
         self._gemini_client = None
 
-        if self.settings.AI_PROVIDER.lower() == "anthropic" and anthropic:
+        # Normalize AI_PROVIDER during initialization to handle misconfigured values
+        provider = self.settings.AI_PROVIDER.lower().strip()
+        
+        # Handle misconfiguration cases (common in deployment environments)
+        if "google (or anthropic, openai)" in provider or "or anthropic" in provider or "or openai" in provider:
+            logger.warning(f"Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
+            print(f"WARNING: Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
+            provider = "gemini"
+        elif provider == "google":
+            provider = "gemini"
+
+        if provider == "anthropic" and anthropic:
             self._anthropic_client = anthropic.Anthropic(
                 api_key=self.settings.ANTHROPIC_API_KEY
             )
-        if self.settings.AI_PROVIDER.lower() == "openai" and OpenAI:
+        if provider == "openai" and OpenAI:
             self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
-        if self.settings.AI_PROVIDER.lower() in ["gemini", "google"]:
+        if provider == "gemini":
             print(f"DEBUG: Initializing Gemini client - genai available: {genai is not None}, GENAI_NEW_SDK: {GENAI_NEW_SDK}")
             # Check if genai package is available
             if genai is None:
