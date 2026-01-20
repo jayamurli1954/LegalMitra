@@ -213,6 +213,23 @@
             gap: 10px;
             margin-bottom: 30px;
             border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tabs::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .tabs::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 2px;
         }
 
         .tab {
@@ -225,6 +242,8 @@
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
             font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .tab.active {
@@ -235,6 +254,42 @@
 
         .tab:hover {
             color: #667eea;
+        }
+
+        /* Mobile Responsive Styles for Tabs */
+        @media (max-width: 768px) {
+            .tabs {
+                justify-content: flex-start;
+                gap: 5px;
+                padding: 0 10px;
+                margin-bottom: 20px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab {
+                padding: 12px 15px;
+                font-size: 0.9em;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tabs {
+                gap: 3px;
+                padding: 0 5px;
+            }
+
+            .tab {
+                padding: 10px 12px;
+                font-size: 0.85em;
+            }
+
+            /* Make Advocate Diary button more compact on very small screens */
+            .tab:last-child {
+                padding: 10px 10px;
+                font-size: 0.8em;
+            }
         }
 
         .tab-content {
