@@ -9,6 +9,8 @@ pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
 python-multipart>=0.0.6  # Required for file uploads (Form data)
 slowapi>=0.1.7  # Rate limiting
+reportlab>=4.0.0  # PDF Generation
+
 
 
 # Production Server & Database adapters
