@@ -90,25 +90,45 @@ class AIService:
         if self.settings.AI_PROVIDER.lower() in ["gemini", "google"]:
             # Check if genai package is available
             if genai is None:
-                logger.error("Google Gemini package not installed. Install with: pip install google-genai")
+                error_msg = "Google Gemini package not installed. Install with: pip install google-genai"
+                logger.error(error_msg)
+                print(f"ERROR: {error_msg}")
             # Check if API key is set
             elif not self.settings.GOOGLE_GEMINI_API_KEY:
-                logger.error("GOOGLE_GEMINI_API_KEY is not set in environment variables")
+                error_msg = "GOOGLE_GEMINI_API_KEY is not set in environment variables"
+                logger.error(error_msg)
+                print(f"ERROR: {error_msg}")
             else:
                 try:
                     if GENAI_NEW_SDK:
                         # Use new google.genai SDK (2025 official)
+                        logger.info(f"Initializing Gemini client with new SDK (API key length: {len(self.settings.GOOGLE_GEMINI_API_KEY) if self.settings.GOOGLE_GEMINI_API_KEY else 0})")
+                        print(f"DEBUG: Initializing Gemini client with new SDK")
                         self._gemini_client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
                         self._gemini_use_new_sdk = True
                         logger.info("✅ Google Gemini client initialized (new SDK)")
+                        print("✅ Google Gemini client initialized (new SDK)")
                     else:
                         # Fallback to old deprecated package (should not be used)
+                        logger.info(f"Initializing Gemini client with old SDK (API key length: {len(self.settings.GOOGLE_GEMINI_API_KEY) if self.settings.GOOGLE_GEMINI_API_KEY else 0})")
+                        print(f"DEBUG: Initializing Gemini client with old SDK")
                         genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
                         self._gemini_client = genai
                         self._gemini_use_new_sdk = False
                         logger.info("✅ Google Gemini client initialized (old SDK)")
+                        print("✅ Google Gemini client initialized (old SDK)")
+                except ImportError as e:
+                    error_msg = f"Failed to import Gemini SDK: {e}. Ensure google-genai is installed: pip install google-genai"
+                    logger.error(error_msg)
+                    print(f"ERROR: {error_msg}")
+                    self._gemini_client = None
+                    self._gemini_use_new_sdk = False
                 except Exception as e:
-                    logger.error(f"Failed to initialize Gemini client: {e}")
+                    error_msg = f"Failed to initialize Gemini client: {e}"
+                    logger.error(error_msg, exc_info=True)
+                    print(f"ERROR: {error_msg}")
+                    import traceback
+                    print(traceback.format_exc())
                     self._gemini_client = None
                     self._gemini_use_new_sdk = False
         else:
