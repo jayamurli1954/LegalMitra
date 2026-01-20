@@ -16,6 +16,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
             color: #333;
+            /* PWA Safe Area Handling - Critical for mobile */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+            /* Prevent horizontal scroll */
+            overflow-x: hidden;
         }
 
         /* Header */
@@ -27,6 +34,12 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            /* PWA Safe Area for header */
+            padding-top: calc(25px + env(safe-area-inset-top));
+            padding-left: calc(40px + env(safe-area-inset-left));
+            padding-right: calc(40px + env(safe-area-inset-right));
+            /* Material standard height for mobile */
+            min-height: 56px;
         }
 
         .header h1 {
@@ -51,11 +64,22 @@
             transform: translateY(-2px);
         }
 
-        /* Dashboard Grid */
+        /* Dashboard Grid - Mobile First */
         .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 12px 16px;
+            box-sizing: border-box;
+        }
+
+        /* Desktop container */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1400px;
+                margin: 30px auto;
+                padding: 0 20px;
+            }
         }
 
         .dashboard-widgets {
@@ -226,10 +250,22 @@
             cursor: pointer;
             font-size: 1em;
             font-weight: 600;
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: transform 0.2s;
+            /* Mobile-first: full width buttons */
+            width: 100%;
+            height: 44px;
+            /* Desktop: auto width */
+        }
+
+        @media (min-width: 768px) {
+            .btn {
+                width: auto;
+                display: inline-flex;
+            }
         }
 
         .btn:hover {
@@ -298,6 +334,178 @@
             display: flex;
             justify-content: space-between;
         }
+
+        /* Section headers with buttons */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            /* Typography Scaling for Mobile */
+            h1 { font-size: 20px; }
+            h2 { font-size: 18px; }
+            p, li { font-size: 14px; }
+            small { font-size: 12px; }
+
+            /* Header adjustments */
+            .header {
+                padding: 16px;
+                padding-top: calc(16px + env(safe-area-inset-top));
+                padding-left: calc(16px + env(safe-area-inset-left));
+                padding-right: calc(16px + env(safe-area-inset-right));
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+                margin-bottom: 0;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+
+            /* Container mobile-first */
+            .container {
+                padding: 12px 16px;
+                margin: 0;
+            }
+
+            /* Dashboard widgets - single column on mobile */
+            .dashboard-widgets {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .widget {
+                padding: 14px;
+            }
+
+            .widget .value {
+                font-size: 2em;
+            }
+
+            /* Navigation tabs - scrollable on mobile */
+            .nav-tabs {
+                display: flex;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                gap: 5px;
+                padding-bottom: 2px;
+                margin-bottom: 16px;
+            }
+
+            .nav-tab {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            /* Tab content - mobile padding */
+            .tab-content {
+                padding: 16px;
+                border-radius: 12px;
+                min-height: auto;
+            }
+
+            /* Forms - single column on mobile */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .form-group {
+                margin-bottom: 16px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                width: 100%;
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            /* Tables - make scrollable on mobile */
+            table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.85em;
+                white-space: nowrap;
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                width: 95%;
+                max-width: 95%;
+                padding: 20px;
+                margin: 10px;
+            }
+
+            /* Section headers with buttons - stack on mobile */
+            .section-header {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .section-header h2 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            .section-header .btn {
+                width: 100%;
+            }
+
+            /* Search input full width */
+            input[type="text"][placeholder*="Search"] {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Extra small devices */
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .widget .value {
+                font-size: 1.8em;
+            }
+
+            .nav-tab {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+
+            .tab-content {
+                padding: 12px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 
@@ -362,7 +570,7 @@
 
         <!-- TAB: Case Master -->
         <div id="case-master" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="section-header">
                 <h2>All Cases</h2>
                 <button class="btn" onclick="openCaseModal()">+ New Case</button>
             </div>
@@ -390,7 +598,7 @@
 
         <!-- TAB: Clients -->
         <div id="clients" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="section-header">
                 <h2>Client Directory</h2>
                 <button class="btn" onclick="openClientModal()">+ Add Client</button>
             </div>
@@ -409,7 +617,7 @@
 
         <!-- TAB: Fee Ledger -->
         <div id="fee-ledger" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="section-header">
                 <h2>Financial Overview</h2>
                 <button class="btn" onclick="openFeeModal()">+ Log Fee</button>
             </div>
