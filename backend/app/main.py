@@ -52,8 +52,17 @@ app.add_middleware(
 
 @app.get("/health")
 async def root_health() -> dict:
-    """Simple health‑check endpoint."""
-    return {"status": "ok", "service": "legalmitra-api"}
+    """
+    Health check endpoint for monitoring and keep-alive services.
+    Used by Render's health checks and external monitoring services.
+    """
+    from datetime import datetime
+    return {
+        "status": "ok",
+        "service": "legalmitra-api",
+        "timestamp": datetime.now().isoformat(),
+        "uptime_check": "healthy"
+    }
 
 
 # Mount feature routers under /api/v1
