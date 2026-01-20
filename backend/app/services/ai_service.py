@@ -468,13 +468,20 @@ class AIService:
             )
             return (response.choices[0].message.content or "").strip()
         elif provider == "gemini":
-            print(f"DEBUG: ✅✅✅ ENTERED GEMINI BLOCK! provider={repr(provider)}, _gemini_client exists={self._gemini_client is not None}")
+            logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
             if not self._gemini_client:
-                raise RuntimeError(
-                    "Google Gemini client not available. "
-                    "Ensure `google-genai` package is installed (pip install google-genai) and "
-                    "GOOGLE_GEMINI_API_KEY is set."
-                )
+                # Provide more helpful error message
+                error_parts = []
+                if genai is None:
+                    error_parts.append("`google-genai` package is not installed. Install with: pip install google-genai")
+                if not self.settings.GOOGLE_GEMINI_API_KEY:
+                    error_parts.append("GOOGLE_GEMINI_API_KEY environment variable is not set")
+                if not error_parts:
+                    error_parts.append("Gemini client initialization failed (check logs for details)")
+                
+                error_msg = "Google Gemini client not available. " + " | ".join(error_parts)
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
 
             # Check if using new SDK
             use_new_sdk = getattr(self, '_gemini_use_new_sdk', False)
