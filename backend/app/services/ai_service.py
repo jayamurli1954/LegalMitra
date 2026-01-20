@@ -31,13 +31,18 @@ except Exception:  # pragma: no cover - optional dependency
 try:
     from google import genai  # type: ignore
     GENAI_NEW_SDK = True
-except Exception:  # pragma: no cover - optional dependency
+    print("✅ Successfully imported google.genai (new SDK)")
+except Exception as e:  # pragma: no cover - optional dependency
     GENAI_NEW_SDK = False
+    print(f"⚠️ Failed to import google.genai (new SDK): {e}")
     # Fallback to old deprecated package (should not be used)
     try:
         import google.generativeai as genai  # type: ignore
-    except Exception:
+        print("✅ Successfully imported google.generativeai (old SDK)")
+    except Exception as e2:
         genai = None  # type: ignore
+        print(f"❌ Failed to import google.generativeai (old SDK): {e2}")
+        print("❌ Google Gemini packages not available. Install with: pip install google-genai")
 
 try:
     import httpx  # type: ignore
