@@ -128,7 +128,7 @@ TEMPORARY*.md
 PHASE_*_IMPLEMENTATION_SUMMARY.md
 
 # Setup/configuration guides (already done)
-*_SETUP.md
+# Keep important setup guides like KEEP_ALIVE_SETUP.md
 HOW_TO_VIEW_ON_YOUR_LAPTOP.md
 
 # Migration/verification scripts (temporary)
