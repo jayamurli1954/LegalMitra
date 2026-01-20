@@ -137,3 +137,16 @@ backend/check_template_issues.py
 backend/list_all_templates.py
 backend/verify_python_templates.py
 backend/compare_templates.py
+
+# Aggressive Cleanup (User Request)
+RESTART_*.txt
+SWITCHED_TO_*.txt
+FINAL_*_FIX.txt
+MUST_CLOSE_TERMINAL.txt
+PS *.txt
+*_FIX.txt
+*_FIXED.txt
+*_PATCH.md
+*_PATCH.txt
+*_MODIFY.md
+*_MODIFY.txt

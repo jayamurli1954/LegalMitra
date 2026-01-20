@@ -3,9 +3,11 @@
 
 const CONFIG = {
     // Backend API base URL
-    // Change this if you modify the PORT in backend/.env
-    API_BASE_URL: 'http://localhost:8888/api/v1',
-    
+    // Automatically determine if we are in dev (localhost) or prod
+    API_BASE_URL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://localhost:8888/api/v1'
+        : '/api/v1', // In prod, we assume api is served from same origin or via proxy
+
     // API endpoints
     ENDPOINTS: {
         LEGAL_RESEARCH: '/legal-research',

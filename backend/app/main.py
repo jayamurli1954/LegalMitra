@@ -1,5 +1,6 @@
 import sys
 import io
+from pathlib import Path
 
 # Fix Windows console encoding to support Unicode characters
 # if sys.platform == "win32":
@@ -48,7 +49,7 @@ async def root() -> dict:
         "message": "LegalMitra API is running ✅",
         "status": "ok",
         "instructions": "Open frontend/index.html in your browser to use LegalMitra",
-        "frontend_path": "D:/SanMitra_Tech/LegalMitra/frontend/index.html",
+        "frontend_path": str(Path(__file__).parent.parent.parent / "frontend" / "index.html"),
         "api_documentation": "http://localhost:8888/docs",
         "health_check": "http://localhost:8888/health",
         "model_selector": "Open frontend/model-selector.html to choose AI models"

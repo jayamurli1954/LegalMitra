@@ -7,7 +7,11 @@
   "background_color": "#667eea",
   "theme_color": "#667eea",
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity", "legal"],
+  "categories": [
+    "business",
+    "productivity",
+    "legal"
+  ],
   "lang": "en-IN",
   "dir": "ltr",
   "scope": "/",
@@ -43,7 +47,7 @@
       "purpose": "any"
     },
     {
-      "src": "icons/icon-192x192.png",
+      "src": "icons/Icon_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
@@ -55,7 +59,7 @@
       "purpose": "any"
     },
     {
-      "src": "icons/icon-512x512.png",
+      "src": "icons/Icon_512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

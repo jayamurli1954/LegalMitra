@@ -10,9 +10,9 @@
     <meta name="description" content="AI-powered Indian legal assistant for CA, Corporate, and Legal professionals">
     <meta name="theme-color" content="#667eea">
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/Icon_192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/Icon_512.png">
+    <link rel="apple-touch-icon" href="/icons/Icon_192.png">
     <style>
         * {
             margin: 0;
@@ -630,7 +630,7 @@
                 <div style="color: white; font-weight: bold; margin-bottom: 10px; font-size: 1.1em;">✨ NEW FEATURES - Quick Access</div>
                 <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                     <button id="template-marketplace-btn" onclick="window.location.href='template-marketplace.html'" style="background: white; color: #56ab2f; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                        🛒 Template Marketplace
+                        🛒 Template Marketplace (110+)
                     </button>
                     <button onclick="window.location.href='cost-dashboard.html'" style="background: white; color: #56ab2f; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1em; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                         💰 Cost Dashboard
@@ -3046,7 +3046,8 @@
                     const button = document.getElementById('template-marketplace-btn');
                     if (button) {
                         // Update button text with count
-                        button.innerHTML = `🛒 Template Marketplace (${count})`;
+                        // button.innerHTML = `🛒 Template Marketplace (${count})`;
+                        button.innerHTML = `🛒 Template Marketplace (110+)`;
                     }
                 } else {
                     console.error('Failed to fetch template count:', response.status);
