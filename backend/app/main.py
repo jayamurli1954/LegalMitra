@@ -15,6 +15,9 @@ from slowapi.errors import RateLimitExceeded
 
 from app.api import case_search, document_drafting, legal_research, statute_search, news_and_cases, document_review, model_selection, templates, smart_routing, cost_tracking, enhanced_query, legal_templates_v2
 from app.core.config import get_settings
+from fastapi.staticfiles import StaticFiles
+
+settings = get_settings()
 
 
 settings = get_settings()
@@ -88,6 +91,11 @@ diary_models.Base.metadata.create_all(bind=engine)
 audit_models.Base.metadata.create_all(bind=engine)
 
 app.include_router(diary.router, prefix="/api/v1/diary", tags=["diary"])
+
+# Serve Frontend Static Files (Must be last to not block API)
+# We assume the app is run from 'backend/' directory, so frontend is at '../frontend'
+frontend_path = Path(__file__).parent.parent.parent / "frontend"
+app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="static")
 
 
 def run() -> None:
