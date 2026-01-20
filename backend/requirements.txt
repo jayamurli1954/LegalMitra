@@ -8,6 +8,8 @@ pydantic>=2.5.0
 pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
 python-multipart>=0.0.6  # Required for file uploads (Form data)
+slowapi>=0.1.7  # Rate limiting
+
 
 # Production Server & Database adapters
 gunicorn>=21.2.0
