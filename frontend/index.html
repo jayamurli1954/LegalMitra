@@ -3384,9 +3384,12 @@
                     data = JSON.parse(responseText);
                 } catch (parseError) {
                     console.error('JSON parse error:', parseError);
+                    console.error('API URL:', apiUrl);
                     console.error('Response status:', response.status);
+                    console.error('Response headers:', response.headers);
                     console.error('Response text (first 500 chars):', responseText.substring(0, 500));
-                    throw new Error('Server returned invalid response. Please check the API endpoint and try again.');
+                    const errorMsg = `Server returned invalid response from ${apiUrl}.\n\nStatus: ${response.status}\nResponse: ${responseText.substring(0, 200)}...\n\nPlease check the API endpoint and try again.`;
+                    throw new Error(errorMsg);
                 }
 
                 if (response.ok) {
@@ -3484,9 +3487,12 @@
                     data = JSON.parse(responseText);
                 } catch (parseError) {
                     console.error('JSON parse error:', parseError);
+                    console.error('API URL:', apiUrl);
                     console.error('Response status:', response.status);
+                    console.error('Response headers:', response.headers);
                     console.error('Response text (first 500 chars):', responseText.substring(0, 500));
-                    throw new Error('Server returned invalid response. Please check the API endpoint and try again.');
+                    const errorMsg = `Server returned invalid response from ${apiUrl}.\n\nStatus: ${response.status}\nResponse: ${responseText.substring(0, 200)}...\n\nPlease check the API endpoint and try again.`;
+                    throw new Error(errorMsg);
                 }
 
                 if (response.ok) {
