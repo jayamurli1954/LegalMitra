@@ -40,8 +40,9 @@ class TemplateService:
         """Initialize template service"""
         self.templates_dir = Path(__file__).parent.parent.parent / "data" / "templates"
         self.templates_cache = {}
-        self._load_templates()
-        logger.info("Template Service initialized")
+        self._templates_loaded = False
+        # Lazy load templates on first access to reduce startup memory
+        logger.info("Template Service initialized (lazy loading enabled)")
 
     def _load_templates(self):
         """Load all templates from Python code first, then JSON files (Python templates take priority)"""
@@ -117,6 +118,9 @@ class TemplateService:
         act: Optional[str] = None,
         language: str = "en"
     ) -> List[Dict]:
+        """List available templates with optional filtering"""
+        if not self._templates_loaded:
+            self._load_templates()
         """
         List available templates with optional filtering
 
@@ -313,6 +317,8 @@ class TemplateService:
         return disclaimers.get(category, disclaimers['default'])
 
     def get_template_fields(self, template_id: str) -> Optional[List[Dict]]:
+        if not self._templates_loaded:
+            self._load_templates()
         """Get required fields for a template"""
         template = self.get_template(template_id)
         if not template:
@@ -321,6 +327,8 @@ class TemplateService:
         return template.get('fields', [])
 
     def validate_fields(self, template_id: str, fields: Dict[str, Any]) -> Dict:
+        if not self._templates_loaded:
+            self._load_templates()
         """
         Validate user-provided fields against template requirements
 
@@ -385,6 +393,8 @@ class TemplateService:
             return True
 
     def get_categories(self) -> List[Dict]:
+        if not self._templates_loaded:
+            self._load_templates()
         """Get all template categories"""
         categories = {}
 

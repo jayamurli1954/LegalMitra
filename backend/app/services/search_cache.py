@@ -266,8 +266,12 @@ class SearchCache:
 
 # Global cache instance
 # Cache for 6 hours - balances freshness with API usage
+# Reduced max_cache_size for Render free tier (512MB limit)
+# Disabled persistence on Render (ephemeral filesystem)
+import os
+is_render = os.getenv('RENDER') is not None
 search_cache = SearchCache(
     cache_duration_hours=6,
-    max_cache_size=1000,
-    enable_persistence=True
+    max_cache_size=100 if is_render else 500,  # Much smaller on Render
+    enable_persistence=not is_render  # Disable on Render to save memory
 )

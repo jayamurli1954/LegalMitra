@@ -57,11 +57,24 @@ async def root_health() -> dict:
     Used by Render's health checks and external monitoring services.
     """
     from datetime import datetime
+    import os
+    import psutil
+    import gc
+    
+    # Get memory usage for monitoring
+    process = psutil.Process(os.getpid())
+    memory_mb = process.memory_info().rss / 1024 / 1024
+    
+    # Force garbage collection periodically to free memory
+    if memory_mb > 400:  # If using > 400MB, force GC
+        gc.collect()
+    
     return {
         "status": "ok",
         "service": "legalmitra-api",
         "timestamp": datetime.now().isoformat(),
-        "uptime_check": "healthy"
+        "uptime_check": "healthy",
+        "memory_mb": round(memory_mb, 2)
     }
 
 
