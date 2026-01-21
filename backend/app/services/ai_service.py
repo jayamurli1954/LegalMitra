@@ -105,9 +105,13 @@ class AIService:
             self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
         # FIX 5: Don't initialize Gemini client at startup - lazy load it
         # Client will be created on first use to save memory
+        # FIX 5: Don't initialize Gemini client at startup - lazy load it
+        # Client will be created on first use to save memory
         if provider == "gemini":
             logger.info("Gemini provider selected - client will be initialized on first use (lazy loading)")
             print("DEBUG: Gemini provider selected - lazy loading enabled")
+            # Set flag but don't initialize client yet
+            self._gemini_use_new_sdk = GENAI_NEW_SDK if genai else False
                         self._gemini_use_new_sdk = True
                         logger.info("✅ Google Gemini client initialized (new SDK)")
                         print("✅ Google Gemini client initialized (new SDK)")
@@ -674,7 +678,7 @@ class AIService:
                                 full_prompt,
                                 generation_config={
                                     "temperature": 0.3,
-                                    "max_output_tokens": 8000,
+                                    "max_output_tokens": 2000,  # FIX 8: Reduced for free tier
                                 }
                             )
                         )
