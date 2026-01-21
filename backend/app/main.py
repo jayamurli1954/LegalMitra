@@ -58,23 +58,17 @@ async def root_health() -> dict:
     """
     from datetime import datetime
     import os
-    import psutil
     import gc
     
-    # Get memory usage for monitoring
-    process = psutil.Process(os.getpid())
-    memory_mb = process.memory_info().rss / 1024 / 1024
-    
-    # Force garbage collection periodically to free memory
-    if memory_mb > 400:  # If using > 400MB, force GC
+    # Force garbage collection on Render to free memory
+    if os.getenv('RENDER'):
         gc.collect()
     
     return {
         "status": "ok",
         "service": "legalmitra-api",
         "timestamp": datetime.now().isoformat(),
-        "uptime_check": "healthy",
-        "memory_mb": round(memory_mb, 2)
+        "uptime_check": "healthy"
     }
 
 

@@ -271,7 +271,7 @@ class SearchCache:
 import os
 is_render = os.getenv('RENDER') is not None
 search_cache = SearchCache(
-    cache_duration_hours=6,
-    max_cache_size=100 if is_render else 500,  # Much smaller on Render
+    cache_duration_hours=3 if is_render else 6,  # Shorter cache on Render
+    max_cache_size=50 if is_render else 500,  # Even smaller on Render (50 entries)
     enable_persistence=not is_render  # Disable on Render to save memory
 )

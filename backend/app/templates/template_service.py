@@ -53,16 +53,27 @@ class TemplateService:
         self.templates_dir = Path(__file__).parent / "data"
         self.templates_dir.mkdir(exist_ok=True)
         self.catalog_file = self.templates_dir / "catalog.json"
-        self._load_catalog()
+        self._catalog_loaded = False
+        self.catalog = {}
+        # Lazy load catalog to reduce startup memory
 
     def _load_catalog(self):
-        """Load template catalog"""
+        """Load template catalog (lazy loading)"""
+        if self._catalog_loaded:
+            return
+        
         if self.catalog_file.exists():
-            with open(self.catalog_file, 'r', encoding='utf-8') as f:
-                self.catalog = json.load(f)
+            try:
+                with open(self.catalog_file, 'r', encoding='utf-8') as f:
+                    self.catalog = json.load(f)
+            except Exception as e:
+                print(f"Warning: Could not load catalog: {e}")
+                self.catalog = self._create_default_catalog()
         else:
             self.catalog = self._create_default_catalog()
             self._save_catalog()
+        
+        self._catalog_loaded = True
 
     def _save_catalog(self):
         """Save template catalog"""
@@ -3287,5 +3298,6 @@ Return the enhanced, professional document:"""
         return filled_text
 
 
-# Singleton instance
+# Singleton instance - lazy loading enabled
+# Templates are loaded only when first accessed to save memory
 template_service = TemplateService()
