@@ -2473,10 +2473,20 @@
         </div>
     </div>
 
-    <script src="config.js"></script>
+    <script src="config.js?v=1.2.0"></script>
     <script>
         // Use configuration from config.js (defaults to port 8888)
         const API_BASE_URL = (typeof CONFIG !== 'undefined') ? CONFIG.API_BASE_URL : 'http://localhost:8888/api/v1';
+        
+        // Listen for service worker updates
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'SW_UPDATED') {
+                    console.log('Service worker updated, reloading page...');
+                    window.location.reload();
+                }
+            });
+        }
 
         function switchTab(tabName) {
             // Hide all tab contents
