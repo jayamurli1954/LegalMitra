@@ -3206,7 +3206,9 @@ Note: This certificate is based on the information and explanations provided by 
 
     def get_all_categories(self) -> Dict:
         """Get all template categories"""
-        return self.catalog["categories"]
+        if not self._catalog_loaded:
+            self._load_catalog()
+        return self.catalog.get("categories", {})
 
     def get_templates_by_category(self, category: str) -> List[Template]:
         if not self._catalog_loaded:
