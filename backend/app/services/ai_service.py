@@ -105,42 +105,11 @@ class AIService:
             self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
         # FIX 5: Don't initialize Gemini client at startup - lazy load it
         # Client will be created on first use to save memory
-        # FIX 5: Don't initialize Gemini client at startup - lazy load it
-        # Client will be created on first use to save memory
         if provider == "gemini":
             logger.info("Gemini provider selected - client will be initialized on first use (lazy loading)")
             print("DEBUG: Gemini provider selected - lazy loading enabled")
             # Set flag but don't initialize client yet
             self._gemini_use_new_sdk = GENAI_NEW_SDK if genai else False
-                        self._gemini_use_new_sdk = True
-                        logger.info("✅ Google Gemini client initialized (new SDK)")
-                        print("✅ Google Gemini client initialized (new SDK)")
-                    else:
-                        # Fallback to old deprecated package (should not be used)
-                        logger.info(f"Initializing Gemini client with old SDK (API key length: {api_key_length})")
-                        print(f"DEBUG: Attempting to configure genai with old SDK")
-                        genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
-                        self._gemini_client = genai
-                        self._gemini_use_new_sdk = False
-                        logger.info("✅ Google Gemini client initialized (old SDK)")
-                        print("✅ Google Gemini client initialized (old SDK)")
-                except ImportError as e:
-                    error_msg = f"Failed to import Gemini SDK: {e}. Ensure google-genai is installed: pip install google-genai"
-                    logger.error(error_msg)
-                    print(f"ERROR: {error_msg}")
-                    import traceback
-                    print(traceback.format_exc())
-                    self._gemini_client = None
-                    self._gemini_use_new_sdk = False
-                except Exception as e:
-                    error_msg = f"Failed to initialize Gemini client: {type(e).__name__}: {e}"
-                    logger.error(error_msg, exc_info=True)
-                    print(f"ERROR: {error_msg}")
-                    import traceback
-                    print("FULL TRACEBACK:")
-                    print(traceback.format_exc())
-                    self._gemini_client = None
-                    self._gemini_use_new_sdk = False
         else:
             self._gemini_use_new_sdk = False
     
