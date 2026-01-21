@@ -117,7 +117,7 @@ async def review_document(
                 )
         
         # Create query for AI analysis
-        user_query = query.strip() if query else "Please review this document and provide a detailed legal analysis."
+        user_query = query.strip() if query and query.strip() else "Please review this document and provide a detailed legal analysis."
         
         # Combine extracted text with user query
         if extracted_text and extracted_text.strip():
@@ -245,5 +245,13 @@ async def review_document(
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
+        import traceback
+        error_detail = str(e)
+        traceback_str = traceback.format_exc()
+        print(f"Document review error: {error_detail}")
+        print(f"Traceback: {traceback_str}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error processing document: {error_detail}"
+        )
 

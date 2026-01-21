@@ -3,7 +3,7 @@
  * Enables offline functionality and faster loading
  */
 
-const CACHE_NAME = 'legalmitra-v1.0.0';
+const CACHE_NAME = 'legalmitra-v1.1.0'; // Updated to force cache refresh
 const API_CACHE = 'legalmitra-api-v1';
 
 // Files to cache for offline use
@@ -55,17 +55,18 @@ self.addEventListener('activate', (event) => {
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
+                    // Delete all old caches to force refresh
                     if (cacheName !== CACHE_NAME && cacheName !== API_CACHE) {
                         console.log('[Service Worker] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
+        }).then(() => {
+            // Force refresh of all clients
+            return self.clients.claim();
         })
     );
-
-    // Take control of all pages immediately
-    return self.clients.claim();
 });
 
 // Fetch event - serve from cache when offline
