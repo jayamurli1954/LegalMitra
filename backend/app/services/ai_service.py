@@ -888,7 +888,7 @@ class AIService:
             response = await loop.run_in_executor(
                 None, lambda: model.generate_content(
                     full_prompt,
-                    generation_config={"temperature": 0.3, "max_output_tokens": 8000}
+                    generation_config={"temperature": 0.3, "max_output_tokens": 2000}  # FIX 8: Reduced for free tier
                 )
             )
             return response.text.strip()
