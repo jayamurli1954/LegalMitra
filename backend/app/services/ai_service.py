@@ -103,28 +103,11 @@ class AIService:
             )
         if provider == "openai" and OpenAI:
             self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
+        # FIX 5: Don't initialize Gemini client at startup - lazy load it
+        # Client will be created on first use to save memory
         if provider == "gemini":
-            print(f"DEBUG: Initializing Gemini client - genai available: {genai is not None}, GENAI_NEW_SDK: {GENAI_NEW_SDK}")
-            # Check if genai package is available
-            if genai is None:
-                error_msg = "Google Gemini package not installed. Install with: pip install google-genai"
-                logger.error(error_msg)
-                print(f"ERROR: {error_msg}")
-            # Check if API key is set
-            elif not self.settings.GOOGLE_GEMINI_API_KEY:
-                error_msg = "GOOGLE_GEMINI_API_KEY is not set in environment variables"
-                logger.error(error_msg)
-                print(f"ERROR: {error_msg}")
-            else:
-                try:
-                    api_key_length = len(self.settings.GOOGLE_GEMINI_API_KEY) if self.settings.GOOGLE_GEMINI_API_KEY else 0
-                    print(f"DEBUG: API key present (length: {api_key_length}), GENAI_NEW_SDK: {GENAI_NEW_SDK}")
-                    
-                    if GENAI_NEW_SDK:
-                        # Use new google.genai SDK (2025 official)
-                        logger.info(f"Initializing Gemini client with new SDK (API key length: {api_key_length})")
-                        print(f"DEBUG: Attempting to create genai.Client with new SDK")
-                        self._gemini_client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+            logger.info("Gemini provider selected - client will be initialized on first use (lazy loading)")
+            print("DEBUG: Gemini provider selected - lazy loading enabled")
                         self._gemini_use_new_sdk = True
                         logger.info("✅ Google Gemini client initialized (new SDK)")
                         print("✅ Google Gemini client initialized (new SDK)")
@@ -155,6 +138,40 @@ class AIService:
                     self._gemini_client = None
                     self._gemini_use_new_sdk = False
         else:
+            self._gemini_use_new_sdk = False
+    
+    def _initialize_gemini_client(self):
+        """Lazy initialize Gemini client on first use (FIX 5)"""
+        if self._gemini_client is not None:
+            return  # Already initialized
+        
+        if genai is None:
+            logger.error("Google Gemini package not installed")
+            return
+        
+        if not self.settings.GOOGLE_GEMINI_API_KEY:
+            logger.error("GOOGLE_GEMINI_API_KEY is not set")
+            return
+        
+        try:
+            api_key_length = len(self.settings.GOOGLE_GEMINI_API_KEY) if self.settings.GOOGLE_GEMINI_API_KEY else 0
+            logger.info(f"Initializing Gemini client (lazy load) - API key length: {api_key_length}")
+            
+            if GENAI_NEW_SDK:
+                self._gemini_client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                self._gemini_use_new_sdk = True
+                logger.info("✅ Google Gemini client initialized (new SDK, lazy load)")
+                print("✅ Google Gemini client initialized (new SDK, lazy load)")
+            else:
+                genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                self._gemini_client = genai
+                self._gemini_use_new_sdk = False
+                logger.info("✅ Google Gemini client initialized (old SDK, lazy load)")
+                print("✅ Google Gemini client initialized (old SDK, lazy load)")
+        except Exception as e:
+            logger.error(f"Failed to initialize Gemini client: {e}", exc_info=True)
+            print(f"ERROR: Failed to initialize Gemini client: {e}")
+            self._gemini_client = None
             self._gemini_use_new_sdk = False
     
     def _detect_case_citation(self, query: str) -> tuple[bool, Optional[str]]:

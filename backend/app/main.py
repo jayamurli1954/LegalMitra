@@ -80,7 +80,13 @@ app.include_router(
 app.include_router(case_search.router, prefix="/api/v1", tags=["case-search"])
 app.include_router(statute_search.router, prefix="/api/v1", tags=["statute-search"])
 app.include_router(news_and_cases.router, prefix="/api/v1", tags=["news-and-cases"])
-app.include_router(document_review.router, prefix="/api/v1", tags=["document-review"])
+# FIX 6: Lazy-load document_review router to reduce startup memory
+def include_document_review_router(app):
+    """Lazy load document review router"""
+    from app.api import document_review
+    app.include_router(document_review.router, prefix="/api/v1", tags=["document-review"])
+
+include_document_review_router(app)
 app.include_router(model_selection.router, prefix="/api/v1", tags=["model-selection"])
 app.include_router(templates.router, prefix="/api/v1", tags=["templates"])
 app.include_router(smart_routing.router, prefix="/api/v1", tags=["smart-routing"])

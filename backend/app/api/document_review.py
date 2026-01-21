@@ -1,14 +1,110 @@
 """
 Document Review API endpoint for reviewing uploaded documents and images
+Optimized for Render free tier (512MB memory limit)
 """
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel
 from typing import Optional
-from app.services.ai_service import ai_service
-from app.services.document_processor import document_processor
+import logging
+import os
+
+logger = logging.getLogger(__name__)
+
+# Free tier limits (Render 512MB)
+MAX_FILE_SIZE = 300_000  # 300 KB for free tier
+MAX_EXTRACTED_CHARS = 25_000  # 25k chars max for AI processing
+
+# Lazy import to reduce startup memory
+ai_service = None
+document_processor = None
+
+def get_ai_service():
+    """Lazy load AI service"""
+    global ai_service
+    if ai_service is None:
+        from app.services.ai_service import ai_service as _ai_service
+        ai_service = _ai_service
+    return ai_service
+
+def get_document_processor():
+    """Lazy load document processor"""
+    global document_processor
+    if document_processor is None:
+        from app.services.document_processor import document_processor as _dp
+        document_processor = _dp
+    return document_processor
 
 router = APIRouter()
+
+
+def _truncate_text(text: str, max_chars: int = MAX_EXTRACTED_CHARS) -> str:
+    """Truncate text to max_chars, preserving word boundaries"""
+    if len(text) <= max_chars:
+        return text
+    # Truncate at word boundary
+    truncated = text[:max_chars]
+    last_space = truncated.rfind(' ')
+    if last_space > max_chars * 0.9:  # If we can find a space near the end
+        truncated = truncated[:last_space]
+    return truncated + "\n\n[Document truncated for free tier - first 25,000 characters shown]"
+
+
+def _process_document_sync(file_content: bytes, file_extension: str, filename: str) -> tuple[str, str]:
+    """
+    Synchronous document processing function for threadpool
+    Returns: (extracted_text, document_type)
+    """
+    dp = get_document_processor()
+    extracted_text = None
+    document_type = 'unknown'
+    
+    try:
+        if file_extension in ['png', 'jpeg', 'jpg']:
+            # For images, use AI vision capabilities (async, but called from sync context)
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            extracted_text = loop.run_until_complete(
+                dp.process_image(file_content, filename or 'image')
+            )
+            document_type = 'image'
+        elif file_extension == 'pdf':
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            extracted_text = loop.run_until_complete(dp.process_pdf(file_content))
+            document_type = 'pdf'
+        elif file_extension in ['doc', 'docx']:
+            import asyncio
+            try:
+                loop = asyncio.get_event_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            extracted_text = loop.run_until_complete(
+                dp.process_word(file_content, file_extension)
+            )
+            document_type = 'word'
+        elif file_extension == 'txt':
+            extracted_text = file_content.decode('utf-8', errors='ignore')
+            document_type = 'text'
+    except Exception as e:
+        logger.error(f"Document processing error: {e}")
+        raise
+    
+    # FIX 2: Truncate extracted text to prevent memory issues
+    if extracted_text:
+        extracted_text = _truncate_text(extracted_text, MAX_EXTRACTED_CHARS)
+    
+    return extracted_text or "", document_type
 
 
 class DocumentReviewResponse(BaseModel):
@@ -46,27 +142,21 @@ async def review_document(
         # Read file content
         file_content = await file.read()
         
-        # Process document based on type
-        extracted_text = None
-        document_type = 'unknown'
+        # FIX 1: Hard size limit for free tier
+        if len(file_content) > MAX_FILE_SIZE:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File too large for free tier. Maximum size: {MAX_FILE_SIZE // 1000}KB. Your file: {len(file_content) // 1000}KB. Please upload a smaller document."
+            )
         
+        # FIX 4: Offload heavy document processing to threadpool
         try:
-            if file_extension in ['png', 'jpeg', 'jpg']:
-                # For images, use AI vision capabilities
-                extracted_text = await document_processor.process_image(file_content, file.filename or 'image')
-                document_type = 'image'
-            elif file_extension == 'pdf':
-                # Extract text from PDF
-                extracted_text = await document_processor.process_pdf(file_content)
-                document_type = 'pdf'
-            elif file_extension in ['doc', 'docx']:
-                # Extract text from Word document
-                extracted_text = await document_processor.process_word(file_content, file_extension)
-                document_type = 'word'
-            elif file_extension == 'txt':
-                # Read text file directly
-                extracted_text = file_content.decode('utf-8', errors='ignore')
-                document_type = 'text'
+            extracted_text, document_type = await run_in_threadpool(
+                _process_document_sync,
+                file_content,
+                file_extension,
+                file.filename or 'document'
+            )
         except Exception as process_error:
             # If document processing fails, still try to proceed but inform user
             error_detail = str(process_error)
@@ -116,12 +206,13 @@ async def review_document(
                     "Please check if the file format is supported and try again."
                 )
         
-        # Create query for AI analysis
-        user_query = query.strip() if query and query.strip() else "Please review this document and provide a detailed legal analysis."
+        # Create query for AI analysis - FIX 8: Limit to case context summary only
+        user_query = query.strip() if query and query.strip() else "Please provide a concise case context summary (2-3 KB) of this document focusing on key facts, parties, and legal issues."
         
-        # Combine extracted text with user query
+        # Combine extracted text with user query (already truncated)
         if extracted_text and extracted_text.strip():
-            analysis_query = f"{user_query}\n\nDocument Content:\n{extracted_text}"
+            # FIX 2: Text is already truncated in _process_document_sync
+            analysis_query = f"{user_query}\n\nDocument Content (first 25,000 chars):\n{extracted_text}"
         else:
             # If no text was extracted, provide detailed error message
             if 'error_message' in locals():
@@ -148,10 +239,13 @@ async def review_document(
         # Note: Documents are processed temporarily and not saved to storage
         # This ensures privacy and prevents storage buildup
         
-        # Get AI analysis
+        # FIX 3: Get AI analysis with defensive error handling
         try:
-            analysis = await ai_service.process_legal_query(
-                query=analysis_query,
+            ai = get_ai_service()
+            # FIX 8: Add prompt instruction to limit response length
+            limited_query = f"{analysis_query}\n\nIMPORTANT: Keep your response concise. Maximum 800 words. Use numbered points. Do not exceed this limit."
+            analysis = await ai.process_legal_query(
+                query=limited_query,
                 query_type="research"
             )
         except Exception as ai_error:
