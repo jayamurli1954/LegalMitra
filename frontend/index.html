@@ -2729,12 +2729,10 @@
             if (!container) return;
 
             try {
-                const baseUrl = API_BASE_URL.endsWith('/api/v1') 
-                    ? API_BASE_URL.replace('/api/v1', '') 
-                    : (API_BASE_URL.startsWith('http') ? API_BASE_URL.split('/api/v1')[0] : '');
+                // Use relative URLs in production, absolute in development
                 const url = forceWeb
-                    ? `${baseUrl}/api/v1/major-cases?force_web=true`
-                    : `${baseUrl}/api/v1/major-cases`;
+                    ? `${API_BASE_URL}/major-cases?force_web=true`
+                    : `${API_BASE_URL}/major-cases`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch major cases');
 
@@ -2795,12 +2793,10 @@
             if (!container) return;
 
             try {
-                const baseUrl = API_BASE_URL.endsWith('/api/v1') 
-                    ? API_BASE_URL.replace('/api/v1', '') 
-                    : (API_BASE_URL.startsWith('http') ? API_BASE_URL.split('/api/v1')[0] : '');
+                // Use relative URLs in production, absolute in development
                 const url = forceWeb
-                    ? `${baseUrl}/api/v1/legal-news?force_web=true`
-                    : `${baseUrl}/api/v1/legal-news`;
+                    ? `${API_BASE_URL}/legal-news?force_web=true`
+                    : `${API_BASE_URL}/legal-news`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch legal news');
 
