@@ -2729,9 +2729,12 @@
             if (!container) return;
 
             try {
+                const baseUrl = API_BASE_URL.endsWith('/api/v1') 
+                    ? API_BASE_URL.replace('/api/v1', '') 
+                    : (API_BASE_URL.startsWith('http') ? API_BASE_URL.split('/api/v1')[0] : '');
                 const url = forceWeb
-                    ? 'http://localhost:8888/api/v1/major-cases?force_web=true'
-                    : 'http://localhost:8888/api/v1/major-cases';
+                    ? `${baseUrl}/api/v1/major-cases?force_web=true`
+                    : `${baseUrl}/api/v1/major-cases`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch major cases');
 
@@ -2792,9 +2795,12 @@
             if (!container) return;
 
             try {
+                const baseUrl = API_BASE_URL.endsWith('/api/v1') 
+                    ? API_BASE_URL.replace('/api/v1', '') 
+                    : (API_BASE_URL.startsWith('http') ? API_BASE_URL.split('/api/v1')[0] : '');
                 const url = forceWeb
-                    ? 'http://localhost:8888/api/v1/legal-news?force_web=true'
-                    : 'http://localhost:8888/api/v1/legal-news';
+                    ? `${baseUrl}/api/v1/legal-news?force_web=true`
+                    : `${baseUrl}/api/v1/legal-news`;
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to fetch legal news');
 
@@ -2946,7 +2952,7 @@
                     <li onclick="alert('Connection Error: ' + '${escapeHtml(error.message)}'.replace(/'/g, &quot;\\'&quot;))">
                         <div class="case-item-title">System Offline / No Data</div>
                         <div class="case-item-court">System Message</div>
-                        <div class="case-item-summary">Error: ${escapeHtml(error.message)}<br>Please ensure the backend server is running on http://localhost:8888</div>
+                        <div class="case-item-summary">Error: ${escapeHtml(error.message)}<br>Please check your connection and try again.</div>
                     </li>
                 </ul>`;
             }
@@ -3375,11 +3381,11 @@
                 if (error.name === 'AbortError') {
                     showResponse('research-response', 'Request timed out after 3 minutes. Complex AI responses can take time. Please try a simpler query or try again.', true);
                 } else if (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.name === 'TypeError') {
-                    const errorMsg = `Connection error: Cannot connect to server.\n\nPlease check:\n1. Backend server is running on http://localhost:8888\n2. No firewall blocking the connection\n3. CORS is enabled\n\nError: ${error.message}`;
+                    const errorMsg = `Connection error: Cannot connect to server.\n\nPlease check:\n1. Backend server is running\n2. No firewall blocking the connection\n3. CORS is enabled\n\nError: ${error.message}`;
                     alert(errorMsg);
                     showResponse('research-response', errorMsg, true);
                 } else {
-                    const errorMsg = `Error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`;
+                    const errorMsg = `Error: ${error.message}\n\nPlease check your connection and try again.`;
                     alert(errorMsg);
                     showResponse('research-response', errorMsg, true);
                 }
@@ -3463,11 +3469,11 @@
                 if (error.name === 'AbortError') {
                     showResponse('research-response', 'Request timed out after 3 minutes. Document processing can take time. Please try again.', true);
                 } else if (error.message.includes('fetch') || error.message.includes('Failed to fetch') || error.name === 'TypeError') {
-                    const errorMsg = `Connection error: Cannot connect to server.\n\nPlease check:\n1. Backend server is running on http://localhost:8888\n2. No firewall blocking the connection\n3. CORS is enabled\n\nError: ${error.message}`;
+                    const errorMsg = `Connection error: Cannot connect to server.\n\nPlease check:\n1. Backend server is running\n2. No firewall blocking the connection\n3. CORS is enabled\n\nError: ${error.message}`;
                     alert(errorMsg);
                     showResponse('research-response', errorMsg, true);
                 } else {
-                    const errorMsg = `Error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`;
+                    const errorMsg = `Error: ${error.message}\n\nPlease check your connection and try again.`;
                     alert(errorMsg);
                     showResponse('research-response', errorMsg, true);
                 }
@@ -3530,7 +3536,7 @@
                 if (error.name === 'AbortError') {
                     showResponse('drafting-response', 'Request timed out after 3 minutes. Document drafting can take time for complex documents. Please try again.', true);
                 } else {
-                    showResponse('drafting-response', `Connection error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`, true);
+                    showResponse('drafting-response', `Connection error: ${error.message}\n\nPlease check your connection and try again.`, true);
                 }
             }
         }
@@ -3580,7 +3586,7 @@
                 if (error.name === 'AbortError') {
                     showResponse('case-response', 'Request timed out after 2 minutes. Please try a simpler search query or try again.', true);
                 } else {
-                    showResponse('case-response', `Connection error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`, true);
+                    showResponse('case-response', `Connection error: ${error.message}\n\nPlease check your connection and try again.`, true);
                 }
             }
         }
@@ -3625,7 +3631,7 @@
                 if (error.name === 'AbortError') {
                     showResponse('statute-response', 'Request timed out after 2 minutes. Please try again.', true);
                 } else {
-                    showResponse('statute-response', `Connection error: ${error.message}\n\nMake sure the backend server is running on http://localhost:8888`, true);
+                    showResponse('statute-response', `Connection error: ${error.message}\n\nPlease check your connection and try again.`, true);
                 }
             }
         }

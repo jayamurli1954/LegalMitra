@@ -1,4 +1,7 @@
-const API_BASE = 'http://localhost:8888/api/v1/diary';
+// Auto-detect API URL based on environment
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:8888/api/v1/diary'
+    : '/api/v1/diary';
 
 // --- Global State ---
 let clients = [];
