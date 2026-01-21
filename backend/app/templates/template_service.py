@@ -3209,6 +3209,8 @@ Note: This certificate is based on the information and explanations provided by 
         return self.catalog["categories"]
 
     def get_templates_by_category(self, category: str) -> List[Template]:
+        if not self._catalog_loaded:
+            self._load_catalog()
         """Get templates for a specific category"""
         templates = [
             Template(**t) for t in self.catalog["templates"]
@@ -3217,6 +3219,8 @@ Note: This certificate is based on the information and explanations provided by 
         return templates
 
     def get_template_by_id(self, template_id: str) -> Optional[Template]:
+        if not self._catalog_loaded:
+            self._load_catalog()
         """Get specific template by ID"""
         for t in self.catalog["templates"]:
             if t["id"] == template_id:
@@ -3224,6 +3228,8 @@ Note: This certificate is based on the information and explanations provided by 
         return None
 
     def search_templates(self, query: str, user_type: Optional[str] = None) -> List[Template]:
+        if not self._catalog_loaded:
+            self._load_catalog()
         """Search templates by query and user type"""
         results = []
         query_lower = query.lower()
