@@ -3460,11 +3460,23 @@
                 clearTimeout(timeoutId);
 
                 let data;
+                let responseText = '';
                 try {
-                    const text = await response.text();
-                    data = JSON.parse(text);
+                    responseText = await response.text();
+                    // Check if response is empty
+                    if (!responseText || responseText.trim().length === 0) {
+                        throw new Error('Server returned empty response');
+                    }
+                    // Check if response looks like HTML (error page)
+                    if (responseText.trim().startsWith('<!DOCTYPE') || responseText.trim().startsWith('<html')) {
+                        throw new Error('Server returned HTML instead of JSON. The API endpoint may not exist.');
+                    }
+                    data = JSON.parse(responseText);
                 } catch (parseError) {
-                    throw new Error('Server returned invalid response. Please try again.');
+                    console.error('JSON parse error:', parseError);
+                    console.error('Response status:', response.status);
+                    console.error('Response text (first 500 chars):', responseText.substring(0, 500));
+                    throw new Error('Server returned invalid response. Please check the API endpoint and try again.');
                 }
 
                 if (response.ok) {
@@ -3477,7 +3489,7 @@
                         showResponse('research-response', errorMsg, true);
                     }
                 } else {
-                    const errorMsg = data.detail || data.error || data.message || `Server error (${response.status})`;
+                    const errorMsg = data?.detail || data?.error || data?.message || `Server error (${response.status})`;
                     showResponse('research-response', `Error ${response.status}: ${errorMsg}`, true);
                 }
             } catch (error) {
