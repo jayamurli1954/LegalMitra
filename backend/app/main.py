@@ -16,11 +16,30 @@ from slowapi.errors import RateLimitExceeded
 from app.api import case_search, document_drafting, legal_research, statute_search, news_and_cases, document_review, model_selection, templates, smart_routing, cost_tracking, enhanced_query, legal_templates_v2
 from app.core.config import get_settings
 from fastapi.staticfiles import StaticFiles
+import logging
 
-settings = get_settings()
+logger = logging.getLogger(__name__)
 
-
-settings = get_settings()
+# FIX: Validate AI configuration at startup - fail fast if misconfigured
+# This ensures the app never starts with a broken AI service
+try:
+    settings = get_settings()
+    # Import AI service to trigger validation
+    from app.services.ai_service import ai_service
+    logger.info("✅ AI service initialized successfully at startup")
+    print("✅ AI service initialized successfully at startup")
+except RuntimeError as e:
+    # If AI service fails to initialize, log and re-raise to prevent app from starting
+    error_msg = f"CRITICAL: AI service initialization failed: {e}. App cannot start without valid AI configuration."
+    logger.critical(error_msg)
+    print(f"❌ {error_msg}")
+    raise
+except Exception as e:
+    # Catch any other initialization errors
+    error_msg = f"CRITICAL: Unexpected error during AI service initialization: {e}"
+    logger.critical(error_msg, exc_info=True)
+    print(f"❌ {error_msg}")
+    raise RuntimeError(error_msg) from e
 
 app = FastAPI(
     title="LegalMitra API",

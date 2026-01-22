@@ -26,8 +26,10 @@ if not _ENV_FILE_PATH.exists():
 class Settings(BaseSettings):
     """Application configuration loaded from environment variables / .env."""
 
-    # AI provider selection: "anthropic", "openai", "google", "grok", "zai", "openrouter"
-    AI_PROVIDER: str = "anthropic"
+    # AI provider selection: "gemini", "openai", "anthropic", "grok", "zai", "openrouter"
+    # Note: "google" is an alias for "gemini" and will be normalized
+    # IMPORTANT: For production, explicitly set AI_PROVIDER in environment variables
+    AI_PROVIDER: str = "anthropic"  # Default for local development only
 
     # API keys (only the one for the selected provider is required)
     OPENAI_API_KEY: Optional[str] = None

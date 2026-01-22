@@ -91,6 +91,17 @@ class AIService:
         VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
         raw_provider = self.settings.AI_PROVIDER.strip().lower()
         
+        # Check if AI_PROVIDER is empty or just whitespace
+        if not raw_provider:
+            error_msg = (
+                "AI_PROVIDER environment variable is missing or empty. "
+                f"Must be one of {sorted(VALID_PROVIDERS)}. "
+                "Please set AI_PROVIDER in your environment variables."
+            )
+            logger.error(error_msg)
+            print(f"ERROR: {error_msg}")
+            raise RuntimeError(error_msg)
+        
         # Handle legacy "google" alias
         if raw_provider == "google":
             raw_provider = "gemini"
