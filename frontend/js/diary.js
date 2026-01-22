@@ -7,8 +7,208 @@ const API_BASE = (window.location.hostname === 'localhost' || window.location.ho
 let clients = [];
 let cases = [];
 
+// --- Profession Labels Config (Single Source of Truth) ---
+const PROFESSION_LABELS = {
+    advocate: {
+        title: "⚖️ Advocate's Digital Diary",
+        subtitle: "Track hearings, cases, clients & fees efficiently",
+        kpis: {
+            today: "Today's Hearings",
+            pending: "Pending Tasks",
+            active: "Active Cases",
+            fees: "Fees Outstanding"
+        },
+        tabs: {
+            dailyBoard: "📅 Daily Board",
+            caseMaster: "📂 Case Master",
+            clients: "👥 Clients",
+            feeLedger: "💰 Fee Ledger"
+        },
+        primaryButton: "+ Log Hearing",
+        dailyBoardTitle: "Upcoming Hearings",
+        caseMasterTitle: "All Cases",
+        newCaseButton: "+ New Case",
+        tableHeaders: {
+            date: "Date",
+            reference: "Case No",
+            authority: "Court",
+            purpose: "Purpose",
+            action: "Action"
+        },
+        caseTableHeaders: {
+            reference: "Case No",
+            client: "Client",
+            authority: "Court",
+            type: "Type",
+            nextDate: "Next Hearing",
+            status: "Status",
+            view: "View"
+        },
+        emptyState: {
+            dailyBoard: "No hearings scheduled.\nLog your next hearing to stay organised.",
+            caseMaster: "No cases yet.\nAdd your first case to get started."
+        }
+    },
+    chartered_accountant: {
+        title: "📊 Chartered Accountant's Digital Diary",
+        subtitle: "Manage compliances, notices, clients & assignments",
+        kpis: {
+            today: "Today's Due Compliances",
+            pending: "Pending Filings / Replies",
+            active: "Active Assignments",
+            fees: "Fees Outstanding"
+        },
+        tabs: {
+            dailyBoard: "📅 Daily Board",
+            caseMaster: "📂 Engagements",
+            clients: "👥 Clients",
+            feeLedger: "💰 Fee Ledger"
+        },
+        primaryButton: "+ Log Compliance / Due Date",
+        dailyBoardTitle: "Due Compliances",
+        caseMasterTitle: "All Engagements",
+        newCaseButton: "+ New Engagement",
+        tableHeaders: {
+            date: "Due Date",
+            reference: "Ack / Ref No",
+            authority: "Authority",
+            purpose: "Compliance Type",
+            action: "Action"
+        },
+        caseTableHeaders: {
+            reference: "Ref / Ack No",
+            client: "Client",
+            authority: "Department",
+            type: "Type",
+            nextDate: "Due Date",
+            status: "Status",
+            view: "View"
+        },
+        emptyState: {
+            dailyBoard: "No compliances due today.\nAdd upcoming filings to track deadlines and avoid penalties.",
+            caseMaster: "No engagements yet.\nAdd your first engagement to get started."
+        }
+    }
+};
+
+// --- Profession Management ---
+function getProfession() {
+    return localStorage.getItem('diary_profession') || 'advocate';
+}
+
+function setProfession(profession) {
+    localStorage.setItem('diary_profession', profession);
+    updateUIForProfession();
+}
+
+function getLabels() {
+    return PROFESSION_LABELS[getProfession()];
+}
+
+// --- Profession Management Functions ---
+function initializeProfessionSelector() {
+    const selector = document.getElementById('profession-selector');
+    if (selector) {
+        selector.value = getProfession();
+    }
+}
+
+function handleProfessionChange(profession) {
+    setProfession(profession);
+}
+
+function updateUIForProfession() {
+    const labels = getLabels();
+    const profession = getProfession();
+    
+    // Update title and subtitle
+    const titleEl = document.getElementById('diary-title');
+    const subtitleEl = document.getElementById('diary-subtitle');
+    if (titleEl) titleEl.textContent = labels.title;
+    if (subtitleEl) subtitleEl.textContent = labels.subtitle;
+    
+    // Update KPI labels
+    const kpiToday = document.getElementById('kpi-today');
+    const kpiPending = document.getElementById('kpi-pending');
+    const kpiActive = document.getElementById('kpi-active');
+    const kpiFees = document.getElementById('kpi-fees');
+    if (kpiToday) kpiToday.textContent = labels.kpis.today;
+    if (kpiPending) kpiPending.textContent = labels.kpis.pending;
+    if (kpiActive) kpiActive.textContent = labels.kpis.active;
+    if (kpiFees) kpiFees.textContent = labels.kpis.fees;
+    
+    // Update tab labels
+    const tabDailyBoard = document.getElementById('tab-daily-board');
+    const tabCaseMaster = document.getElementById('tab-case-master');
+    const tabClients = document.getElementById('tab-clients');
+    const tabFeeLedger = document.getElementById('tab-fee-ledger');
+    if (tabDailyBoard) tabDailyBoard.textContent = labels.tabs.dailyBoard;
+    if (tabCaseMaster) tabCaseMaster.textContent = labels.tabs.caseMaster;
+    if (tabClients) tabClients.textContent = labels.tabs.clients;
+    if (tabFeeLedger) tabFeeLedger.textContent = labels.tabs.feeLedger;
+    
+    // Update primary action button
+    const primaryBtn = document.getElementById('primary-action-btn');
+    if (primaryBtn) primaryBtn.textContent = labels.primaryButton;
+    
+    // Update section titles
+    const dailyBoardTitle = document.getElementById('daily-board-title');
+    const caseMasterTitle = document.getElementById('case-master-title');
+    const newCaseBtn = document.getElementById('new-case-btn');
+    if (dailyBoardTitle) dailyBoardTitle.textContent = labels.dailyBoardTitle;
+    if (caseMasterTitle) caseMasterTitle.textContent = labels.caseMasterTitle;
+    if (newCaseBtn) newCaseBtn.textContent = labels.newCaseButton;
+    
+    // Update table headers
+    const thDate = document.getElementById('th-date');
+    const thReference = document.getElementById('th-reference');
+    const thAuthority = document.getElementById('th-authority');
+    const thPurpose = document.getElementById('th-purpose');
+    const thAction = document.getElementById('th-action');
+    if (thDate) thDate.textContent = labels.tableHeaders.date;
+    if (thReference) thReference.textContent = labels.tableHeaders.reference;
+    if (thAuthority) thAuthority.textContent = labels.tableHeaders.authority;
+    if (thPurpose) thPurpose.textContent = labels.tableHeaders.purpose;
+    if (thAction) thAction.textContent = labels.tableHeaders.action;
+    
+    // Update case table headers
+    const caseThReference = document.getElementById('case-th-reference');
+    const caseThClient = document.getElementById('case-th-client');
+    const caseThAuthority = document.getElementById('case-th-authority');
+    const caseThType = document.getElementById('case-th-type');
+    const caseThNextDate = document.getElementById('case-th-next-date');
+    const caseThStatus = document.getElementById('case-th-status');
+    const caseThView = document.getElementById('case-th-view');
+    if (caseThReference) caseThReference.textContent = labels.caseTableHeaders.reference;
+    if (caseThClient) caseThClient.textContent = labels.caseTableHeaders.client;
+    if (caseThAuthority) caseThAuthority.textContent = labels.caseTableHeaders.authority;
+    if (caseThType) caseThType.textContent = labels.caseTableHeaders.type;
+    if (caseThNextDate) caseThNextDate.textContent = labels.caseTableHeaders.nextDate;
+    if (caseThStatus) caseThStatus.textContent = labels.caseTableHeaders.status;
+    if (caseThView) caseThView.textContent = labels.caseTableHeaders.view;
+    
+    // Update search placeholder
+    const caseSearchInput = document.getElementById('case-search-input');
+    if (caseSearchInput) {
+        caseSearchInput.placeholder = profession === 'advocate' 
+            ? 'Search cases...' 
+            : 'Search engagements...';
+    }
+    
+    // Reload data to reflect profession change
+    if (document.getElementById('daily-board')?.classList.contains('active')) {
+        loadDailyBoard();
+    }
+    if (document.getElementById('case-master')?.classList.contains('active')) {
+        loadCaseMaster();
+    }
+    loadDashboard();
+}
+
 // --- Init ---
 document.addEventListener('DOMContentLoaded', () => {
+    initializeProfessionSelector();
+    updateUIForProfession();
     loadDashboard();
     loadDailyBoard();
     loadClients(); // Prefetch for selects

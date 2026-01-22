@@ -512,8 +512,18 @@
 <body>
 
     <div class="header">
-        <h1>⚖️ Advocate's Digital Diary</h1>
-        <a href="index.html" class="back-btn">← Back to Research</a>
+        <div>
+            <h1 id="diary-title">⚖️ Advocate's Digital Diary</h1>
+            <p id="diary-subtitle" style="margin: 0; font-size: 0.9em; opacity: 0.9;">Track hearings, cases, clients & fees efficiently</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <select id="profession-selector" onchange="handleProfessionChange(this.value)" 
+                style="padding: 10px 15px; border-radius: 8px; border: 2px solid white; background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer; font-size: 1em;">
+                <option value="advocate">⚖️ Advocate</option>
+                <option value="chartered_accountant">📊 Chartered Accountant</option>
+            </select>
+            <a href="index.html" class="back-btn">← Back to Research</a>
+        </div>
     </div>
 
     <div class="container">
@@ -540,26 +550,26 @@
 
         <!-- Navigation -->
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('daily-board')">📅 Daily Board</button>
-            <button class="nav-tab" onclick="switchTab('case-master')">📂 Case Master</button>
-            <button class="nav-tab" onclick="switchTab('clients')">👥 Clients</button>
-            <button class="nav-tab" onclick="switchTab('fee-ledger')">💰 Fee Ledger</button>
+            <button class="nav-tab active" onclick="switchTab('daily-board')" id="tab-daily-board">📅 Daily Board</button>
+            <button class="nav-tab" onclick="switchTab('case-master')" id="tab-case-master">📂 Case Master</button>
+            <button class="nav-tab" onclick="switchTab('clients')" id="tab-clients">👥 Clients</button>
+            <button class="nav-tab" onclick="switchTab('fee-ledger')" id="tab-fee-ledger">💰 Fee Ledger</button>
         </div>
 
         <!-- TAB: Daily Board -->
         <div id="daily-board" class="tab-content active">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Upcoming Hearings</h2>
-                <button class="btn" onclick="openHearingModal()">+ Log Hearing</button>
+                <h2 id="daily-board-title">Upcoming Hearings</h2>
+                <button class="btn" id="primary-action-btn" onclick="openHearingModal()">+ Log Hearing</button>
             </div>
             <table id="hearings-table">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Case No</th>
-                        <th>Court</th>
-                        <th>Purpose</th>
-                        <th>Action</th>
+                        <th id="th-date">Date</th>
+                        <th id="th-reference">Case No</th>
+                        <th id="th-authority">Court</th>
+                        <th id="th-purpose">Purpose</th>
+                        <th id="th-action">Action</th>
                     </tr>
                 </thead>
                 <tbody id="hearings-list">
@@ -571,23 +581,23 @@
         <!-- TAB: Case Master -->
         <div id="case-master" class="tab-content">
             <div class="section-header">
-                <h2>All Cases</h2>
-                <button class="btn" onclick="openCaseModal()">+ New Case</button>
+                <h2 id="case-master-title">All Cases</h2>
+                <button class="btn" id="new-case-btn" onclick="openCaseModal()">+ New Case</button>
             </div>
             <div style="margin-top: 15px; margin-bottom: 15px;">
-                <input type="text" placeholder="Search cases..."
+                <input type="text" id="case-search-input" placeholder="Search cases..."
                     style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 5px;">
             </div>
             <table id="cases-table">
                 <thead>
                     <tr>
-                        <th>Case No</th>
-                        <th>Client</th>
-                        <th>Court</th>
-                        <th>Type</th>
-                        <th>Next Hearing</th>
-                        <th>Status</th>
-                        <th>View</th>
+                        <th id="case-th-reference">Case No</th>
+                        <th id="case-th-client">Client</th>
+                        <th id="case-th-authority">Court</th>
+                        <th id="case-th-type">Type</th>
+                        <th id="case-th-next-date">Next Hearing</th>
+                        <th id="case-th-status">Status</th>
+                        <th id="case-th-view">View</th>
                     </tr>
                 </thead>
                 <tbody id="cases-list">
@@ -641,18 +651,18 @@
     <div id="modal-case" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>New Case Entry</h2>
+                <h2 id="modal-case-title">New Case Entry</h2>
                 <span style="cursor:pointer; font-size:1.5em;" onclick="closeModal('modal-case')">&times;</span>
             </div>
             <form id="form-case" onsubmit="handleCreateCase(event)">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Case Number</label>
-                        <input type="text" name="case_number" required placeholder="e.g. WP 1234/2024">
+                        <label id="label-case-number">Case Number</label>
+                        <input type="text" name="case_number" required id="input-case-number" placeholder="e.g. WP 1234/2024">
                     </div>
                     <div class="form-group">
-                        <label>Court</label>
-                        <input type="text" name="court" required placeholder="e.g. High Court">
+                        <label id="label-court">Court</label>
+                        <input type="text" name="court" required id="input-court" placeholder="e.g. High Court">
                     </div>
                 </div>
                 <div class="form-grid">
@@ -725,31 +735,31 @@
     <div id="modal-hearing" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Log New Hearing</h2>
+                <h2 id="modal-hearing-title">Log New Hearing</h2>
                 <span style="cursor:pointer; font-size:1.5em;" onclick="closeModal('modal-hearing')">&times;</span>
             </div>
             <form id="form-hearing" onsubmit="handleLogHearingGlobal(event)">
                 <div class="form-group">
-                    <label>Select Case</label>
+                    <label id="label-select-case">Select Case</label>
                     <select id="hearing-case-select" name="case_id" required>
                         <option value="">Loading cases...</option>
                     </select>
                 </div>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Hearing Date</label>
+                        <label id="label-hearing-date">Hearing Date</label>
                         <input type="date" name="hearing_date" required>
                     </div>
                     <div class="form-group">
-                        <label>Next Date</label>
+                        <label id="label-next-date">Next Date</label>
                         <input type="date" name="next_date">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Purpose / Order</label>
-                    <textarea name="purpose" placeholder="e.g. Evidence, Arguments..."></textarea>
+                    <label id="label-purpose">Purpose / Order</label>
+                    <textarea name="purpose" id="textarea-purpose" placeholder="e.g. Evidence, Arguments..."></textarea>
                 </div>
-                <button type="submit" class="btn">Save Hearing</button>
+                <button type="submit" class="btn" id="btn-save-hearing">Save Hearing</button>
             </form>
         </div>
     </div>
