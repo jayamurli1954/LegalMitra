@@ -20,26 +20,39 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# FIX: Validate AI configuration at startup - fail fast if misconfigured
-# This ensures the app never starts with a broken AI service
+# FIX: Validate AI_PROVIDER at startup - fail fast only if provider is invalid
+# API key validation happens lazily when AI service is actually used
 try:
     settings = get_settings()
-    # Import AI service to trigger validation
+    # Only validate that AI_PROVIDER is set and valid (not empty/invalid)
+    VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
+    raw_provider = settings.AI_PROVIDER.strip().lower() if settings.AI_PROVIDER else ""
+    
+    if not raw_provider:
+        logger.warning("AI_PROVIDER is not set - using default 'anthropic'")
+    elif raw_provider not in VALID_PROVIDERS and raw_provider != "google":
+        error_msg = (
+            f"Invalid AI_PROVIDER='{settings.AI_PROVIDER}'. "
+            f"Must be one of {sorted(VALID_PROVIDERS)}. "
+            f"App cannot start with invalid AI_PROVIDER."
+        )
+        logger.critical(error_msg)
+        print(f"❌ {error_msg}")
+        raise RuntimeError(error_msg)
+    else:
+        logger.info(f"✅ AI_PROVIDER validated: {raw_provider if raw_provider != 'google' else 'gemini'}")
+    
+    # Import AI service (will validate API keys lazily when used)
     from app.services.ai_service import ai_service
-    logger.info("✅ AI service initialized successfully at startup")
-    print("✅ AI service initialized successfully at startup")
-except RuntimeError as e:
-    # If AI service fails to initialize, log and re-raise to prevent app from starting
-    error_msg = f"CRITICAL: AI service initialization failed: {e}. App cannot start without valid AI configuration."
-    logger.critical(error_msg)
-    print(f"❌ {error_msg}")
+    logger.info("✅ AI service module loaded successfully")
+except RuntimeError:
+    # Re-raise RuntimeError (invalid provider)
     raise
 except Exception as e:
-    # Catch any other initialization errors
-    error_msg = f"CRITICAL: Unexpected error during AI service initialization: {e}"
-    logger.critical(error_msg, exc_info=True)
-    print(f"❌ {error_msg}")
-    raise RuntimeError(error_msg) from e
+    # Log other errors but don't prevent app from starting
+    error_msg = f"Warning during AI service import: {e}"
+    logger.warning(error_msg, exc_info=True)
+    print(f"⚠️ {error_msg} - App will start but AI features may not work")
 
 app = FastAPI(
     title="LegalMitra API",
