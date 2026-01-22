@@ -3669,8 +3669,15 @@
 
                 if (response.ok) {
                     showResponse('statute-response', data.content || data.explanation);
+                } else if (response.status === 503) {
+                    // Handle 503 Service Unavailable gracefully - show the message from backend
+                    const message = data.message || data.error || 'AI service is temporarily unavailable';
+                    const content = data.content || data.explanation || message;
+                    showResponse('statute-response', content, true);
                 } else {
-                    showResponse('statute-response', data.detail || 'An error occurred', true);
+                    // Other errors
+                    const errorMsg = data.detail || data.error || data.message || `Server error (${response.status})`;
+                    showResponse('statute-response', `Error: ${errorMsg}`, true);
                 }
             } catch (error) {
                 if (error.name === 'AbortError') {
