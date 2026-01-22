@@ -749,44 +749,47 @@ class AIService:
                 for attempt in range(max_retries):
                     try:
                         if use_new_sdk:
-                        # New SDK: Use client.models.generate_content()
-                        # Combine system prompt and user text
-                        full_prompt = f"{self.system_prompt}\n\n{user_text}"
-                        
-                        response = await loop.run_in_executor(
-                            None, lambda: self._gemini_client.models.generate_content(
-                                model=model_name,
-                                contents=[
-                                    {
-                                        "role": "user",
-                                        "parts": [{"text": full_prompt}]
+                            # New SDK: Use client.models.generate_content()
+                            # Combine system prompt and user text
+                            full_prompt = f"{self.system_prompt}\n\n{user_text}"
+                            
+                            response = await loop.run_in_executor(
+                                None, lambda: self._gemini_client.models.generate_content(
+                                    model=model_name,
+                                    contents=[
+                                        {
+                                            "role": "user",
+                                            "parts": [{"text": full_prompt}]
+                                        }
+                                    ]
+                                )
+                            )
+                            result = response.text.strip()
+                            # End trace with success
+                            end_trace(success=True, model=model_name)
+                            return result
+                        else:
+                            # Old SDK: Use GenerativeModel
+                            model = self._gemini_client.GenerativeModel(model_name)
+                            
+                            # Combine system prompt and user text
+                            full_prompt = f"{self.system_prompt}\n\n{user_text}"
+                            
+                            response = await loop.run_in_executor(
+                                None, lambda: model.generate_content(
+                                    full_prompt,
+                                    generation_config={
+                                        "temperature": 0.3,
+                                        "max_output_tokens": 2000,  # FIX 8: Reduced for free tier
                                     }
-                                ]
+                                )
                             )
-                        )
-                        result = response.text.strip()
-                        # End trace with success
-                        end_trace(success=True, model=model_name)
-                        return result
-                    else:
-                        # Old SDK: Use GenerativeModel
-                        model = self._gemini_client.GenerativeModel(model_name)
+                            result = response.text.strip()
+                            # End trace with success
+                            end_trace(success=True, model=model_name)
+                            return result
                         
-                        # Combine system prompt and user text
-                        full_prompt = f"{self.system_prompt}\n\n{user_text}"
-                        
-                        response = await loop.run_in_executor(
-                            None, lambda: model.generate_content(
-                                full_prompt,
-                                generation_config={
-                                    "temperature": 0.3,
-                                    "max_output_tokens": 2000,  # FIX 8: Reduced for free tier
-                                }
-                            )
-                        )
-                        return response.text.strip()
-                    
-                except Exception as e:
+                    except Exception as e:
                     error_str = str(e)
                     
                     # Check if model doesn't exist (404) - try to list available models and use one
