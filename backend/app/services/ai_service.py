@@ -591,29 +591,29 @@ class AIService:
                 end_trace(success=True, model="claude-3-sonnet-20240229")
                 return result
             elif provider == "openai":
-            if not self._openai_client:
-                error_msg = (
-                    "OpenAI client not available. "
-                    "Ensure `openai` package is installed and "
-                    "OPENAI_API_KEY is set."
-                )
-                end_trace(success=False, error=error_msg)
-                raise RuntimeError(error_msg)
+                if not self._openai_client:
+                    error_msg = (
+                        "OpenAI client not available. "
+                        "Ensure `openai` package is installed and "
+                        "OPENAI_API_KEY is set."
+                    )
+                    end_trace(success=False, error=error_msg)
+                    raise RuntimeError(error_msg)
 
-            response = self._openai_client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": self.system_prompt},
-                    {"role": "user", "content": user_text},
-                ],
-                max_tokens=2048,
-            )
-            result = (response.choices[0].message.content or "").strip()
-            end_trace(success=True, model="gpt-4o-mini")
-            return result
+                response = self._openai_client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": self.system_prompt},
+                        {"role": "user", "content": user_text},
+                    ],
+                    max_tokens=2048,
+                )
+                result = (response.choices[0].message.content or "").strip()
+                end_trace(success=True, model="gpt-4o-mini")
+                return result
             elif provider == "gemini":
                 logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
-            if not self._gemini_client:
+                if not self._gemini_client:
                 # Provide more helpful error message with actual initialization error
                 error_parts = []
                 
@@ -644,23 +644,29 @@ class AIService:
             loop = asyncio.get_event_loop()
             
             # Try to find an available Gemini model
-            # Updated priority: Try newer models first, then fallback to older ones
-            # For new SDK, use gemini-2.5-flash or gemini-2.0-flash
-            # For old SDK, use gemini-1.5-flash or gemini-1.5-pro
-            if use_new_sdk:
-                preferred_models = [
-                    "gemini-2.5-flash",   # Latest for new SDK
-                    "gemini-2.0-flash",   # Fallback
-                    "gemini-2.5-pro",     # Higher capability
-                ]
-            else:
-                preferred_models = [
-                    "gemini-1.5-flash",      # Fast, cost-effective, widely available
-                    "gemini-1.5-pro",        # Higher capability
-                    "gemini-1.0-pro",        # Stable successor to gemini-pro
-                    "gemini-pro",            # Legacy (may not be available)
-                ]
-            model_name = None
+                # Updated priority: Try newer models first, then fallback to older ones
+                # For new SDK, use gemini-2.5-flash or gemini-2.0-flash
+                # For old SDK, use gemini-1.5-flash or gemini-1.5-pro
+                if use_new_sdk:
+                    # Map old model names to new SDK equivalents
+                    model_map = {
+                        "gemini-1.5-flash": "gemini-2.0-flash",
+                        "gemini-1.5-pro": "gemini-2.5-pro"
+                    }
+                    primary_model = model_map.get(selected_model, "gemini-2.0-flash")
+                    preferred_models = [
+                        primary_model,
+                        "gemini-2.5-flash",   # Fallback
+                        "gemini-2.0-flash",   # Another fallback
+                    ]
+                else:
+                    preferred_models = [
+                        selected_model,  # Use smart-selected model
+                        "gemini-1.5-flash",      # Fast, cost-effective fallback
+                        "gemini-1.5-pro",        # Higher capability fallback
+                        "gemini-1.0-pro",        # Stable fallback
+                    ]
+                model_name = None
             
             # First, try to list available models from API (most reliable)
             # Note: New SDK uses different API structure
@@ -856,71 +862,6 @@ class AIService:
             if 'end_trace' in locals():
                 end_trace(success=False, error=str(e))
             raise
-            if not httpx:
-                raise RuntimeError(
-                    "httpx package required for Grok API. "
-                    "Install with: pip install httpx"
-                )
-            if not self.settings.GROK_API_KEY:
-                raise RuntimeError(
-                    "GROK_API_KEY not set in .env file."
-                )
-
-            # Grok uses OpenAI-compatible API
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "https://api.x.ai/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {self.settings.GROK_API_KEY}",
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "model": "grok-2-1212",
-                        "messages": [
-                            {"role": "system", "content": self.system_prompt},
-                            {"role": "user", "content": user_text},
-                        ],
-                        "max_tokens": 8192,  # Increased to maximum for exhaustive responses
-                        "temperature": 0.2,  # Lower temperature for more accurate, detailed legal information
-                    },
-                    timeout=60.0,
-                )
-                response.raise_for_status()
-                data = response.json()
-                return (data["choices"][0]["message"]["content"] or "").strip()
-        elif provider == "zai":
-            if not httpx:
-                raise RuntimeError(
-                    "httpx package required for Z AI API. "
-                    "Install with: pip install httpx"
-                )
-            if not self.settings.ZAI_API_KEY:
-                raise RuntimeError(
-                    "ZAI_API_KEY not set in .env file."
-                )
-
-            # Z AI GLM 4.6 uses OpenAI-compatible API
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    "https://api.z.ai/api/paas/v4/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {self.settings.ZAI_API_KEY}",
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "model": "glm-4.6",
-                        "messages": [
-                            {"role": "system", "content": self.system_prompt},
-                            {"role": "user", "content": user_text},
-                        ],
-                        "max_tokens": 2048,
-                    },
-                    timeout=60.0,
-                )
-                response.raise_for_status()
-                data = response.json()
-                return (data["choices"][0]["message"]["content"] or "").strip()
-        elif provider == "openrouter":
             if not openrouter_service:
                 raise RuntimeError(
                     "OpenRouter service not available. "
