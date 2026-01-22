@@ -3665,7 +3665,20 @@
                 });
 
                 clearTimeout(timeoutId);
-                const data = await response.json();
+                
+                // Parse JSON response - handle both success and error responses
+                let data;
+                try {
+                    const responseText = await response.text();
+                    if (!responseText || responseText.trim().length === 0) {
+                        throw new Error('Server returned empty response');
+                    }
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('JSON parse error:', parseError);
+                    console.error('Response status:', response.status);
+                    throw new Error(`Server returned invalid response. Status: ${response.status}`);
+                }
 
                 if (response.ok) {
                     showResponse('statute-response', data.content || data.explanation);
