@@ -55,6 +55,8 @@ async def root_health() -> dict:
     """
     Health check endpoint for monitoring and keep-alive services.
     Used by Render's health checks and external monitoring services.
+    
+    FIX 5: Includes AI readiness status for production monitoring.
     """
     from datetime import datetime
     import os
@@ -64,11 +66,49 @@ async def root_health() -> dict:
     if os.getenv('RENDER'):
         gc.collect()
     
+    # FIX 5: Check AI service readiness
+    ai_ready = False
+    ai_provider = None
+    try:
+        from app.services.ai_service import ai_service
+        from app.core.config import get_settings
+        settings = get_settings()
+        ai_provider = settings.AI_PROVIDER.lower().strip()
+        
+        # Check if the selected provider's client is available
+        if ai_provider == "gemini":
+            # For Gemini, check if client can be initialized (lazy loading)
+            if hasattr(ai_service, '_gemini_client') and ai_service._gemini_client is not None:
+                ai_ready = True
+            elif hasattr(ai_service, '_gemini_init_error') and ai_service._gemini_init_error:
+                ai_ready = False  # Has error
+            else:
+                # Try to initialize to check readiness
+                try:
+                    ai_service._initialize_gemini_client()
+                    ai_ready = ai_service._gemini_client is not None
+                except:
+                    ai_ready = False
+        elif ai_provider == "anthropic":
+            ai_ready = hasattr(ai_service, '_anthropic_client') and ai_service._anthropic_client is not None
+        elif ai_provider == "openai":
+            ai_ready = hasattr(ai_service, '_openai_client') and ai_service._openai_client is not None
+        else:
+            ai_ready = True  # Other providers (grok, zai, openrouter) - assume ready if no error
+    except Exception as e:
+        # If AI service check fails, log but don't fail health check
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"AI readiness check failed: {e}")
+        ai_ready = False
+    
     return {
         "status": "ok",
         "service": "legalmitra-api",
         "timestamp": datetime.now().isoformat(),
-        "uptime_check": "healthy"
+        "uptime_check": "healthy",
+        "ai_provider": ai_provider or "unknown",
+        "ai_ready": ai_ready
     }
 
 

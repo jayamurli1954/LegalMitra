@@ -87,29 +87,87 @@ class AIService:
         self._gemini_client = None
         self._gemini_init_error = None  # Store initialization error for better error messages
 
-        # Normalize AI_PROVIDER during initialization to handle misconfigured values
-        provider = self.settings.AI_PROVIDER.lower().strip()
+        # FIX 3: Harden AI_PROVIDER validation with strict validation
+        VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
+        raw_provider = self.settings.AI_PROVIDER.strip().lower()
         
-        # Handle misconfiguration cases (common in deployment environments)
-        if "google (or anthropic, openai)" in provider or "or anthropic" in provider or "or openai" in provider:
-            logger.warning(f"Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
-            print(f"WARNING: Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
-            provider = "gemini"
-        elif provider == "google":
-            provider = "gemini"
-
-        if provider == "anthropic" and anthropic:
-            self._anthropic_client = anthropic.Anthropic(
-                api_key=self.settings.ANTHROPIC_API_KEY
+        # Handle legacy "google" alias
+        if raw_provider == "google":
+            raw_provider = "gemini"
+            logger.info("AI_PROVIDER='google' normalized to 'gemini'")
+        
+        # Reject invalid providers immediately
+        if raw_provider not in VALID_PROVIDERS:
+            error_msg = (
+                f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
+                f"Must be one of {sorted(VALID_PROVIDERS)}. "
+                f"Please set AI_PROVIDER to a valid value in your environment variables."
             )
-        if provider == "openai" and OpenAI:
-            self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
-        # FIX 5: Don't initialize Gemini client at startup - lazy load it
-        # Client will be created on first use to save memory
-        if provider == "gemini":
-            logger.info("Gemini provider selected - client will be initialized on first use (lazy loading)")
-            print("DEBUG: Gemini provider selected - lazy loading enabled")
-            # Set flag but don't initialize client yet
+            logger.error(error_msg)
+            print(f"ERROR: {error_msg}")
+            raise RuntimeError(error_msg)
+        
+        self._provider = raw_provider
+        logger.info(f"AI_PROVIDER validated: {self._provider}")
+
+        # FIX 2: Fail fast if client initialization fails - don't allow silent None clients
+        if self._provider == "anthropic":
+            if not anthropic:
+                raise RuntimeError(
+                    "Anthropic provider selected but `anthropic` package is not installed. "
+                    "Install with: pip install anthropic"
+                )
+            if not self.settings.ANTHROPIC_API_KEY:
+                raise RuntimeError(
+                    "Anthropic provider selected but ANTHROPIC_API_KEY is not set. "
+                    "Please set ANTHROPIC_API_KEY in your environment variables."
+                )
+            try:
+                self._anthropic_client = anthropic.Anthropic(
+                    api_key=self.settings.ANTHROPIC_API_KEY
+                )
+                logger.info("✅ Anthropic client initialized successfully")
+            except Exception as e:
+                raise RuntimeError(f"Failed to initialize Anthropic client: {e}")
+        
+        if self._provider == "openai":
+            if not OpenAI:
+                raise RuntimeError(
+                    "OpenAI provider selected but `openai` package is not installed. "
+                    "Install with: pip install openai"
+                )
+            if not self.settings.OPENAI_API_KEY:
+                raise RuntimeError(
+                    "OpenAI provider selected but OPENAI_API_KEY is not set. "
+                    "Please set OPENAI_API_KEY in your environment variables."
+                )
+            try:
+                self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
+                logger.info("✅ OpenAI client initialized successfully")
+            except Exception as e:
+                raise RuntimeError(f"Failed to initialize OpenAI client: {e}")
+        
+        # FIX 2 & 5: For Gemini, validate API key exists but lazy-load client to save memory
+        if self._provider == "gemini":
+            if not genai:
+                raise RuntimeError(
+                    "Gemini provider selected but `google-genai` package is not installed. "
+                    "Install with: pip install google-genai"
+                )
+            if not self.settings.GOOGLE_GEMINI_API_KEY:
+                raise RuntimeError(
+                    "Gemini provider selected but GOOGLE_GEMINI_API_KEY is not set. "
+                    "Please set GOOGLE_GEMINI_API_KEY in your environment variables."
+                )
+            # Validate API key is not empty
+            if not self.settings.GOOGLE_GEMINI_API_KEY.strip():
+                raise RuntimeError(
+                    "GOOGLE_GEMINI_API_KEY is set but empty. "
+                    "Please provide a valid API key in your environment variables."
+                )
+            logger.info("✅ Gemini provider validated - client will be initialized on first use (lazy loading)")
+            print("DEBUG: Gemini provider validated - lazy loading enabled")
+            # Set flag but don't initialize client yet (saves memory)
             self._gemini_use_new_sdk = GENAI_NEW_SDK if genai else False
         else:
             self._gemini_use_new_sdk = False
