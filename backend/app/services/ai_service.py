@@ -616,26 +616,27 @@ class AIService:
                 if not self._gemini_client:
                     # Provide more helpful error message with actual initialization error
                     error_parts = []
-                
-                # Use stored initialization error if available
-                if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
-                    error_parts.append(self._gemini_init_error)
-                else:
-                    # Fallback to checking common issues
-                    if genai is None:
-                        error_parts.append("`google-genai` package is not installed. Install with: pip install google-genai")
-                    if not self.settings.GOOGLE_GEMINI_API_KEY:
-                        error_parts.append("GOOGLE_GEMINI_API_KEY environment variable is not set")
-                    if not error_parts:
-                        error_parts.append("Gemini client initialization failed (check logs for details)")
-                
-                error_msg = "Google Gemini client not available. " + " | ".join(error_parts)
-                logger.error(error_msg)
-                print(f"ERROR: {error_msg}")
-                raise RuntimeError(error_msg)
+                    
+                    # Use stored initialization error if available
+                    if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
+                        error_parts.append(self._gemini_init_error)
+                    else:
+                        # Fallback to checking common issues
+                        if genai is None:
+                            error_parts.append("`google-genai` package is not installed. Install with: pip install google-genai")
+                        if not self.settings.GOOGLE_GEMINI_API_KEY:
+                            error_parts.append("GOOGLE_GEMINI_API_KEY environment variable is not set")
+                        if not error_parts:
+                            error_parts.append("Gemini client initialization failed (check logs for details)")
+                    
+                    error_msg = "Google Gemini client not available. " + " | ".join(error_parts)
+                    logger.error(error_msg)
+                    print(f"ERROR: {error_msg}")
+                    end_trace(success=False, error=error_msg)
+                    raise RuntimeError(error_msg)
 
-            # Check if using new SDK
-            use_new_sdk = getattr(self, '_gemini_use_new_sdk', False)
+                # Check if using new SDK
+                use_new_sdk = getattr(self, '_gemini_use_new_sdk', False)
 
             # Run Gemini in thread pool since it's synchronous
             import asyncio
@@ -668,9 +669,9 @@ class AIService:
                     ]
                 model_name = None
             
-            # First, try to list available models from API (most reliable)
-            # Note: New SDK uses different API structure
-            if use_new_sdk:
+                # First, try to list available models from API (most reliable)
+                # Note: New SDK uses different API structure
+                if use_new_sdk:
                     # New SDK: Use client.models.list() instead
                     try:
                         print("🔍 Listing available Gemini models from API (new SDK)...")
