@@ -801,8 +801,8 @@ class AIService:
                         
                         # Check if model doesn't exist (404) - try to list available models and use one
                         if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
-                                logger.warning(f"Model {model_name} not available (404). Trying to find alternative...")
-                        try:
+                            logger.warning(f"Model {model_name} not available (404). Trying to find alternative...")
+                            try:
                                 # Clear cache and retry getting models
                                 self._available_gemini_models = None
                                 available_model_ids = await self._get_cached_gemini_models(use_new_sdk)
@@ -810,17 +810,21 @@ class AIService:
                                     model_name = available_model_ids[0]
                                     logger.info(f"✅ Switched to available model: {model_name}")
                                     continue  # Retry with new model
-                            
-                            # If we get here, no models were found
-                            raise RuntimeError(
-                                f"No available Gemini models found. Please check your API key. "
-                                f"Last error: {error_str[:200]}"
-                            )
-                        except RuntimeError:
-                            raise  # Re-raise if it's our RuntimeError
-                        except Exception as list_err:
-                            # If listing fails, raise original error
-                            raise RuntimeError(f"Gemini model {model_name} not available and could not list alternatives. Error: {error_str[:200]}")
+                                
+                                # If we get here, no models were found
+                                error_msg = (
+                                    f"No available Gemini models found. Please check your API key. "
+                                    f"Last error: {error_str[:200]}"
+                                )
+                                end_trace(success=False, error=error_msg)
+                                raise RuntimeError(error_msg)
+                            except RuntimeError:
+                                raise  # Re-raise if it's our RuntimeError
+                            except Exception as list_err:
+                                # If listing fails, raise original error
+                                error_msg = f"Gemini model {model_name} not available and could not list alternatives. Error: {error_str[:200]}"
+                                end_trace(success=False, error=error_msg)
+                                raise RuntimeError(error_msg)
                     
                     # Check for rate limit error (429)
                     if "429" in error_str or "quota" in error_str.lower() or "rate limit" in error_str.lower() or "exceeded" in error_str.lower():
