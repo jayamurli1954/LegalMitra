@@ -577,16 +577,16 @@ class AIService:
                     raise RuntimeError(error_msg)
 
                 message = self._anthropic_client.messages.create(
-                model="claude-3-sonnet-20240229",
-                max_tokens=2048,
-                system=self.system_prompt,
-                messages=[{"role": "user", "content": user_text}],
-            )
-            # Anthropic returns a list of content blocks
-            parts = []
-            for block in message.content:
-                if getattr(block, "type", None) == "text":
-                    parts.append(block.text)
+                    model="claude-3-sonnet-20240229",
+                    max_tokens=2048,
+                    system=self.system_prompt,
+                    messages=[{"role": "user", "content": user_text}],
+                )
+                # Anthropic returns a list of content blocks
+                parts = []
+                for block in message.content:
+                    if getattr(block, "type", None) == "text":
+                        parts.append(block.text)
                 result = "\n".join(parts).strip()
                 end_trace(success=True, model="claude-3-sonnet-20240229")
                 return result
