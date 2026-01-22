@@ -25,22 +25,44 @@ logger = logging.getLogger(__name__)
 try:
     settings = get_settings()
     # Only validate that AI_PROVIDER is set and valid (not empty/invalid)
+    # Use same normalization logic as ai_service.py to handle malformed values
     VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
     raw_provider = settings.AI_PROVIDER.strip().lower() if settings.AI_PROVIDER else ""
     
     if not raw_provider:
         logger.warning("AI_PROVIDER is not set - using default 'anthropic'")
-    elif raw_provider not in VALID_PROVIDERS and raw_provider != "google":
-        error_msg = (
-            f"Invalid AI_PROVIDER='{settings.AI_PROVIDER}'. "
-            f"Must be one of {sorted(VALID_PROVIDERS)}. "
-            f"App cannot start with invalid AI_PROVIDER."
-        )
-        logger.critical(error_msg)
-        print(f"❌ {error_msg}")
-        raise RuntimeError(error_msg)
     else:
-        logger.info(f"✅ AI_PROVIDER validated: {raw_provider if raw_provider != 'google' else 'gemini'}")
+        # Enhanced normalization: Handle malformed values like "google (or anthropic, openai)"
+        normalized_provider = None
+        
+        # Check for "google" first (can be part of a longer string)
+        if "google" in raw_provider:
+            normalized_provider = "gemini"
+            if raw_provider != "google":
+                logger.warning(f"Invalid AI_PROVIDER detected during startup: '{settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
+        # Check if it's a direct match to a valid provider
+        elif raw_provider in VALID_PROVIDERS:
+            normalized_provider = raw_provider
+        else:
+            # Try to extract a valid provider from the string
+            for valid_provider in VALID_PROVIDERS:
+                if valid_provider in raw_provider:
+                    normalized_provider = valid_provider
+                    logger.warning(f"Invalid AI_PROVIDER detected during startup: '{settings.AI_PROVIDER}'. Extracted '{normalized_provider}'.")
+                    break
+            
+            # If still no valid provider found, reject it
+            if normalized_provider is None:
+                error_msg = (
+                    f"Invalid AI_PROVIDER='{settings.AI_PROVIDER}'. "
+                    f"Must be one of {sorted(VALID_PROVIDERS)}. "
+                    f"App cannot start with invalid AI_PROVIDER."
+                )
+                logger.critical(error_msg)
+                print(f"❌ {error_msg}")
+                raise RuntimeError(error_msg)
+        
+        logger.info(f"✅ AI_PROVIDER validated: {normalized_provider}")
     
     # Import AI service (will validate API keys lazily when used)
     from app.services.ai_service import ai_service
