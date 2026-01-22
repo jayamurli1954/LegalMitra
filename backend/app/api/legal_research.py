@@ -86,9 +86,6 @@ async def legal_research(request: LegalQueryRequest):
                 "error": error_msg
             }
         )
-            query_type=request.query_type,
-            confidence_score=0.85  # Default confidence score
-        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
