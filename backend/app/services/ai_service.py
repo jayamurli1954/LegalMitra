@@ -122,63 +122,44 @@ class AIService:
         self._provider = raw_provider
         logger.info(f"AI_PROVIDER validated: {self._provider}")
 
-        # FIX 2: Fail fast if client initialization fails - don't allow silent None clients
+        # FIX 2: Validate packages and API keys, but initialize clients lazily
+        # This allows app to start even if API keys aren't set yet (errors will be caught when used)
         if self._provider == "anthropic":
             if not anthropic:
-                raise RuntimeError(
-                    "Anthropic provider selected but `anthropic` package is not installed. "
-                    "Install with: pip install anthropic"
-                )
-            if not self.settings.ANTHROPIC_API_KEY:
-                raise RuntimeError(
-                    "Anthropic provider selected but ANTHROPIC_API_KEY is not set. "
-                    "Please set ANTHROPIC_API_KEY in your environment variables."
-                )
-            try:
-                self._anthropic_client = anthropic.Anthropic(
-                    api_key=self.settings.ANTHROPIC_API_KEY
-                )
-                logger.info("✅ Anthropic client initialized successfully")
-            except Exception as e:
-                raise RuntimeError(f"Failed to initialize Anthropic client: {e}")
+                logger.warning("Anthropic provider selected but `anthropic` package is not installed")
+            elif not self.settings.ANTHROPIC_API_KEY:
+                logger.warning("Anthropic provider selected but ANTHROPIC_API_KEY is not set")
+            else:
+                try:
+                    self._anthropic_client = anthropic.Anthropic(
+                        api_key=self.settings.ANTHROPIC_API_KEY
+                    )
+                    logger.info("✅ Anthropic client initialized successfully")
+                except Exception as e:
+                    logger.warning(f"Failed to initialize Anthropic client: {e}")
         
         if self._provider == "openai":
             if not OpenAI:
-                raise RuntimeError(
-                    "OpenAI provider selected but `openai` package is not installed. "
-                    "Install with: pip install openai"
-                )
-            if not self.settings.OPENAI_API_KEY:
-                raise RuntimeError(
-                    "OpenAI provider selected but OPENAI_API_KEY is not set. "
-                    "Please set OPENAI_API_KEY in your environment variables."
-                )
-            try:
-                self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
-                logger.info("✅ OpenAI client initialized successfully")
-            except Exception as e:
-                raise RuntimeError(f"Failed to initialize OpenAI client: {e}")
+                logger.warning("OpenAI provider selected but `openai` package is not installed")
+            elif not self.settings.OPENAI_API_KEY:
+                logger.warning("OpenAI provider selected but OPENAI_API_KEY is not set")
+            else:
+                try:
+                    self._openai_client = OpenAI(api_key=self.settings.OPENAI_API_KEY)
+                    logger.info("✅ OpenAI client initialized successfully")
+                except Exception as e:
+                    logger.warning(f"Failed to initialize OpenAI client: {e}")
         
-        # FIX 2 & 5: For Gemini, validate API key exists but lazy-load client to save memory
+        # FIX 2 & 5: For Gemini, validate but lazy-load client to save memory
         if self._provider == "gemini":
             if not genai:
-                raise RuntimeError(
-                    "Gemini provider selected but `google-genai` package is not installed. "
-                    "Install with: pip install google-genai"
-                )
-            if not self.settings.GOOGLE_GEMINI_API_KEY:
-                raise RuntimeError(
-                    "Gemini provider selected but GOOGLE_GEMINI_API_KEY is not set. "
-                    "Please set GOOGLE_GEMINI_API_KEY in your environment variables."
-                )
-            # Validate API key is not empty
-            if not self.settings.GOOGLE_GEMINI_API_KEY.strip():
-                raise RuntimeError(
-                    "GOOGLE_GEMINI_API_KEY is set but empty. "
-                    "Please provide a valid API key in your environment variables."
-                )
-            logger.info("✅ Gemini provider validated - client will be initialized on first use (lazy loading)")
-            print("DEBUG: Gemini provider validated - lazy loading enabled")
+                logger.warning("Gemini provider selected but `google-genai` package is not installed")
+            elif not self.settings.GOOGLE_GEMINI_API_KEY:
+                logger.warning("Gemini provider selected but GOOGLE_GEMINI_API_KEY is not set")
+            elif not self.settings.GOOGLE_GEMINI_API_KEY.strip():
+                logger.warning("GOOGLE_GEMINI_API_KEY is set but empty")
+            else:
+                logger.info("✅ Gemini provider validated - client will be initialized on first use (lazy loading)")
             # Set flag but don't initialize client yet (saves memory)
             self._gemini_use_new_sdk = GENAI_NEW_SDK if genai else False
         else:
