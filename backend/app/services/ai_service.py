@@ -810,14 +810,14 @@ class AIService:
                                     model_name = available_model_ids[0]
                                     logger.info(f"✅ Switched to available model: {model_name}")
                                     continue  # Retry with new model
-                                
-                                # If we get here, no models were found
-                                error_msg = (
-                                    f"No available Gemini models found. Please check your API key. "
-                                    f"Last error: {error_str[:200]}"
-                                )
-                                end_trace(success=False, error=error_msg)
-                                raise RuntimeError(error_msg)
+                                else:
+                                    # If we get here, no models were found
+                                    error_msg = (
+                                        f"No available Gemini models found. Please check your API key. "
+                                        f"Last error: {error_str[:200]}"
+                                    )
+                                    end_trace(success=False, error=error_msg)
+                                    raise RuntimeError(error_msg)
                             except RuntimeError:
                                 raise  # Re-raise if it's our RuntimeError
                             except Exception as list_err:
