@@ -566,7 +566,7 @@ class AIService:
                 logger.warning(f"Unknown AI_PROVIDER: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
                 provider = "gemini"
 
-        if provider == "anthropic":
+            if provider == "anthropic":
             if not self._anthropic_client:
                 error_msg = (
                     "Anthropic client not available. "
