@@ -614,8 +614,8 @@ class AIService:
             elif provider == "gemini":
                 logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
                 if not self._gemini_client:
-                # Provide more helpful error message with actual initialization error
-                error_parts = []
+                    # Provide more helpful error message with actual initialization error
+                    error_parts = []
                 
                 # Use stored initialization error if available
                 if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
@@ -671,76 +671,78 @@ class AIService:
             # First, try to list available models from API (most reliable)
             # Note: New SDK uses different API structure
             if use_new_sdk:
-                # New SDK: Use client.models.list() instead
-                try:
-                    print("🔍 Listing available Gemini models from API (new SDK)...")
-                    available_models_list = await loop.run_in_executor(
-                        None, lambda: list(self._gemini_client.models.list())
-                    )
-                    available_model_ids = [m.name.split('/')[-1] if hasattr(m, 'name') else str(m) for m in available_models_list]
-                    print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
-                    
-                    # Try preferred models first
-                    for preferred in preferred_models:
-                        if preferred in available_model_ids:
-                            model_name = preferred
-                            print(f"✅ Using preferred Gemini model: {model_name}")
-                            break
-                    
-                    if not model_name and available_model_ids:
-                        model_name = available_model_ids[0]
-                        print(f"✅ Using first available Gemini model: {model_name}")
-                except Exception as list_error:
-                    print(f"⚠️ Could not list Gemini models: {list_error}")
-                    print("⚠️ Falling back to trying preferred models directly...")
-                    model_name = preferred_models[0]
-            else:
-                # Old SDK: Use list_models()
-                try:
-                    print("🔍 Listing available Gemini models from API...")
-                    available_models = await loop.run_in_executor(
-                        None, lambda: list(self._gemini_client.list_models())
-                    )
-                    
-                    # Create a list of available model IDs
-                    available_model_ids = []
-                    for model_info in available_models:
-                        if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                            model_id = model_info.name.split('/')[-1]
-                            available_model_ids.append(model_id)
-                    
-                    print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
-                    
-                    # Try preferred models first (in order), but only if they're in the available list
-                    for preferred in preferred_models:
-                        if preferred in available_model_ids:
-                            model_name = preferred
-                            print(f"✅ Using preferred Gemini model: {model_name}")
-                            break
-                    
-                    # If no preferred model is available, use the first available model
-                    if not model_name and available_model_ids:
-                        model_name = available_model_ids[0]
-                        print(f"✅ Using first available Gemini model: {model_name}")
+                    # New SDK: Use client.models.list() instead
+                    try:
+                        print("🔍 Listing available Gemini models from API (new SDK)...")
+                        available_models_list = await loop.run_in_executor(
+                            None, lambda: list(self._gemini_client.models.list())
+                        )
+                        available_model_ids = [m.name.split('/')[-1] if hasattr(m, 'name') else str(m) for m in available_models_list]
+                        print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
                         
-                except Exception as list_error:
-                    print(f"⚠️ Could not list Gemini models: {list_error}")
-                    print("⚠️ Falling back to trying preferred models directly...")
-                    # Fallback: try preferred models in order
-                    model_name = preferred_models[0]
-            
-            if not model_name:
-                raise RuntimeError(
-                    "No available Gemini models found. "
-                    "Please check your API key and ensure you have access to Gemini models. "
-                    "Tried models: " + ", ".join(preferred_models)
-                )
-            
-            # Retry logic for rate limit errors (429)
-            max_retries = 3
-            base_delay = 2
-            
-            for attempt in range(max_retries):
+                        # Try preferred models first
+                        for preferred in preferred_models:
+                            if preferred in available_model_ids:
+                                model_name = preferred
+                                print(f"✅ Using preferred Gemini model: {model_name}")
+                                break
+                        
+                        if not model_name and available_model_ids:
+                            model_name = available_model_ids[0]
+                            print(f"✅ Using first available Gemini model: {model_name}")
+                    except Exception as list_error:
+                        print(f"⚠️ Could not list Gemini models: {list_error}")
+                        print("⚠️ Falling back to trying preferred models directly...")
+                        model_name = preferred_models[0]
+                else:
+                    # Old SDK: Use list_models()
+                    try:
+                        print("🔍 Listing available Gemini models from API...")
+                        available_models = await loop.run_in_executor(
+                            None, lambda: list(self._gemini_client.list_models())
+                        )
+                        
+                        # Create a list of available model IDs
+                        available_model_ids = []
+                        for model_info in available_models:
+                            if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                                model_id = model_info.name.split('/')[-1]
+                                available_model_ids.append(model_id)
+                        
+                        print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
+                        
+                        # Try preferred models first (in order), but only if they're in the available list
+                        for preferred in preferred_models:
+                            if preferred in available_model_ids:
+                                model_name = preferred
+                                print(f"✅ Using preferred Gemini model: {model_name}")
+                                break
+                        
+                        # If no preferred model is available, use the first available model
+                        if not model_name and available_model_ids:
+                            model_name = available_model_ids[0]
+                            print(f"✅ Using first available Gemini model: {model_name}")
+                            
+                    except Exception as list_error:
+                        print(f"⚠️ Could not list Gemini models: {list_error}")
+                        print("⚠️ Falling back to trying preferred models directly...")
+                        # Fallback: try preferred models in order
+                        model_name = preferred_models[0]
+                
+                if not model_name:
+                    error_msg = (
+                        "No available Gemini models found. "
+                        "Please check your API key and ensure you have access to Gemini models. "
+                        "Tried models: " + ", ".join(preferred_models)
+                    )
+                    end_trace(success=False, error=error_msg)
+                    raise RuntimeError(error_msg)
+                
+                # Retry logic for rate limit errors (429)
+                max_retries = 3
+                base_delay = 2
+                
+                for attempt in range(max_retries):
                 try:
                     if use_new_sdk:
                         # New SDK: Use client.models.generate_content()
