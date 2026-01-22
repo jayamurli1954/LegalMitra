@@ -638,13 +638,16 @@ class AIService:
                 # Check if using new SDK
                 use_new_sdk = getattr(self, '_gemini_use_new_sdk', False)
 
-            # Run Gemini in thread pool since it's synchronous
-            import asyncio
-            import time
-            import re
-            loop = asyncio.get_event_loop()
-            
-            # Try to find an available Gemini model
+                # Run Gemini in thread pool since it's synchronous
+                import asyncio
+                import time
+                import re
+                loop = asyncio.get_event_loop()
+                
+                # Smart model routing based on query type
+                selected_model = self._select_gemini_model(query_type)
+                
+                # Try to find an available Gemini model
                 # Updated priority: Try newer models first, then fallback to older ones
                 # For new SDK, use gemini-2.5-flash or gemini-2.0-flash
                 # For old SDK, use gemini-1.5-flash or gemini-1.5-pro
