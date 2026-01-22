@@ -567,7 +567,7 @@ class AIService:
                 provider = "gemini"
 
             if provider == "anthropic":
-            if not self._anthropic_client:
+                if not self._anthropic_client:
                 error_msg = (
                     "Anthropic client not available. "
                     "Ensure `anthropic` package is installed and "
