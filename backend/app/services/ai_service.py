@@ -87,6 +87,7 @@ class AIService:
         self._openai_client = None
         self._gemini_client = None
         self._gemini_init_error = None  # Store initialization error for better error messages
+        self._available_gemini_models = None  # Cache model list to avoid repeated API calls
 
         # FIX 3: Harden AI_PROVIDER validation with strict validation
         VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
@@ -224,6 +225,46 @@ class AIService:
             self._gemini_use_new_sdk = False
             self._gemini_init_error = error_msg
     
+    async def _get_cached_gemini_models(self, use_new_sdk: bool) -> List[str]:
+        """
+        Get cached list of available Gemini models.
+        Caches the result to avoid repeated API calls.
+        """
+        # Return cached list if available
+        if self._available_gemini_models is not None:
+            return self._available_gemini_models
+        
+        # Fetch models from API
+        import asyncio
+        loop = asyncio.get_event_loop()
+        available_model_ids = []
+        
+        try:
+            if use_new_sdk:
+                logger.debug("Fetching available Gemini models from API (new SDK)...")
+                available_models_list = await loop.run_in_executor(
+                    None, lambda: list(self._gemini_client.models.list())
+                )
+                available_model_ids = [m.name.split('/')[-1] if hasattr(m, 'name') else str(m) for m in available_models_list]
+            else:
+                logger.debug("Fetching available Gemini models from API (old SDK)...")
+                available_models = await loop.run_in_executor(
+                    None, lambda: list(self._gemini_client.list_models())
+                )
+                for model_info in available_models:
+                    if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
+                        model_id = model_info.name.split('/')[-1]
+                        available_model_ids.append(model_id)
+            
+            # Cache the result
+            self._available_gemini_models = available_model_ids
+            logger.info(f"✅ Cached {len(available_model_ids)} available Gemini models: {', '.join(available_model_ids[:5])}")
+            return available_model_ids
+        except Exception as e:
+            logger.warning(f"Could not list Gemini models: {e}. Will use fallback models.")
+            # Return empty list to trigger fallback logic
+            return []
+    
     def _detect_case_citation(self, query: str) -> tuple[bool, Optional[str]]:
         """
         Detect if query contains a case citation
@@ -319,20 +360,21 @@ class AIService:
             "  * Do NOT wait for explicit mention - be PROACTIVE and INTELLIGENT",
             "",
             "**FOR GST QUERIES (automatic detection):**",
-            "- AUTOMATICALLY provide EXHAUSTIVE coverage of GST 2.0 reforms (September 2025)",
-            "- AUTOMATICALLY include Finance Act 2025 GST amendments with complete details",
-            "- AUTOMATICALLY mention rate structure changes (5%, 18%, 40% slabs)",
-            "- AUTOMATICALLY include GST Council 56th meeting decisions",
-            "- AUTOMATICALLY cover all procedural changes, compliance updates, e-invoicing changes",
+            "- If officially notified, provide EXHAUSTIVE coverage of GST 2.0 reforms (September 2025). If not notified, clearly state 'Proposed / Not yet in force'",
+            "- If officially notified, include Finance Act 2025 GST amendments with complete details. If not notified, clearly state 'Proposed / Not yet in force'",
+            "- If officially notified, mention rate structure changes (5%, 18%, 40% slabs). If not notified, clearly state 'Proposed / Not yet in force'",
+            "- If officially notified, include GST Council 56th meeting decisions. If not notified, clearly state 'Proposed / Not yet in force'",
+            "- If officially notified, cover all procedural changes, compliance updates, e-invoicing changes. If not notified, clearly state 'Proposed / Not yet in force'",
             "- Provide COMPREHENSIVE section-wise analysis",
             "",
             "**CRITICAL: FOR GST 2.0 QUERIES:**",
-            "- If the user mentions 'GST 2.0' or '2.0', you MUST focus on the GST 2.0 reforms from September 2025",
-            "- GST 2.0 is NOT the same as earlier GST amendments - it's a major reform with new rate structure",
-            "- GST 2.0 includes: new 3-slab structure (5%, 18%, 40%), elimination of 12% and 28% slabs, compensation cess changes",
+            "- If the user mentions 'GST 2.0' or '2.0', focus on GST 2.0 reforms from September 2025 IF officially notified",
+            "- If GST 2.0 is not officially notified, clearly state 'Proposed / Not yet in force' and do not present as fact",
+            "- GST 2.0 (if notified) is NOT the same as earlier GST amendments - it's a major reform with new rate structure",
+            "- GST 2.0 (if notified) includes: new 3-slab structure (5%, 18%, 40%), elimination of 12% and 28% slabs, compensation cess changes",
             "- Do NOT provide 2023 amendments when user asks about GST 2.0 - that's outdated information",
-            "- GST 2.0 was approved in 56th GST Council meeting (September 2025)",
-            "- Finance Act 2025 contains GST-related amendments that are part of GST 2.0 framework",
+            "- GST 2.0 was approved in 56th GST Council meeting (September 2025) - verify if officially notified before stating as fact",
+            "- Finance Act 2025 contains GST-related amendments that are part of GST 2.0 framework - verify notification status",
             "",
             "**RESPONSE QUALITY REQUIREMENT:**",
             "- Your response MUST be MORE exhaustive and detailed than what general AI assistants provide",
@@ -454,18 +496,20 @@ class AIService:
                 "",
                 "**⚠️ CRITICAL: USER ASKED SPECIFICALLY ABOUT GST 2.0**",
                 "- This query is about GST 2.0 reforms (September 2025), NOT earlier amendments",
+                "- You MUST verify if GST 2.0 is officially notified before stating as fact",
+                "- If officially notified, focus on GST 2.0: new rate structure, September 2025 reforms, 56th GST Council meeting",
+                "- If NOT officially notified, clearly state 'Proposed / Not yet in force' and do not present as fact",
+                "- GST 2.0 (if notified) = major structural reform with 3-slab system (5%, 18%, 40%) replacing old multi-slab system",
+                "- Finance Act 2025 GST amendments are part of GST 2.0 framework - verify notification status",
+                "- Start with GST 2.0 information FIRST (if notified), then mention earlier context only if relevant",
                 "- DO NOT provide 2023 or earlier amendments as the primary response",
-                "- Focus EXCLUSIVELY on GST 2.0: new rate structure, September 2025 reforms, 56th GST Council meeting",
-                "- GST 2.0 = major structural reform with 3-slab system (5%, 18%, 40%) replacing old multi-slab system",
-                "- Finance Act 2025 GST amendments are part of GST 2.0 framework",
-                "- Start with GST 2.0 information FIRST, then mention earlier context only if relevant",
             ])
         elif is_amendment_query or is_gst_query or is_tax_query:
             prompt_parts.extend([
                 "",
                 "**DETECTED: This query relates to amendments/recent changes/tax law.**",
                 "- AUTOMATICALLY prioritize Finance Act 2025 information",
-                "- AUTOMATICALLY include GST 2.0 reforms if GST-related",
+                "- If officially notified, include GST 2.0 reforms if GST-related. If not notified, clearly state 'Proposed / Not yet in force'",
                 "- AUTOMATICALLY provide EXHAUSTIVE coverage of latest changes",
                 "- Start with 2025, then 2024, then earlier",
                 "- Include ALL relevant sections, notifications, circulars, and GST Council decisions",
@@ -613,6 +657,11 @@ class AIService:
                 return result
             elif provider == "gemini":
                 logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
+                # FIX: Actually call initialization if client is not available
+                if not self._gemini_client:
+                    self._initialize_gemini_client()
+                
+                # Check again after initialization attempt
                 if not self._gemini_client:
                     # Provide more helpful error message with actual initialization error
                     error_parts = []
@@ -631,7 +680,6 @@ class AIService:
                     
                     error_msg = "Google Gemini client not available. " + " | ".join(error_parts)
                     logger.error(error_msg)
-                    print(f"ERROR: {error_msg}")
                     end_trace(success=False, error=error_msg)
                     raise RuntimeError(error_msg)
 
@@ -672,66 +720,25 @@ class AIService:
                     ]
                 model_name = None
             
-                # First, try to list available models from API (most reliable)
-                # Note: New SDK uses different API structure
-                if use_new_sdk:
-                    # New SDK: Use client.models.list() instead
-                    try:
-                        print("🔍 Listing available Gemini models from API (new SDK)...")
-                        available_models_list = await loop.run_in_executor(
-                            None, lambda: list(self._gemini_client.models.list())
-                        )
-                        available_model_ids = [m.name.split('/')[-1] if hasattr(m, 'name') else str(m) for m in available_models_list]
-                        print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
-                        
-                        # Try preferred models first
-                        for preferred in preferred_models:
-                            if preferred in available_model_ids:
-                                model_name = preferred
-                                print(f"✅ Using preferred Gemini model: {model_name}")
-                                break
-                        
-                        if not model_name and available_model_ids:
-                            model_name = available_model_ids[0]
-                            print(f"✅ Using first available Gemini model: {model_name}")
-                    except Exception as list_error:
-                        print(f"⚠️ Could not list Gemini models: {list_error}")
-                        print("⚠️ Falling back to trying preferred models directly...")
-                        model_name = preferred_models[0]
+                # Use cached model list to avoid repeated API calls
+                available_model_ids = await self._get_cached_gemini_models(use_new_sdk)
+                
+                if available_model_ids:
+                    # Try preferred models first (in order), but only if they're in the available list
+                    for preferred in preferred_models:
+                        if preferred in available_model_ids:
+                            model_name = preferred
+                            logger.info(f"✅ Using preferred Gemini model: {model_name}")
+                            break
+                    
+                    # If no preferred model is available, use the first available model
+                    if not model_name and available_model_ids:
+                        model_name = available_model_ids[0]
+                        logger.info(f"✅ Using first available Gemini model: {model_name}")
                 else:
-                    # Old SDK: Use list_models()
-                    try:
-                        print("🔍 Listing available Gemini models from API...")
-                        available_models = await loop.run_in_executor(
-                            None, lambda: list(self._gemini_client.list_models())
-                        )
-                        
-                        # Create a list of available model IDs
-                        available_model_ids = []
-                        for model_info in available_models:
-                            if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                                model_id = model_info.name.split('/')[-1]
-                                available_model_ids.append(model_id)
-                        
-                        print(f"✅ Found {len(available_model_ids)} available models: {', '.join(available_model_ids[:5])}")
-                        
-                        # Try preferred models first (in order), but only if they're in the available list
-                        for preferred in preferred_models:
-                            if preferred in available_model_ids:
-                                model_name = preferred
-                                print(f"✅ Using preferred Gemini model: {model_name}")
-                                break
-                        
-                        # If no preferred model is available, use the first available model
-                        if not model_name and available_model_ids:
-                            model_name = available_model_ids[0]
-                            print(f"✅ Using first available Gemini model: {model_name}")
-                            
-                    except Exception as list_error:
-                        print(f"⚠️ Could not list Gemini models: {list_error}")
-                        print("⚠️ Falling back to trying preferred models directly...")
-                        # Fallback: try preferred models in order
-                        model_name = preferred_models[0]
+                    # Fallback: try preferred models directly if listing failed
+                    logger.warning("Could not get model list from API, using fallback models")
+                    model_name = preferred_models[0]
                 
                 if not model_name:
                     error_msg = (
@@ -794,30 +801,15 @@ class AIService:
                         
                         # Check if model doesn't exist (404) - try to list available models and use one
                         if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
-                            print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
+                                logger.warning(f"Model {model_name} not available (404). Trying to find alternative...")
                         try:
-                            if use_new_sdk:
-                                # New SDK: Use client.models.list()
-                                available_models_list = await loop.run_in_executor(
-                                    None, lambda: list(self._gemini_client.models.list())
-                                )
-                                for model_info in available_models_list:
-                                    if hasattr(model_info, 'name'):
-                                        model_id = model_info.name.split('/')[-1]
-                                        model_name = model_id
-                                        print(f"✅ Switched to available model: {model_name}")
-                                        continue  # Retry with new model
-                            else:
-                                # Old SDK: Use list_models()
-                                available_models = await loop.run_in_executor(
-                                    None, lambda: list(self._gemini_client.list_models())
-                                )
-                                for model_info in available_models:
-                                    if hasattr(model_info, 'name') and 'generateContent' in getattr(model_info, 'supported_generation_methods', []):
-                                        model_id = model_info.name.split('/')[-1]
-                                        model_name = model_id
-                                        print(f"✅ Switched to available model: {model_name}")
-                                        continue  # Retry with new model
+                                # Clear cache and retry getting models
+                                self._available_gemini_models = None
+                                available_model_ids = await self._get_cached_gemini_models(use_new_sdk)
+                                if available_model_ids:
+                                    model_name = available_model_ids[0]
+                                    logger.info(f"✅ Switched to available model: {model_name}")
+                                    continue  # Retry with new model
                             
                             # If we get here, no models were found
                             raise RuntimeError(
@@ -841,7 +833,7 @@ class AIService:
                             if delay_match:
                                 retry_delay = float(delay_match.group(1)) + 2  # Add 2 second buffer
                             
-                            print(f"⚠️ Rate limit exceeded for {model_name}. Retrying in {retry_delay:.1f} seconds... (Attempt {attempt + 1}/{max_retries})")
+                                logger.warning(f"Rate limit exceeded for {model_name}. Retrying in {retry_delay:.1f} seconds... (Attempt {attempt + 1}/{max_retries})")
                             await asyncio.sleep(retry_delay)
                             continue
                         else:
@@ -870,92 +862,7 @@ class AIService:
             # Catch any unhandled exceptions and end trace
             if 'end_trace' in locals():
                 end_trace(success=False, error=str(e))
-            raise
-                raise RuntimeError(
-                    "OpenRouter service not available. "
-                    "Ensure openrouter_service.py is properly configured."
-                )
-            if not self.settings.OPENROUTER_API_KEY:
-                raise RuntimeError(
-                    "OPENROUTER_API_KEY not set in .env file. "
-                    "Get your free key from https://openrouter.ai/keys"
-                )
-
-            # Use OpenRouter service
-            result = await openrouter_service.generate_text(
-                user_text=user_text,
-                system_prompt=self.system_prompt,
-                model=self.settings.OPENROUTER_MODEL,
-                max_tokens=8192,
-                temperature=0.3
-            )
-
-            # Log usage info for user transparency
-            print(f"✅ OpenRouter Response:")
-            print(f"   Model: {result['model_used']}")
-            print(f"   Tokens: {result['tokens_used']}")
-            print(f"   Estimated Cost: ${result['cost_usd']:.4f}")
-
-            return result["text"]
-
-        # This should never be reached if provider checks are correct
-        # But if we're here, try one more time with explicit handling
-        print(f"ERROR: Reached final error block! provider={repr(provider)}, type={type(provider)}")
-        print(f"ERROR: provider == 'gemini': {provider == 'gemini'}")
-        print(f"ERROR: provider in ('gemini', 'google'): {provider in ('gemini', 'google')}")
-        print(f"ERROR: All elif checks failed - this shouldn't happen!")
-        
-        # Last resort: handle gemini/google directly here by recursing
-        if provider in ('gemini', 'google') or provider == 'gemini':
-            print(f"WARNING: Caught gemini provider in fallback - handling directly")
-            # Call the gemini logic directly
-            if not self._gemini_client:
-                # Try to initialize if not already attempted
-                if not hasattr(self, '_gemini_init_error'):
-                    self._initialize_gemini_client()
-                
-                # Use stored error if available
-                if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
-                    error_msg = f"Google Gemini client not available. {self._gemini_init_error}"
-                else:
-                    error_msg = (
-                        "Google Gemini client not available. "
-                        "Ensure `google-genai` package is installed (pip install google-genai) and "
-                        "GOOGLE_GEMINI_API_KEY is set."
-                    )
-                raise RuntimeError(error_msg)
-            # Use the same logic as the elif block - just copy it here as fallback
-            import asyncio
-            import time
-            import re
-            loop = asyncio.get_event_loop()
-            preferred_models = [
-                "gemini-1.5-flash",      # Fast, cost-effective, widely available
-                "gemini-1.5-pro",        # Higher capability
-                "gemini-1.0-pro",        # Stable successor to gemini-pro
-                "gemini-pro",            # Legacy (may not be available)
-                "gemini-2.5-flash"       # Latest (may have rate limits)
-            ]
-            model_name = None
-            for candidate in preferred_models:
-                try:
-                    test_model = self._gemini_client.GenerativeModel(candidate)
-                    model_name = candidate
-                    print(f"✅ Using Gemini model: {model_name}")
-                    break
-                except Exception:
-                    continue
-            if not model_name:
-                raise RuntimeError("No available Gemini models found.")
-            model = self._gemini_client.GenerativeModel(model_name)
-            full_prompt = f"{self.system_prompt}\n\n{user_text}"
-            response = await loop.run_in_executor(
-                None, lambda: model.generate_content(
-                    full_prompt,
-                    generation_config={"temperature": 0.3, "max_output_tokens": 2000}  # FIX 8: Reduced for free tier
-                )
-            )
-            return response.text.strip()
+            raise RuntimeError(str(e)) from e
         
 
 
