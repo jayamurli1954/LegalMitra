@@ -3,10 +3,11 @@
  * Enables offline functionality and faster loading
  */
 
-const CACHE_NAME = 'legalmitra-v1.2.0'; // Updated to force cache refresh - removes localhost error messages
+const CACHE_NAME = 'legalmitra-v1.3.0'; // Updated to force cache refresh - Professional Diary update
 const API_CACHE = 'legalmitra-api-v1';
 
 // Files to cache for offline use
+// Note: diary.js is NOT cached to ensure fresh updates
 const STATIC_ASSETS = [
     '/',
     '/index.html',
@@ -89,6 +90,9 @@ self.addEventListener('fetch', (event) => {
     // Handle API requests differently
     if (url.pathname.startsWith('/api/')) {
         event.respondWith(handleApiRequest(request));
+    } else if (url.pathname.includes('diary.js')) {
+        // Always fetch diary.js fresh (no cache) to ensure updates are immediate
+        event.respondWith(fetch(request));
     } else {
         // Static assets - cache first, falling back to network
         event.respondWith(handleStaticRequest(request));
