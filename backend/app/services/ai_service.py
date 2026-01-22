@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 from app.core.config import get_settings
 from app.services.web_search_service import web_search_service
+from app.core.ai_observability import ai_trace
 
 logger = logging.getLogger(__name__)
 
@@ -498,7 +499,7 @@ class AIService:
             prompt_parts.append(f"Relevant statutes: {relevant_statutes}")
 
         user_text = "\n\n".join(prompt_parts)
-        return await self._generate_text(user_text)
+        return await self._generate_text(user_text, query_type=query_type)
     
     async def draft_document(
         self,
@@ -528,45 +529,71 @@ class AIService:
             "with headings, numbered paragraphs, and clear sections."
         )
 
-        return await self._generate_text(prompt)
+        return await self._generate_text(prompt, query_type="drafting")
 
-    async def _generate_text(self, user_text: str) -> str:
+    def _select_gemini_model(self, query_type: str) -> str:
+        """
+        Smart model routing based on query type.
+        
+        Returns:
+            Model name to use (gemini-1.5-flash for simple, gemini-1.5-pro for complex)
+        """
+        # Simple queries use flash (fast, cheap)
+        simple_types = ["summary", "section_lookup", "research", "drafting"]
+        
+        # Complex queries use pro (better reasoning)
+        complex_types = ["interpretation", "case_prep", "litigation_strategy", "comparative_analysis"]
+        
+        if query_type in simple_types:
+            return "gemini-1.5-flash"  # Default for 80-90% of traffic
+        elif query_type in complex_types:
+            return "gemini-1.5-pro"  # Better reasoning for complex queries
+        else:
+            return "gemini-1.5-flash"  # Default to flash
+
+    async def _generate_text(self, user_text: str, query_type: str = "research") -> str:
         """
         Route the request to the configured AI provider.
-        """
-        # FIX 3: Use validated provider from initialization
-        provider = getattr(self, '_provider', None)
-        if not provider:
-            # Fallback: validate now if not set during init (shouldn't happen with FIX 3)
-            VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
-            raw_provider = self.settings.AI_PROVIDER.strip().lower()
-            if raw_provider == "google":
-                raw_provider = "gemini"
-            if raw_provider not in VALID_PROVIDERS:
-                raise RuntimeError(
-                    f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
-                    f"Must be one of {sorted(VALID_PROVIDERS)}"
-                )
-            provider = raw_provider
-            self._provider = provider  # Store for future use
-        elif provider not in ["anthropic", "openai", "gemini", "grok", "zai", "openrouter"]:
-            # If provider is still invalid after normalization, default to gemini
-            print(f"WARNING: Unknown AI_PROVIDER value: '{self.settings.AI_PROVIDER}'. Defaulting to 'gemini'.")
-            logger.warning(f"Unknown AI_PROVIDER: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
-            provider = "gemini"
         
-        # Debug: Log the provider value after normalization
-        print(f"DEBUG: AI_PROVIDER={repr(self.settings.AI_PROVIDER)}, original={repr(original_provider)}, normalized={repr(provider)}, type={type(provider)}")
-        print(f"DEBUG: Direct comparison test - provider == 'gemini': {provider == 'gemini'}")
-        print(f"DEBUG: Provider checks - anthropic={provider == 'anthropic'}, openai={provider == 'openai'}, gemini={provider == 'gemini'}, grok={provider == 'grok'}, zai={provider == 'zai'}")
+        Args:
+            user_text: The prompt text to send to AI
+            query_type: Type of query (research, drafting, etc.) for smart routing
+        """
+        # Start AI trace for observability
+        trace_id, end_trace = ai_trace(user_text[:200], getattr(self, '_provider', 'unknown'), query_type)
+        
+        try:
+            # FIX 3: Use validated provider from initialization
+            provider = getattr(self, '_provider', None)
+            if not provider:
+                # Fallback: validate now if not set during init (shouldn't happen with FIX 3)
+                VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
+                raw_provider = self.settings.AI_PROVIDER.strip().lower()
+                if raw_provider == "google":
+                    raw_provider = "gemini"
+                if raw_provider not in VALID_PROVIDERS:
+                    error_msg = (
+                        f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
+                        f"Must be one of {sorted(VALID_PROVIDERS)}"
+                    )
+                    end_trace(success=False, error=error_msg)
+                    raise RuntimeError(error_msg)
+                provider = raw_provider
+                self._provider = provider  # Store for future use
+            elif provider not in ["anthropic", "openai", "gemini", "grok", "zai", "openrouter"]:
+                # If provider is still invalid after normalization, default to gemini
+                logger.warning(f"Unknown AI_PROVIDER: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
+                provider = "gemini"
 
         if provider == "anthropic":
             if not self._anthropic_client:
-                raise RuntimeError(
+                error_msg = (
                     "Anthropic client not available. "
                     "Ensure `anthropic` package is installed and "
                     "ANTHROPIC_API_KEY is set."
                 )
+                end_trace(success=False, error=error_msg)
+                raise RuntimeError(error_msg)
 
             message = self._anthropic_client.messages.create(
                 model="claude-3-sonnet-20240229",
@@ -579,14 +606,18 @@ class AIService:
             for block in message.content:
                 if getattr(block, "type", None) == "text":
                     parts.append(block.text)
-            return "\n".join(parts).strip()
+            result = "\n".join(parts).strip()
+            end_trace(success=True, model="claude-3-sonnet-20240229")
+            return result
         elif provider == "openai":
             if not self._openai_client:
-                raise RuntimeError(
+                error_msg = (
                     "OpenAI client not available. "
                     "Ensure `openai` package is installed and "
                     "OPENAI_API_KEY is set."
                 )
+                end_trace(success=False, error=error_msg)
+                raise RuntimeError(error_msg)
 
             response = self._openai_client.chat.completions.create(
                 model="gpt-4o-mini",
@@ -596,7 +627,9 @@ class AIService:
                 ],
                 max_tokens=2048,
             )
-            return (response.choices[0].message.content or "").strip()
+            result = (response.choices[0].message.content or "").strip()
+            end_trace(success=True, model="gpt-4o-mini")
+            return result
         elif provider == "gemini":
             logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
             if not self._gemini_client:
@@ -738,7 +771,10 @@ class AIService:
                                 ]
                             )
                         )
-                        return response.text.strip()
+                        result = response.text.strip()
+                        # End trace with success
+                        end_trace(success=True, model=model_name)
+                        return result
                     else:
                         # Old SDK: Use GenerativeModel
                         model = self._gemini_client.GenerativeModel(model_name)

@@ -1,11 +1,17 @@
 """
 Legal Research API endpoints
+
+Implements production-grade error handling with graceful fallbacks.
 """
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional, Dict, List
 from app.services.ai_service import ai_service
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -13,7 +19,7 @@ router = APIRouter()
 class LegalQueryRequest(BaseModel):
     """Request model for legal research query"""
     query: str
-    query_type: str = "research"  # research, drafting, opinion, case_prep
+    query_type: str = "research"  # research, drafting, opinion, case_prep, summary, section_lookup, interpretation
     context: Optional[Dict] = None
     relevant_cases: Optional[List[Dict]] = None
     relevant_statutes: Optional[List[Dict]] = None
@@ -24,12 +30,17 @@ class LegalQueryResponse(BaseModel):
     response: str
     query_type: str
     confidence_score: Optional[float] = None
+    status: str = "success"  # success, partial, error
+    mode: str = "ai"  # ai, non_ai, cached
+    message: Optional[str] = None
 
 
 @router.post("/legal-research", response_model=LegalQueryResponse)
 async def legal_research(request: LegalQueryRequest):
     """
     Perform legal research and analysis
+    
+    Implements graceful fallback if AI is unavailable.
     
     Example:
     {
@@ -48,6 +59,33 @@ async def legal_research(request: LegalQueryRequest):
         
         return LegalQueryResponse(
             response=response_text,
+            query_type=request.query_type,
+            status="success",
+            mode="ai"
+        )
+    except RuntimeError as ai_error:
+        # AI service unavailable - return graceful fallback
+        error_msg = str(ai_error)
+        logger.warning(f"AI service unavailable for legal research: {error_msg}")
+        
+        # FIX 4: Production-grade error UX with fallback
+        return JSONResponse(
+            status_code=503,
+            content={
+                "status": "partial",
+                "mode": "non_ai",
+                "message": "AI legal analysis temporarily unavailable. Showing verified information only.",
+                "response": (
+                    f"Legal research query: {request.query}\n\n"
+                    "AI analysis is currently unavailable. "
+                    "Please check your AI provider configuration or try again later.\n\n"
+                    "For verified statute information, please use the statute search feature."
+                ),
+                "query_type": request.query_type,
+                "confidence_score": None,
+                "error": error_msg
+            }
+        )
             query_type=request.query_type,
             confidence_score=0.85  # Default confidence score
         )
