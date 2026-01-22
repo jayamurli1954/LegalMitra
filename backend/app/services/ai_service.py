@@ -587,10 +587,10 @@ class AIService:
             for block in message.content:
                 if getattr(block, "type", None) == "text":
                     parts.append(block.text)
-            result = "\n".join(parts).strip()
-            end_trace(success=True, model="claude-3-sonnet-20240229")
-            return result
-        elif provider == "openai":
+                result = "\n".join(parts).strip()
+                end_trace(success=True, model="claude-3-sonnet-20240229")
+                return result
+            elif provider == "openai":
             if not self._openai_client:
                 error_msg = (
                     "OpenAI client not available. "
@@ -830,16 +830,32 @@ class AIService:
                             await asyncio.sleep(retry_delay)
                             continue
                         else:
-                            raise RuntimeError(
+                            error_msg = (
                                 f"Rate limit exceeded after {max_retries} attempts. "
                                 f"Gemini free tier limits: gemini-pro = 60 requests/minute, gemini-2.5-flash = 5 requests/minute. "
                                 f"Using {model_name}. Please wait a minute before trying again. "
                                 f"Original error: {error_str[:300]}"
                             )
+                            end_trace(success=False, error=error_msg, model=model_name)
+                            raise RuntimeError(error_msg)
                     else:
                         # Not a rate limit error, re-raise immediately
-                        raise RuntimeError(f"Gemini API error ({model_name}): {error_str}")
-        elif provider == "grok":
+                        error_msg = f"Gemini API error ({model_name}): {error_str}"
+                        end_trace(success=False, error=error_msg, model=model_name)
+                        raise RuntimeError(error_msg)
+            else:
+                # If we get here, provider is not supported
+                error_msg = (
+                    f"Unsupported AI provider '{self.settings.AI_PROVIDER}' (normalized: '{provider}'). "
+                    "Use 'anthropic', 'openai', 'gemini', 'google', 'grok', or 'zai'."
+                )
+                end_trace(success=False, error=error_msg)
+                raise RuntimeError(error_msg)
+        except Exception as e:
+            # Catch any unhandled exceptions and end trace
+            if 'end_trace' in locals():
+                end_trace(success=False, error=str(e))
+            raise
             if not httpx:
                 raise RuntimeError(
                     "httpx package required for Grok API. "
@@ -992,13 +1008,6 @@ class AIService:
             )
             return response.text.strip()
         
-        raise RuntimeError(
-            f"Unsupported AI provider '{self.settings.AI_PROVIDER}' (normalized: '{provider}'). "
-            "Use 'anthropic', 'openai', 'gemini', 'google', 'grok', or 'zai'. "
-            f"Available provider checks: anthropic={provider == 'anthropic'}, "
-            f"openai={provider == 'openai'}, gemini={provider == 'gemini'}, "
-            f"gemini/google={provider in ['gemini', 'google']}, grok={provider == 'grok'}, zai={provider == 'zai'}"
-        )
 
 
 # Singleton instance used by the API routers
