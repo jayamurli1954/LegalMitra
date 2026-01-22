@@ -748,7 +748,7 @@ class AIService:
                 
                 for attempt in range(max_retries):
                     try:
-                    if use_new_sdk:
+                        if use_new_sdk:
                         # New SDK: Use client.models.generate_content()
                         # Combine system prompt and user text
                         full_prompt = f"{self.system_prompt}\n\n{user_text}"
