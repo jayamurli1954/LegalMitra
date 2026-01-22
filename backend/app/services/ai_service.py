@@ -523,19 +523,21 @@ class AIService:
         """
         Route the request to the configured AI provider.
         """
-        provider = self.settings.AI_PROVIDER.lower().strip()
-        
-        # Normalize provider names - handle variations (google -> gemini)
-        # Also handle potential misconfiguration strings seen in deployment
-        original_provider = provider
-        
-        # Handle specific misconfiguration cases (common in deployment environments)
-        if "google (or anthropic, openai)" in provider.lower() or "or anthropic" in provider.lower() or "or openai" in provider.lower():
-            print(f"WARNING: Detected invalid AI_PROVIDER value: '{self.settings.AI_PROVIDER}'. Defaulting to 'gemini'.")
-            logger.warning(f"Invalid AI_PROVIDER detected: '{self.settings.AI_PROVIDER}'. Using 'gemini' as default.")
-            provider = "gemini"
-        elif provider == "google":
-            provider = "gemini"
+        # FIX 3: Use validated provider from initialization
+        provider = getattr(self, '_provider', None)
+        if not provider:
+            # Fallback: validate now if not set during init (shouldn't happen with FIX 3)
+            VALID_PROVIDERS = {"gemini", "openai", "anthropic", "grok", "zai", "openrouter"}
+            raw_provider = self.settings.AI_PROVIDER.strip().lower()
+            if raw_provider == "google":
+                raw_provider = "gemini"
+            if raw_provider not in VALID_PROVIDERS:
+                raise RuntimeError(
+                    f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
+                    f"Must be one of {sorted(VALID_PROVIDERS)}"
+                )
+            provider = raw_provider
+            self._provider = provider  # Store for future use
         elif provider not in ["anthropic", "openai", "gemini", "grok", "zai", "openrouter"]:
             # If provider is still invalid after normalization, default to gemini
             print(f"WARNING: Unknown AI_PROVIDER value: '{self.settings.AI_PROVIDER}'. Defaulting to 'gemini'.")
