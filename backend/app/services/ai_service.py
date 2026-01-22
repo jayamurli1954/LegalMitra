@@ -794,7 +794,7 @@ class AIService:
                         
                         # Check if model doesn't exist (404) - try to list available models and use one
                         if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
-                        print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
+                            print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
                         try:
                             if use_new_sdk:
                                 # New SDK: Use client.models.list()
