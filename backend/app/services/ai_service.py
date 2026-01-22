@@ -104,24 +104,44 @@ class AIService:
             print(f"ERROR: {error_msg}")
             raise RuntimeError(error_msg)
         
-        # Handle legacy "google" alias
-        if raw_provider == "google":
-            raw_provider = "gemini"
-            logger.info("AI_PROVIDER='google' normalized to 'gemini'")
+        # Enhanced normalization: Handle malformed values like "google (or anthropic, openai)"
+        # Extract the first valid provider name from the string
+        normalized_provider = None
         
-        # Reject invalid providers immediately
-        if raw_provider not in VALID_PROVIDERS:
-            error_msg = (
-                f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
-                f"Must be one of {sorted(VALID_PROVIDERS)}. "
-                f"Please set AI_PROVIDER to a valid value in your environment variables."
-            )
-            logger.error(error_msg)
-            print(f"ERROR: {error_msg}")
-            raise RuntimeError(error_msg)
+        # Check for "google" first (can be part of a longer string)
+        if "google" in raw_provider:
+            normalized_provider = "gemini"
+            if raw_provider != "google":
+                logger.warning(f"Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Normalizing to 'gemini'.")
+        # Check if it's a direct match to a valid provider
+        elif raw_provider in VALID_PROVIDERS:
+            normalized_provider = raw_provider
+        else:
+            # Try to extract a valid provider from the string
+            for valid_provider in VALID_PROVIDERS:
+                if valid_provider in raw_provider:
+                    normalized_provider = valid_provider
+                    logger.warning(f"Invalid AI_PROVIDER detected during init: '{self.settings.AI_PROVIDER}'. Extracted '{normalized_provider}'.")
+                    break
+            
+            # If still no valid provider found, reject it
+            if normalized_provider is None:
+                error_msg = (
+                    f"Invalid AI_PROVIDER='{self.settings.AI_PROVIDER}'. "
+                    f"Must be one of {sorted(VALID_PROVIDERS)}. "
+                    f"Please set AI_PROVIDER to a valid value in your environment variables."
+                )
+                logger.error(error_msg)
+                print(f"ERROR: {error_msg}")
+                raise RuntimeError(error_msg)
         
-        self._provider = raw_provider
-        logger.info(f"AI_PROVIDER validated: {self._provider}")
+        self._provider = normalized_provider
+        if normalized_provider == "gemini" and raw_provider != "google" and "google" in raw_provider:
+            logger.info(f"AI_PROVIDER='{self.settings.AI_PROVIDER}' normalized to 'gemini'")
+        elif normalized_provider != raw_provider:
+            logger.info(f"AI_PROVIDER='{self.settings.AI_PROVIDER}' normalized to '{normalized_provider}'")
+        else:
+            logger.info(f"AI_PROVIDER validated: {self._provider}")
 
         # FIX 2: Validate packages and API keys, but initialize clients lazily
         # This allows app to start even if API keys aren't set yet (errors will be caught when used)
