@@ -747,7 +747,7 @@ class AIService:
                 base_delay = 2
                 
                 for attempt in range(max_retries):
-                try:
+                    try:
                     if use_new_sdk:
                         # New SDK: Use client.models.generate_content()
                         # Combine system prompt and user text
