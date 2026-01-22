@@ -568,15 +568,15 @@ class AIService:
 
             if provider == "anthropic":
                 if not self._anthropic_client:
-                error_msg = (
-                    "Anthropic client not available. "
-                    "Ensure `anthropic` package is installed and "
-                    "ANTHROPIC_API_KEY is set."
-                )
-                end_trace(success=False, error=error_msg)
-                raise RuntimeError(error_msg)
+                    error_msg = (
+                        "Anthropic client not available. "
+                        "Ensure `anthropic` package is installed and "
+                        "ANTHROPIC_API_KEY is set."
+                    )
+                    end_trace(success=False, error=error_msg)
+                    raise RuntimeError(error_msg)
 
-            message = self._anthropic_client.messages.create(
+                message = self._anthropic_client.messages.create(
                 model="claude-3-sonnet-20240229",
                 max_tokens=2048,
                 system=self.system_prompt,
@@ -611,8 +611,8 @@ class AIService:
             result = (response.choices[0].message.content or "").strip()
             end_trace(success=True, model="gpt-4o-mini")
             return result
-        elif provider == "gemini":
-            logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
+            elif provider == "gemini":
+                logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
             if not self._gemini_client:
                 # Provide more helpful error message with actual initialization error
                 error_parts = []
