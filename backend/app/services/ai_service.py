@@ -857,11 +857,20 @@ class AIService:
             print(f"WARNING: Caught gemini provider in fallback - handling directly")
             # Call the gemini logic directly
             if not self._gemini_client:
-                raise RuntimeError(
-                    "Google Gemini client not available. "
-                    "Ensure `google-genai` package is installed (pip install google-genai) and "
-                    "GOOGLE_GEMINI_API_KEY is set."
-                )
+                # Try to initialize if not already attempted
+                if not hasattr(self, '_gemini_init_error'):
+                    self._initialize_gemini_client()
+                
+                # Use stored error if available
+                if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
+                    error_msg = f"Google Gemini client not available. {self._gemini_init_error}"
+                else:
+                    error_msg = (
+                        "Google Gemini client not available. "
+                        "Ensure `google-genai` package is installed (pip install google-genai) and "
+                        "GOOGLE_GEMINI_API_KEY is set."
+                    )
+                raise RuntimeError(error_msg)
             # Use the same logic as the elif block - just copy it here as fallback
             import asyncio
             import time
