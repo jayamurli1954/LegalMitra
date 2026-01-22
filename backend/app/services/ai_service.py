@@ -790,10 +790,10 @@ class AIService:
                             return result
                         
                     except Exception as e:
-                    error_str = str(e)
-                    
-                    # Check if model doesn't exist (404) - try to list available models and use one
-                    if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
+                        error_str = str(e)
+                        
+                        # Check if model doesn't exist (404) - try to list available models and use one
+                        if "404" in error_str and ("not found" in error_str.lower() or "is not found" in error_str.lower()):
                         print(f"⚠️ Model {model_name} not available (404). Trying to find alternative...")
                         try:
                             if use_new_sdk:
@@ -871,7 +871,6 @@ class AIService:
             if 'end_trace' in locals():
                 end_trace(success=False, error=str(e))
             raise
-            if not openrouter_service:
                 raise RuntimeError(
                     "OpenRouter service not available. "
                     "Ensure openrouter_service.py is properly configured."
