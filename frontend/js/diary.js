@@ -195,6 +195,86 @@ function updateUIForProfession() {
             : 'Search engagements...';
     }
     
+    // Update modal titles and labels
+    const modalCaseTitle = document.getElementById('modal-case-title');
+    const modalHearingTitle = document.getElementById('modal-hearing-title');
+    if (modalCaseTitle) {
+        modalCaseTitle.textContent = profession === 'advocate' 
+            ? 'New Case Entry' 
+            : 'New Engagement Entry';
+    }
+    if (modalHearingTitle) {
+        modalHearingTitle.textContent = profession === 'advocate' 
+            ? 'Log New Hearing' 
+            : 'Log Compliance / Due Date';
+    }
+    
+    // Update form labels
+    const labelCaseNumber = document.getElementById('label-case-number');
+    const labelCourt = document.getElementById('label-court');
+    const labelSelectCase = document.getElementById('label-select-case');
+    const inputCaseNumber = document.getElementById('input-case-number');
+    const inputCourt = document.getElementById('input-court');
+    const labelHearingDate = document.getElementById('label-hearing-date');
+    const labelNextDate = document.getElementById('label-next-date');
+    const labelPurpose = document.getElementById('label-purpose');
+    const textareaPurpose = document.getElementById('textarea-purpose');
+    const btnSaveHearing = document.getElementById('btn-save-hearing');
+    const labelCaseType = document.getElementById('label-case-type');
+    const selectCaseType = document.getElementById('select-case-type');
+    const labelFilingDate = document.getElementById('label-filing-date');
+    const btnSaveCase = document.getElementById('btn-save-case');
+    
+    if (profession === 'chartered_accountant') {
+        if (labelCaseNumber) labelCaseNumber.textContent = 'Ref / Ack No';
+        if (labelCourt) labelCourt.textContent = 'Department / Authority';
+        if (labelSelectCase) labelSelectCase.textContent = 'Select Engagement';
+        if (inputCaseNumber) inputCaseNumber.placeholder = 'e.g. GSTIN-123456789, IT Notice No. 143(2)/2024';
+        if (inputCourt) inputCourt.placeholder = 'e.g. GST Department, Income Tax Department';
+        if (labelHearingDate) labelHearingDate.textContent = 'Due Date';
+        if (labelNextDate) labelNextDate.textContent = 'Next Due Date';
+        if (labelPurpose) labelPurpose.textContent = 'Compliance Type / Remarks';
+        if (textareaPurpose) textareaPurpose.placeholder = 'e.g. GST Return Filing, IT Notice Reply, Audit Compliance...';
+        if (btnSaveHearing) btnSaveHearing.textContent = 'Save Compliance';
+        // Update case type options for CA
+        if (selectCaseType) {
+            selectCaseType.innerHTML = `
+                <option value="GST">GST</option>
+                <option value="Income Tax">Income Tax</option>
+                <option value="Audit">Audit</option>
+                <option value="MCA Compliance">MCA Compliance</option>
+                <option value="TDS">TDS</option>
+                <option value="Other">Other</option>
+            `;
+        }
+        if (labelCaseType) labelCaseType.textContent = 'Compliance Type';
+        if (labelFilingDate) labelFilingDate.textContent = 'Start Date / Period';
+        if (btnSaveCase) btnSaveCase.textContent = 'Save Engagement';
+    } else {
+        if (labelCaseNumber) labelCaseNumber.textContent = 'Case Number';
+        if (labelCourt) labelCourt.textContent = 'Court';
+        if (labelSelectCase) labelSelectCase.textContent = 'Select Case';
+        if (inputCaseNumber) inputCaseNumber.placeholder = 'e.g. WP 1234/2024';
+        if (inputCourt) inputCourt.placeholder = 'e.g. High Court';
+        if (labelHearingDate) labelHearingDate.textContent = 'Hearing Date';
+        if (labelNextDate) labelNextDate.textContent = 'Next Date';
+        if (labelPurpose) labelPurpose.textContent = 'Purpose / Order';
+        if (textareaPurpose) textareaPurpose.placeholder = 'e.g. Evidence, Arguments...';
+        if (btnSaveHearing) btnSaveHearing.textContent = 'Save Hearing';
+        // Reset case type options for Advocate
+        if (selectCaseType) {
+            selectCaseType.innerHTML = `
+                <option value="Civil">Civil</option>
+                <option value="Criminal">Criminal</option>
+                <option value="Corporate">Corporate</option>
+                <option value="Family">Family</option>
+            `;
+        }
+        if (labelCaseType) labelCaseType.textContent = 'Case Type';
+        if (labelFilingDate) labelFilingDate.textContent = 'Filing Date';
+        if (btnSaveCase) btnSaveCase.textContent = 'Save Case';
+    }
+    
     // Reload data to reflect profession change
     if (document.getElementById('daily-board')?.classList.contains('active')) {
         loadDailyBoard();
