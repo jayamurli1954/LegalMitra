@@ -85,6 +85,7 @@ class AIService:
         self._anthropic_client = None
         self._openai_client = None
         self._gemini_client = None
+        self._gemini_init_error = None  # Store initialization error for better error messages
 
         # Normalize AI_PROVIDER during initialization to handle misconfigured values
         provider = self.settings.AI_PROVIDER.lower().strip()
@@ -118,34 +119,59 @@ class AIService:
         if self._gemini_client is not None:
             return  # Already initialized
         
+        # Check if genai package is available
         if genai is None:
-            logger.error("Google Gemini package not installed")
+            error_msg = "Google Gemini package not installed. Install with: pip install google-genai"
+            logger.error(error_msg)
+            print(f"ERROR: {error_msg}")
+            self._gemini_init_error = error_msg
             return
         
-        if not self.settings.GOOGLE_GEMINI_API_KEY:
-            logger.error("GOOGLE_GEMINI_API_KEY is not set")
+        # Check if API key is set
+        api_key = self.settings.GOOGLE_GEMINI_API_KEY
+        if not api_key:
+            error_msg = "GOOGLE_GEMINI_API_KEY is not set in environment variables"
+            logger.error(error_msg)
+            print(f"ERROR: {error_msg}")
+            self._gemini_init_error = error_msg
+            return
+        
+        # Check if API key looks valid (should be non-empty string)
+        api_key = api_key.strip()
+        if not api_key:
+            error_msg = "GOOGLE_GEMINI_API_KEY is set but empty"
+            logger.error(error_msg)
+            print(f"ERROR: {error_msg}")
+            self._gemini_init_error = error_msg
             return
         
         try:
-            api_key_length = len(self.settings.GOOGLE_GEMINI_API_KEY) if self.settings.GOOGLE_GEMINI_API_KEY else 0
-            logger.info(f"Initializing Gemini client (lazy load) - API key length: {api_key_length}")
+            api_key_length = len(api_key)
+            logger.info(f"Initializing Gemini client (lazy load) - API key length: {api_key_length}, GENAI_NEW_SDK: {GENAI_NEW_SDK}")
+            print(f"DEBUG: Initializing Gemini client - API key length: {api_key_length}, GENAI_NEW_SDK: {GENAI_NEW_SDK}")
             
             if GENAI_NEW_SDK:
-                self._gemini_client = genai.Client(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                self._gemini_client = genai.Client(api_key=api_key)
                 self._gemini_use_new_sdk = True
                 logger.info("✅ Google Gemini client initialized (new SDK, lazy load)")
                 print("✅ Google Gemini client initialized (new SDK, lazy load)")
+                self._gemini_init_error = None  # Clear any previous error
             else:
-                genai.configure(api_key=self.settings.GOOGLE_GEMINI_API_KEY)
+                genai.configure(api_key=api_key)
                 self._gemini_client = genai
                 self._gemini_use_new_sdk = False
                 logger.info("✅ Google Gemini client initialized (old SDK, lazy load)")
                 print("✅ Google Gemini client initialized (old SDK, lazy load)")
+                self._gemini_init_error = None  # Clear any previous error
         except Exception as e:
-            logger.error(f"Failed to initialize Gemini client: {e}", exc_info=True)
-            print(f"ERROR: Failed to initialize Gemini client: {e}")
+            error_msg = f"Failed to initialize Gemini client: {type(e).__name__}: {e}"
+            logger.error(error_msg, exc_info=True)
+            print(f"ERROR: {error_msg}")
+            import traceback
+            print(f"TRACEBACK:\n{traceback.format_exc()}")
             self._gemini_client = None
             self._gemini_use_new_sdk = False
+            self._gemini_init_error = error_msg
     
     def _detect_case_citation(self, query: str) -> tuple[bool, Optional[str]]:
         """
@@ -503,17 +529,24 @@ class AIService:
         elif provider == "gemini":
             logger.debug(f"Entered Gemini block - provider={repr(provider)}, client exists={self._gemini_client is not None}")
             if not self._gemini_client:
-                # Provide more helpful error message
+                # Provide more helpful error message with actual initialization error
                 error_parts = []
-                if genai is None:
-                    error_parts.append("`google-genai` package is not installed. Install with: pip install google-genai")
-                if not self.settings.GOOGLE_GEMINI_API_KEY:
-                    error_parts.append("GOOGLE_GEMINI_API_KEY environment variable is not set")
-                if not error_parts:
-                    error_parts.append("Gemini client initialization failed (check logs for details)")
+                
+                # Use stored initialization error if available
+                if hasattr(self, '_gemini_init_error') and self._gemini_init_error:
+                    error_parts.append(self._gemini_init_error)
+                else:
+                    # Fallback to checking common issues
+                    if genai is None:
+                        error_parts.append("`google-genai` package is not installed. Install with: pip install google-genai")
+                    if not self.settings.GOOGLE_GEMINI_API_KEY:
+                        error_parts.append("GOOGLE_GEMINI_API_KEY environment variable is not set")
+                    if not error_parts:
+                        error_parts.append("Gemini client initialization failed (check logs for details)")
                 
                 error_msg = "Google Gemini client not available. " + " | ".join(error_parts)
                 logger.error(error_msg)
+                print(f"ERROR: {error_msg}")
                 raise RuntimeError(error_msg)
 
             # Check if using new SDK
